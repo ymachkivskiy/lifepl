@@ -65,6 +65,11 @@ public abstract class GoalDefinitionBuilder {
     public GoalDefinitionBuilder accept() {
       return builder.setUpPredecessors(predecessors, actions);
     }
+
+    public GoalDefinitionBuilder forAction(Action action) {
+      addAction(action);
+      return accept();
+    }
   }
 
 }
