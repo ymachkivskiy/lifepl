@@ -13,19 +13,24 @@ public abstract class Action {
 
   @Override
   public int hashCode() {
-    //TODO Yarek : implement
-    return super.hashCode();
+    return name.hashCode();
   }
 
   @Override
   public boolean equals(Object obj) {
-    //TODO Yarek : implement
-    return super.equals(obj);
+    if(this == obj)
+      return true;
+    if(obj instanceof Action) {
+      Action other = (Action) obj;
+      return name.equals(other.name);
+    }
+    return false;
   }
 
   @Override
   public String toString() {
-    //TODO Yarek : implement
-    return super.toString();
+    return new StringBuilder()
+      .append("action{").append(name).append("}")
+      .toString();
   }
 }
