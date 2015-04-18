@@ -16,10 +16,7 @@ public abstract class GoalDefinition implements Iterable<Action> {
   public static abstract class Builder {
     public abstract GoalDefinition build();
 
-    public Builder addAction(Action action) {
-      //TODO Yarek : implement
-      return this;
-    }
+    public abstract Builder addAction(Action action);
 
     public PredecessorActionList withPredecessors() {
       return new PredecessorActionList();
