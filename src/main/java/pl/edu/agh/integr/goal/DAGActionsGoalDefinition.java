@@ -1,5 +1,6 @@
 package pl.edu.agh.integr.goal;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -12,26 +13,25 @@ final class DAGActionsGoalDefinition extends GoalDefinition {
     @Override
     protected Builder setUpPredecessors(Set<Action> currentActionsPredecessors, Set<Action> currentActions) {
       //TODO
-      return null;
+      return this;
     }
 
     @Override
     public Builder addAction(Action action) {
       //TODO
-      return null;
+      return this;
     }
 
     @Override
     public GoalDefinition build() {
       //TODO Yarek : implement
-      return null;
+      return new DAGActionsGoalDefinition();
     }
   }
 
   @Override
   public Iterator<Action> iterator() {
-    //TODO Yarek : implement
-    return null;
+    return Collections.emptyIterator();
   }
 
   static Builder Builder() {

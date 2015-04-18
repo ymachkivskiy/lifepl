@@ -1,6 +1,8 @@
 /* Copyright 2013 Sabre Holdings */
 package pl.edu.agh.integr.goal;
 
+import com.google.common.collect.Sets;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +18,10 @@ public abstract class GoalDefinitionBuilder {
     return new PredecessorActionList();
   }
 
+  public ActionList withPredecessor(Action action) {
+    return new ActionList(new PredecessorActionList().addAction(action));
+  }
+
   public class PredecessorActionList {
     private Set<Action> predecessors = new HashSet<Action>();
 
@@ -25,6 +31,10 @@ public abstract class GoalDefinitionBuilder {
     }
     public ActionList forActions() {
       return new ActionList(this);
+    }
+
+    public GoalDefinitionBuilder forAction(Action action) {
+      return setUpPredecessors(predecessors, Sets.newHashSet(action));
     }
 
     Set<Action> getPredecessors() {

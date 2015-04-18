@@ -19,8 +19,7 @@ final class SetActionsGoalDefinition extends GoalDefinition {
 
     @Override
     protected Builder setUpPredecessors(Set<Action> currentActionsPredecessors, Set<Action> currentActions) {
-      //TODO
-      return null;
+      throw new UnsupportedOperationException();
     }
 
     @Override

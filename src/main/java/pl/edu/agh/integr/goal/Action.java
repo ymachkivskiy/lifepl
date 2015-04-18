@@ -2,7 +2,7 @@ package pl.edu.agh.integr.goal;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public abstract class Action {
+public class Action {
   private final String name;
 
   public String getName() {

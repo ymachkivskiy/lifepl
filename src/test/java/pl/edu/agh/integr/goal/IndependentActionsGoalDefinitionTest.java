@@ -6,6 +6,12 @@ public class IndependentActionsGoalDefinitionTest extends GoalDefinitionTest {
 
   @Before
   public void setUpClass() {
-    //TODO
+    GoalDefinitionBuilder builder = GoalDefinition.Builder(GoalActionDependency.INDEPENDENT);
+
+    for (int i = 0; i < 1000; ++i) {
+      builder.addAction(createRandomAction());
+    }
+
+    tested = builder.build();
   }
 }
