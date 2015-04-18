@@ -14,11 +14,17 @@ final class SetActionsGoalDefinition extends GoalDefinition {
     this.actions = Collections.unmodifiableCollection(actions);
   }
 
-  private static class Builder extends GoalDefinition.Builder {
+  private static class Builder extends GoalDefinitionBuilder {
     private final Set<Action> actions = new HashSet<Action>();
 
     @Override
-    public GoalDefinition.Builder addAction(Action action) {
+    protected Builder setUpPredecessors(Set<Action> currentActionsPredecessors, Set<Action> currentActions) {
+      //TODO
+      return null;
+    }
+
+    @Override
+    public Builder addAction(Action action) {
       actions.add(action);
       return this;
     }

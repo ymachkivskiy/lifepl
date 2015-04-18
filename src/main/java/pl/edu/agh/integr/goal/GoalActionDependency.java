@@ -3,14 +3,14 @@ package pl.edu.agh.integr.goal;
 public enum GoalActionDependency {
   DEPENDENT(
     new BuilderProvider() {
-      public GoalDefinition.Builder getBuilder() {
+      public GoalDefinitionBuilder getBuilder() {
         return GoalDefinition.DependentActionsGoalBuilder();
       }
     }
   ),
   INDEPENDENT(
     new BuilderProvider() {
-      public GoalDefinition.Builder getBuilder() {
+      public GoalDefinitionBuilder getBuilder() {
         return GoalDefinition.IndependentActionsGoalBuilder();
       }
     }
@@ -23,11 +23,11 @@ public enum GoalActionDependency {
   }
 
 
-  GoalDefinition.Builder getBuilder() {
+  GoalDefinitionBuilder getBuilder() {
     return builderProvider.getBuilder();
   }
 
   private interface BuilderProvider {
-    GoalDefinition.Builder getBuilder();
+    GoalDefinitionBuilder getBuilder();
   }
 }
