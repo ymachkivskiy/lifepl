@@ -12,7 +12,7 @@ public abstract class GoalDefinitionTest {
   protected GoalDefinition tested;
   private Set<Action> containingActions = new HashSet<Action>();
 
-  private int actionCounter = 1;
+  private int actionCounter = 0;
 
   protected Action createRandomAction() {
     Action action = new Action("Action - " + actionCounter++);

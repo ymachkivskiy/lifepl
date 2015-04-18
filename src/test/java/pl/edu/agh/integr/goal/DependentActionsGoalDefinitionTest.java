@@ -69,6 +69,7 @@ public class DependentActionsGoalDefinitionTest extends GoalDefinitionTest {
       .accept()
       .withPredecessor(A[8])
       .addAction(A[9])
+      .accept()
       ;
 
     tested = builder.build();

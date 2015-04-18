@@ -15,26 +15,31 @@ public abstract class GoalDefinitionBuilder {
   public abstract GoalDefinitionBuilder addAction(Action action);
 
   public PredecessorActionList withPredecessors() {
-    return new PredecessorActionList();
+    return new PredecessorActionList(this);
   }
 
   public ActionList withPredecessor(Action action) {
-    return new ActionList(new PredecessorActionList().addAction(action));
+    return new ActionList(this, new PredecessorActionList(this).addAction(action));
   }
 
-  public class PredecessorActionList {
+  public static class PredecessorActionList {
+    private final GoalDefinitionBuilder builder;
     private Set<Action> predecessors = new HashSet<Action>();
+
+    public PredecessorActionList(GoalDefinitionBuilder builder) {
+      this.builder = builder;
+    }
 
     public PredecessorActionList addAction(Action action) {
       predecessors.add(action);
       return this;
     }
     public ActionList forActions() {
-      return new ActionList(this);
+      return new ActionList(builder, this);
     }
 
     public GoalDefinitionBuilder forAction(Action action) {
-      return setUpPredecessors(predecessors, Sets.newHashSet(action));
+      return builder.setUpPredecessors(predecessors, Sets.newHashSet(action));
     }
 
     Set<Action> getPredecessors() {
@@ -42,11 +47,13 @@ public abstract class GoalDefinitionBuilder {
     }
   }
 
-  public class ActionList {
+  public static class ActionList {
     private final Set<Action> predecessors;
     private final Set<Action> actions = new HashSet<Action>();
+    private final GoalDefinitionBuilder builder;
 
-    public ActionList(PredecessorActionList predecessorActionList) {
+    public ActionList(GoalDefinitionBuilder builder, PredecessorActionList predecessorActionList) {
+      this.builder = builder;
       this.predecessors = predecessorActionList.getPredecessors();
     }
 
@@ -56,7 +63,7 @@ public abstract class GoalDefinitionBuilder {
     }
 
     public GoalDefinitionBuilder accept() {
-      return setUpPredecessors(predecessors, actions);
+      return builder.setUpPredecessors(predecessors, actions);
     }
   }
 

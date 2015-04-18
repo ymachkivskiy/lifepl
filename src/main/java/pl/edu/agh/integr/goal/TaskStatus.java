@@ -18,7 +18,7 @@ public final class TaskStatus {
   public boolean isDone() {
     return isDone;
   }
-
+//TODO allow to do it only from GOalCOmpletionTracker
   public void setIsDone(boolean isDone) {
     this.isDone = isDone;
   }
