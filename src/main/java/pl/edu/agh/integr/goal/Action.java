@@ -1,5 +1,7 @@
 package pl.edu.agh.integr.goal;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public abstract class Action {
   private final String name;
 
@@ -13,7 +15,9 @@ public abstract class Action {
 
   @Override
   public int hashCode() {
-    return name.hashCode();
+    return new HashCodeBuilder(17, 137)
+      .append(name)
+      .hashCode();
   }
 
   @Override
