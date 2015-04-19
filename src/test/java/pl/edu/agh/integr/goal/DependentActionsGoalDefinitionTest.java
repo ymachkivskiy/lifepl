@@ -43,6 +43,7 @@ public class DependentActionsGoalDefinitionTest extends GoalDefinitionTest {
     builder
       .addAction(A[0])
       .withPredecessor(A[1])
+        .forActions()
           .addAction(A[2])
           .addAction(A[3])
           .addAction(A[4])

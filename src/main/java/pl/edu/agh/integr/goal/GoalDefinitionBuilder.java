@@ -18,15 +18,34 @@ public abstract class GoalDefinitionBuilder {
     return new PredecessorActionList(this);
   }
 
-  public ActionList withPredecessor(Action action) {
-    return new ActionList(this, new PredecessorActionList(this).addAction(action));
+  public PredecessorsListToActionListBridge withPredecessor(Action action) {
+    return new PredecessorsListToActionListBridge(this, new PredecessorActionList(this).addAction(action));
+  }
+
+  public static class PredecessorsListToActionListBridge {
+
+    private final GoalDefinitionBuilder builder;
+    private final PredecessorActionList predecessorActionList;
+
+    public PredecessorsListToActionListBridge(GoalDefinitionBuilder builder, PredecessorActionList predecessorActionList) {
+      this.builder = builder;
+      this.predecessorActionList = predecessorActionList;
+    }
+
+    public ActionList forActions() {
+      return new ActionList(builder, predecessorActionList);
+    }
+
+    public GoalDefinitionBuilder forAction(Action action) {
+      return builder.setUpPredecessors(predecessorActionList.getPredecessors(), Sets.newHashSet(action));
+    }
   }
 
   public static class PredecessorActionList {
     private final GoalDefinitionBuilder builder;
     private Set<Action> predecessors = new HashSet<Action>();
 
-    public PredecessorActionList(GoalDefinitionBuilder builder) {
+    private PredecessorActionList(GoalDefinitionBuilder builder) {
       this.builder = builder;
     }
 
@@ -52,7 +71,7 @@ public abstract class GoalDefinitionBuilder {
     private final Set<Action> actions = new HashSet<Action>();
     private final GoalDefinitionBuilder builder;
 
-    public ActionList(GoalDefinitionBuilder builder, PredecessorActionList predecessorActionList) {
+    private ActionList(GoalDefinitionBuilder builder, PredecessorActionList predecessorActionList) {
       this.builder = builder;
       this.predecessors = predecessorActionList.getPredecessors();
     }
@@ -66,10 +85,6 @@ public abstract class GoalDefinitionBuilder {
       return builder.setUpPredecessors(predecessors, actions);
     }
 
-    public GoalDefinitionBuilder forAction(Action action) {
-      addAction(action);
-      return accept();
-    }
   }
 
 }
