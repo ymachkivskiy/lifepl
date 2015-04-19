@@ -1,23 +1,22 @@
 package pl.edu.agh.integr.goal;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Monitor stanu spe?nienia celu, jest tworzony na podstawie  @see GoalDefinition,
- * dla którego na pocz?tku wszystkie zadania nie s? spe?nione.
+ * Monitor stanu spelnienia celu, jest tworzony na podstawie  @see GoalDefinition,
+ * dla ktorego na poczatku wszystkie zadania nie sa spelnione.
  */
 public class GoalCompletionTracker {
-  public GoalCompletionTracker(GoalDefinition goalDefinition) {
+  private Map<Action, TaskStatus> actionToTaskMapping = new HashMap<Action, TaskStatus>();
+
+  GoalCompletionTracker(GoalDefinition goalDefinition) {
     //TODO Yarek implement
   }
 
   /**
-   * Zwraca informacje, czy dany cel zosta? w pe?ni osi?gni?ty.
+   * Zwraca informacje, czy dany cel zostal w pelni osiagniety.
    *
-   * @return osi?gni?cie celu
+   * @return osiagniecie celu
    */
   public boolean goalReached() {
     //TODO Yarek : implement
@@ -25,10 +24,10 @@ public class GoalCompletionTracker {
   }
 
   /**
-   * Zwraca kolekcj? zada? zawartych w tym celu. Zadania sa uporzadkowane wed?ug
-   * zale?no?ci, tzn. ?e je?li B zale?y od A, to a pojawi si? w kolekcji wcze?niej.
+   * Zwraca kolekcje zadan zawartych w tym celu. Zadania sa uporzadkowane wedlug
+   * zaleznosci, tzn. ze jesli B zalezy od A, to a pojawi si? w kolekcji wczesniej.
    *
-   * @return kolekcja zawartychw ?rodku zada?
+   * @return kolekcja zawartychw srodku zadan
    */
   public Collection<TaskStatus> getTasks() {
     //TODO Yarek : implement
@@ -36,10 +35,10 @@ public class GoalCompletionTracker {
   }
 
   /**
-   * S?u?y do pobierania zbioru nie dokonanych akcji, które mog? aktualnie zosta? wykonane,
-   * w sensie wszystkie akcje, od których s? zale?ne zosta?y wykonane, lub akcje nie maj? zale?no?ci.
+   * S?uzy do pobierania zbioru nie dokonanych akcji, ktore moga aktualnie zostac wykonane,
+   * w sensie wszystkie akcje, od ktorych sa zalezne zostaly wykonane, lub akcje nie maja zale?nosci.
    *
-   * @return zbiór niedokonanych akcji które aktualnie mo?na wykona?
+   * @return zbior niedokonanych akcji ktore aktualnie mozna wykonac
    */
   public Set<TaskStatus> getTasksCanBePerformedCurrently() {
     //TODO Yarek : implement
@@ -53,7 +52,27 @@ public class GoalCompletionTracker {
    * @return stan zadania
    */
   public Optional<TaskStatus> getStatusForAction(Action action) {
+    return Optional.ofNullable(actionToTaskMapping.get(action));
+  }
+
+  /**
+   * Metoda ktora zazwnacza podana skcje (jesli taka nalezy do celu) jako wykonana tylko
+   * w przypadku jesli akcje od ktorych ona jest zalezna zostaly wykonane, czyli sa done.
+   *
+   * @param action akcja ktora probujemy
+   * @return jesli akcja zostala oznaczona jako zrobiona true,  w przeciwnym przypadku false
+   */
+  public boolean markAsDone(Action action) {
     //TODO Yarek : implement
-    return null;
+    return false;
+  }
+
+  /**
+   * Metoda ktora zaznacza akcje oraz wzystkie od niej zalezne akcje jako nie zrobione.
+   *
+   * @param action akcja ktora trzeba oznaczyc jako nie zrobiona
+   */
+  public void markAsNotDone(Action action) {
+    //TODO Yarek : implement
   }
 }
