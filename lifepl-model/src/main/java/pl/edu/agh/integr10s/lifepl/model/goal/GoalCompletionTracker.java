@@ -1,5 +1,7 @@
 package pl.edu.agh.integr10s.lifepl.model.goal;
 
+import org.apache.log4j.Logger;
+
 import java.util.*;
 
 /**
@@ -7,6 +9,8 @@ import java.util.*;
  * dla ktorego na poczatku wszystkie zadania nie sa spelnione.
  */
 public class GoalCompletionTracker {
+  private final static Logger logger = Logger.getLogger(GoalCompletionTracker.class);
+
   private Map<Action, TaskStatus> actionToTaskMapping = new HashMap<Action, TaskStatus>();
 
   GoalCompletionTracker(GoalDefinition goalDefinition) {

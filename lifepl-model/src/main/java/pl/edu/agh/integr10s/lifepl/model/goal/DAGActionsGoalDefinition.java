@@ -1,12 +1,15 @@
 package pl.edu.agh.integr10s.lifepl.model.goal;
 
 import com.google.common.collect.Iterators;
+import org.apache.log4j.Logger;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 
 import java.util.*;
 
 final class DAGActionsGoalDefinition extends GoalDefinition {
+  private static final Logger logger = Logger.getLogger(DAGActionsGoalDefinition.class);
+
   private static class Factory implements EdgeFactory<Action, Integer> {
     public Integer createEdge(Action action, Action v1) {
       return Integer.MIN_VALUE;
@@ -20,9 +23,18 @@ final class DAGActionsGoalDefinition extends GoalDefinition {
   }
 
   private void setDependencies(Action source, Action destination) {
+    logger.debug("setting dependencies between source=" + source + " and desctination=" + destination + " actions");
     try {
-      if(!innerRepresentation.containsVertex(source)) innerRepresentation.addVertex(source);
-      if(!innerRepresentation.containsVertex(destination)) innerRepresentation.addVertex(destination);
+      if (!innerRepresentation.containsVertex(source)) {
+        logger.debug("goal does not contain action " + source + " yer, adding..");
+        innerRepresentation.addVertex(source);
+      }
+
+      if (!innerRepresentation.containsVertex(destination)) {
+        logger.debug("goal does not contain action " + destination + " yer, adding..");
+        innerRepresentation.addVertex(destination);
+      }
+
       innerRepresentation.addDagEdge(source, destination);
     } catch (DirectedAcyclicGraph.CycleFoundException e) {
       throw new RuntimeException(e);
@@ -30,6 +42,7 @@ final class DAGActionsGoalDefinition extends GoalDefinition {
   }
 
   private void addAloneAction(Action action) {
+    logger.debug("add alone action without dependencies : " + action);
     aloneActions.add(action);
   }
 
