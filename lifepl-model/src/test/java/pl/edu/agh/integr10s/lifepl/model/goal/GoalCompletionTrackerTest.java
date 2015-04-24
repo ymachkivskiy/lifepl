@@ -1,8 +1,8 @@
-package pl.edu.agh.integr.goal;
+package pl.edu.agh.integr10s.lifepl.model.goal;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class GoalCompletionTrackerTest {
 

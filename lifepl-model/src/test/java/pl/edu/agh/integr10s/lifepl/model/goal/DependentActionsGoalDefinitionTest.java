@@ -1,4 +1,4 @@
-package pl.edu.agh.integr.goal;
+package pl.edu.agh.integr10s.lifepl.model.goal;
 
 import com.google.common.collect.Lists;
 import org.junit.Before;
@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class DependentActionsGoalDefinitionTest extends GoalDefinitionTest {
 

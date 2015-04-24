@@ -1,5 +1,4 @@
-/* Copyright 2013 Sabre Holdings */
-package pl.edu.agh.integr.goal;
+package pl.edu.agh.integr10s.lifepl.model.goal;
 
 import com.google.common.collect.Sets;
 

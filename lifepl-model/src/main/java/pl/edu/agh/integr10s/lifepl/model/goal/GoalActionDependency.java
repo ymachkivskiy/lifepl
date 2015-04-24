@@ -1,4 +1,4 @@
-package pl.edu.agh.integr.goal;
+package pl.edu.agh.integr10s.lifepl.model.goal;
 
 public enum GoalActionDependency {
   DEPENDENT(

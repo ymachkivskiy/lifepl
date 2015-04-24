@@ -1,9 +1,10 @@
-package pl.edu.agh.integr.goal;
+package pl.edu.agh.integr10s.lifepl.model.goal;
+
 
 import java.util.Iterator;
 
 /**
- * Cel który si? sk?ada z akcji.
+ * Cel ktory sie sklada z akcji
  */
 public abstract class GoalDefinition implements Iterable<Action> {
 
