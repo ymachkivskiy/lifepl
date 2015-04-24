@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.goal;
+package pl.edu.agh.integr10s.lifepl.model.definition.goal;
 
 import com.google.common.collect.Iterators;
 import org.apache.log4j.Logger;

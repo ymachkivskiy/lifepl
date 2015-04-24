@@ -1,5 +1,8 @@
-package pl.edu.agh.integr10s.lifepl.model.goal;
+package pl.edu.agh.integr10s.lifepl.model.definition.goal;
 
+
+import org.apache.log4j.Logger;
+import pl.edu.agh.integr10s.lifepl.model.working.goal.GoalCompletionTracker;
 
 import java.util.Iterator;
 
@@ -7,6 +10,7 @@ import java.util.Iterator;
  * Cel ktory sie sklada z akcji
  */
 public abstract class GoalDefinition implements Iterable<Action> {
+  private static final Logger logger = Logger.getLogger(GoalDefinition.class);
 
   public abstract Iterator<Action> iterator();
 
@@ -23,6 +27,7 @@ public abstract class GoalDefinition implements Iterable<Action> {
   }
 
   public static GoalDefinitionBuilder Builder(GoalActionDependency goalActionDependency) {
+    logger.info("getting goal definition builder for " + goalActionDependency + " action dependency type");
     return goalActionDependency.getBuilder();
   }
 }

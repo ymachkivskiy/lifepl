@@ -1,6 +1,8 @@
-package pl.edu.agh.integr10s.lifepl.model.goal;
+package pl.edu.agh.integr10s.lifepl.model.working.goal;
 
 import org.apache.log4j.Logger;
+import pl.edu.agh.integr10s.lifepl.model.definition.goal.Action;
+import pl.edu.agh.integr10s.lifepl.model.definition.goal.GoalDefinition;
 
 import java.util.*;
 

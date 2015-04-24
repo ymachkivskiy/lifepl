@@ -1,6 +1,7 @@
-package pl.edu.agh.integr10s.lifepl.model.goal;
+package pl.edu.agh.integr10s.lifepl.model.working.goal;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import pl.edu.agh.integr10s.lifepl.model.definition.goal.Action;
 
 public final class TaskStatus {
   private final Action action;
