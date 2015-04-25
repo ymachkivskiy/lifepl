@@ -1,6 +1,8 @@
 package pl.edu.agh.integr10s.lifepl.model.working.goal;
 
-import org.apache.log4j.Logger;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.model.definition.goal.Action;
 import pl.edu.agh.integr10s.lifepl.model.definition.goal.GoalDefinition;
 
@@ -11,7 +13,7 @@ import java.util.*;
  * dla ktorego na poczatku wszystkie zadania nie sa spelnione.
  */
 public class GoalStatusTracker {
-    private final static Logger logger = Logger.getLogger(GoalStatusTracker.class);
+    private final static Logger logger = LoggerFactory.getLogger(GoalStatusTracker.class);
 
     private Map<Action, TaskStatus> actionToTaskMapping = new HashMap<Action, TaskStatus>();
 
@@ -36,8 +38,7 @@ public class GoalStatusTracker {
      * @return kolekcja zawartychw srodku zadan
      */
     public Collection<TaskStatus> getTasks() {
-        //TODO Yarek : implement
-        return Collections.emptyList();
+        return Lists.newArrayList(actionToTaskMapping.values());
     }
 
     /**
@@ -74,10 +75,10 @@ public class GoalStatusTracker {
     }
 
     /**
-     * Sluzy do pobierania zbioru nie dokonanych akcji, ktore moga aktualnie zostac wykonane,
+     * Sluzy do pobierania zbioru nie wykonanych akcji, ktore moga aktualnie zostac wykonane,
      * w sensie wszystkie akcje, od ktorych sa zalezne zostaly wykonane, lub akcje nie maja zaleznosci.
      *
-     * @return zbior niedokonanych akcji ktore aktualnie mozna wykonac
+     * @return zbior nie wykonanych akcji ktore aktualnie mozna wykonac
      */
     public Set<TaskStatus> getTasksCanBePerformedCurrently() {
         //TODO Yarek : implement

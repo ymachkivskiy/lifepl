@@ -1,16 +1,18 @@
 package pl.edu.agh.integr10s.lifepl.model.definition.goal;
 
 import com.google.common.collect.Iterators;
-import org.apache.log4j.Logger;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 final class DAGActionsGoalDefinition extends GoalDefinition {
-    private static final Logger logger = Logger.getLogger(DAGActionsGoalDefinition.class);
+    private static final Logger logger = LoggerFactory.getLogger(DAGActionsGoalDefinition.class);
     private DirectedAcyclicGraph<Action, Integer> innerRepresentation = new DirectedAcyclicGraph<Action, Integer>(new Factory());
     private Set<Action> aloneActions = new HashSet<Action>();
+
     private DAGActionsGoalDefinition() {
     }
 
@@ -19,15 +21,15 @@ final class DAGActionsGoalDefinition extends GoalDefinition {
     }
 
     private void setDependencies(Action source, Action destination) {
-        logger.debug("setting dependencies between source=" + source + " and desctination=" + destination + " actions");
+        logger.debug("setting dependencies between source={} and desctination={} actions", source, destination);
         try {
             if (!innerRepresentation.containsVertex(source)) {
-                logger.debug("goal does not contain action " + source + " yer, adding..");
+                logger.debug("goal does not contain action {} yet, adding..", source);
                 innerRepresentation.addVertex(source);
             }
 
             if (!innerRepresentation.containsVertex(destination)) {
-                logger.debug("goal does not contain action " + destination + " yer, adding..");
+                logger.debug("goal does not contain action {} yet, adding..", destination);
                 innerRepresentation.addVertex(destination);
             }
 
@@ -38,7 +40,7 @@ final class DAGActionsGoalDefinition extends GoalDefinition {
     }
 
     private void addAloneAction(Action action) {
-        logger.debug("add alone action without dependencies : " + action);
+        logger.debug("add alone action without dependencies : {} ", action);
         aloneActions.add(action);
     }
 
@@ -59,18 +61,22 @@ final class DAGActionsGoalDefinition extends GoalDefinition {
 
         @Override
         protected Builder setUpPredecessors(Set<Action> currentActionsPredecessors, Set<Action> currentActions) {
+            logger.debug("Setting up predecessors actions {} for actions {}", currentActionsPredecessors, currentActions);
             dependencies.add(new Dependency(currentActionsPredecessors, currentActions));
             return this;
         }
 
         @Override
         public Builder addAction(Action action) {
+            logger.debug("Adding alone action {}", action);
             aloneActions.add(action);
             return this;
         }
 
         @Override
         public GoalDefinition build() {
+            logger.debug("Building new goal definition");
+
             DAGActionsGoalDefinition resultDefinition = new DAGActionsGoalDefinition();
             for (Action aloneAction : aloneActions) {
                 resultDefinition.addAloneAction(aloneAction);
@@ -82,6 +88,9 @@ final class DAGActionsGoalDefinition extends GoalDefinition {
                     }
                 }
             }
+
+            logger.debug("goal definition created");
+
             return resultDefinition;
         }
 

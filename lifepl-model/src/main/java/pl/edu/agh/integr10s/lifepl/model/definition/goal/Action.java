@@ -33,8 +33,6 @@ public class Action {
 
     @Override
     public String toString() {
-        return new StringBuilder()
-                .append("action{").append(name).append("}")
-                .toString();
+        return "action{ " + name + " }";
     }
 }

@@ -1,14 +1,15 @@
 package pl.edu.agh.integr10s.lifepl.model.definition.goal;
 
 import com.google.common.collect.Sets;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class GoalDefinitionBuilder {
-    private static final Logger logger = Logger.getLogger(GoalDefinitionBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(GoalDefinitionBuilder.class);
 
     public abstract GoalDefinition build();
 
@@ -22,7 +23,7 @@ public abstract class GoalDefinitionBuilder {
     }
 
     public PredecessorsListToActionListBridge withPredecessor(Action action) {
-        logger.info("constructed list of predecessor actions with one action : " + action);
+        logger.info("constructed list of predecessor actions with one action : {} ", action);
         return new PredecessorsListToActionListBridge(this, new PredecessorActionList(this).addAction(action));
     }
 
@@ -42,7 +43,7 @@ public abstract class GoalDefinitionBuilder {
         }
 
         public GoalDefinitionBuilder forAction(Action action) {
-            logger.info("constructed list of actions with one action : " + action);
+            logger.info("constructed list of actions with one action : {}", action);
             return builder.setUpPredecessors(predecessorActionList.getPredecessors(), Sets.newHashSet(action));
         }
     }
@@ -56,7 +57,7 @@ public abstract class GoalDefinitionBuilder {
         }
 
         public PredecessorActionList addAction(Action action) {
-            logger.info("add action to predecessors actions list : " + action);
+            logger.info("add action to predecessors actions list : {}", action);
             predecessors.add(action);
             return this;
         }
@@ -68,7 +69,7 @@ public abstract class GoalDefinitionBuilder {
         }
 
         public GoalDefinitionBuilder forAction(Action action) {
-            logger.info("applying predecessors list for single action : " + action);
+            logger.info("applying predecessors list for single action : {}", action);
             return builder.setUpPredecessors(predecessors, Sets.newHashSet(action));
         }
 
@@ -88,7 +89,7 @@ public abstract class GoalDefinitionBuilder {
         }
 
         public ActionList addAction(Action action) {
-            logger.info("add action to action list : " + action);
+            logger.info("add action to action list : {}", action);
             actions.add(action);
             return this;
         }

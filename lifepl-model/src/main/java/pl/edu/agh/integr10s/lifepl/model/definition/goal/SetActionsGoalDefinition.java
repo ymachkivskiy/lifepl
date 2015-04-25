@@ -1,16 +1,17 @@
 package pl.edu.agh.integr10s.lifepl.model.definition.goal;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 final class SetActionsGoalDefinition extends GoalDefinition {
-    private final static Logger logger = Logger.getLogger(SetActionsGoalDefinition.class);
+    private final static Logger logger = LoggerFactory.getLogger(SetActionsGoalDefinition.class);
 
     private final Collection<Action> actions;
 
     private SetActionsGoalDefinition(Collection<Action> actions) {
-        logger.debug("Constructed goal definition with actions : " + actions);
+        logger.debug("Constructed goal definition with actions : {}", actions);
         this.actions = Collections.unmodifiableCollection(actions);
     }
 
@@ -28,14 +29,14 @@ final class SetActionsGoalDefinition extends GoalDefinition {
 
         @Override
         protected Builder setUpPredecessors(Set<Action> currentActionsPredecessors, Set<Action> currentActions) {
-            logger.error("invoking unsuported operation for goal definition builder : setUpPredecessors with currentActionsPredecessors="
-                    + currentActionsPredecessors + " and currentActions=" + currentActions);
+            logger.error("invoking unsupported operation for goal definition builder : " +
+                    "setUpPredecessors with currentActionsPredecessors={} and currentActions={}", currentActionsPredecessors, currentActions);
             throw new UnsupportedOperationException();
         }
 
         @Override
         public Builder addAction(Action action) {
-            logger.debug("adding action " + action + " to builder");
+            logger.debug("adding action {} to builder", action);
             actions.add(action);
             return this;
         }
