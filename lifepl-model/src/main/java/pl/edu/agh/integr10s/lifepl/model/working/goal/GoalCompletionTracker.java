@@ -15,7 +15,7 @@ public class GoalCompletionTracker {
 
   private Map<Action, TaskStatus> actionToTaskMapping = new HashMap<Action, TaskStatus>();
 
-  GoalCompletionTracker(GoalDefinition goalDefinition) {
+  public GoalCompletionTracker(GoalDefinition goalDefinition) {
     //TODO Yarek implement
   }
 
@@ -54,7 +54,7 @@ public class GoalCompletionTracker {
   /**
    * Zwraca status zadania dla podanej akcji jesli taka nalezy do celu, inaczej Optional.empty()
    *
-   * @param action akcja dla której zwracamy stan zadania
+   * @param action akcja dla ktï¿½rej zwracamy stan zadania
    * @return stan zadania
    */
   public Optional<TaskStatus> getStatusForAction(Action action) {
