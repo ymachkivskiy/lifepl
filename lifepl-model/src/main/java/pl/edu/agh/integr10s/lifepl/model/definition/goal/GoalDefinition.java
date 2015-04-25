@@ -10,24 +10,24 @@ import java.util.Iterator;
  * Cel ktory sie sklada z akcji
  */
 public abstract class GoalDefinition implements Iterable<Action> {
-  private static final Logger logger = Logger.getLogger(GoalDefinition.class);
+    private static final Logger logger = Logger.getLogger(GoalDefinition.class);
 
-  public abstract Iterator<Action> iterator();
+    static GoalDefinitionBuilder DependentActionsGoalBuilder() {
+        return DAGActionsGoalDefinition.Builder();
+    }
 
-  public GoalCompletionTracker startWorkingOn() {
-    return new GoalCompletionTracker(this);
-  }
+    static GoalDefinitionBuilder IndependentActionsGoalBuilder() {
+        return SetActionsGoalDefinition.Builder();
+    }
 
-  static GoalDefinitionBuilder DependentActionsGoalBuilder() {
-    return DAGActionsGoalDefinition.Builder();
-  }
+    public static GoalDefinitionBuilder Builder(GoalActionDependency goalActionDependency) {
+        logger.info("getting goal definition builder for " + goalActionDependency + " action dependency type");
+        return goalActionDependency.getBuilder();
+    }
 
-  static GoalDefinitionBuilder IndependentActionsGoalBuilder() {
-    return SetActionsGoalDefinition.Builder();
-  }
+    public abstract Iterator<Action> iterator();
 
-  public static GoalDefinitionBuilder Builder(GoalActionDependency goalActionDependency) {
-    logger.info("getting goal definition builder for " + goalActionDependency + " action dependency type");
-    return goalActionDependency.getBuilder();
-  }
+    public GoalCompletionTracker startWorkingOn() {
+        return new GoalCompletionTracker(this);
+    }
 }

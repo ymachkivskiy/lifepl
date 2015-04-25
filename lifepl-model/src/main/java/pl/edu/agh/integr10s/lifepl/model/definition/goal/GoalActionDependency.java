@@ -1,33 +1,33 @@
 package pl.edu.agh.integr10s.lifepl.model.definition.goal;
 
 public enum GoalActionDependency {
-  DEPENDENT(
-    new BuilderProvider() {
-      public GoalDefinitionBuilder getBuilder() {
-        return GoalDefinition.DependentActionsGoalBuilder();
-      }
+    DEPENDENT(
+            new BuilderProvider() {
+                public GoalDefinitionBuilder getBuilder() {
+                    return GoalDefinition.DependentActionsGoalBuilder();
+                }
+            }
+    ),
+    INDEPENDENT(
+            new BuilderProvider() {
+                public GoalDefinitionBuilder getBuilder() {
+                    return GoalDefinition.IndependentActionsGoalBuilder();
+                }
+            }
+    );
+
+    private final BuilderProvider builderProvider;
+
+    private GoalActionDependency(BuilderProvider builderProvider) {
+        this.builderProvider = builderProvider;
     }
-  ),
-  INDEPENDENT(
-    new BuilderProvider() {
-      public GoalDefinitionBuilder getBuilder() {
-        return GoalDefinition.IndependentActionsGoalBuilder();
-      }
+
+
+    GoalDefinitionBuilder getBuilder() {
+        return builderProvider.getBuilder();
     }
-  );
 
-  private final BuilderProvider builderProvider;
-
-  private GoalActionDependency(BuilderProvider builderProvider) {
-    this.builderProvider = builderProvider;
-  }
-
-
-  GoalDefinitionBuilder getBuilder() {
-    return builderProvider.getBuilder();
-  }
-
-  private interface BuilderProvider {
-    GoalDefinitionBuilder getBuilder();
-  }
+    private interface BuilderProvider {
+        GoalDefinitionBuilder getBuilder();
+    }
 }
