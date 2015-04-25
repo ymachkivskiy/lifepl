@@ -2,7 +2,7 @@ package pl.edu.agh.integr10s.lifepl.model.definition.goal;
 
 
 import org.apache.log4j.Logger;
-import pl.edu.agh.integr10s.lifepl.model.working.goal.GoalCompletionTracker;
+import pl.edu.agh.integr10s.lifepl.model.working.goal.GoalStatusTracker;
 
 import java.util.Iterator;
 
@@ -27,7 +27,7 @@ public abstract class GoalDefinition implements Iterable<Action> {
 
     public abstract Iterator<Action> iterator();
 
-    public GoalCompletionTracker startWorkingOn() {
-        return new GoalCompletionTracker(this);
+    public GoalStatusTracker startWorkingOn() {
+        return new GoalStatusTracker(this);
     }
 }

@@ -10,12 +10,12 @@ import java.util.*;
  * Monitor stanu spelnienia celu, jest tworzony na podstawie GoalDefinition,
  * dla ktorego na poczatku wszystkie zadania nie sa spelnione.
  */
-public class GoalCompletionTracker {
-    private final static Logger logger = Logger.getLogger(GoalCompletionTracker.class);
+public class GoalStatusTracker {
+    private final static Logger logger = Logger.getLogger(GoalStatusTracker.class);
 
     private Map<Action, TaskStatus> actionToTaskMapping = new HashMap<Action, TaskStatus>();
 
-    public GoalCompletionTracker(GoalDefinition goalDefinition) {
+    public GoalStatusTracker(GoalDefinition goalDefinition) {
         //TODO Yarek implement
     }
 
