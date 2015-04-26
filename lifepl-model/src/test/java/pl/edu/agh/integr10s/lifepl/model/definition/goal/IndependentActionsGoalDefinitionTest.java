@@ -6,12 +6,12 @@ public class IndependentActionsGoalDefinitionTest extends GoalDefinitionTest {
 
     @Before
     public void setUpClass() {
-        GoalDefinitionBuilder builder = GoalDefinition.Builder(GoalActionDependency.INDEPENDENT);
+        GoalDefinition.GoalDefinitionBuilder builder = GoalDefinition.NewBuilder();
 
         for (int i = 0; i < 20; ++i) {
-            builder.addAction(createRandomAction());
+            builder.addIndependentElement(createRandomAction());
         }
 
-        tested = builder.build();
+        tested = builder.buildGoalDefinition();
     }
 }

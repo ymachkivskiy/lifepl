@@ -11,47 +11,30 @@ public class DependencyGraphBuilder<T> {
     private static final Logger logger = LoggerFactory.getLogger(DependencyGraphBuilder.class);
 
     private Set<T> independentElements = new HashSet<>();
-    private List<Dependency<T>> dependencies = new LinkedList<>();
+    private List<DependencyGraph.Dependency<T>> dependencies = new LinkedList<>();
 
     public DependencyGraph<T> build() {
-        logger.debug("Building new dependency graph");
-
-        DependencyGraph<T> resultDefinition = new DependencyGraph<>();
-        for (T aloneAction : independentElements) {
-            resultDefinition.addElement(aloneAction);
-        }
-
-        for (Dependency<T> dependency : dependencies) {
-            for (T predecessor : dependency.predecessors) {
-                for (T element : dependency.elements) {
-                    resultDefinition.addDependencyBetween(predecessor, element);
-                }
-            }
-        }
-
-        logger.debug("dependency graph created");
-
-        return resultDefinition;
+        return new DependencyGraph<T>(independentElements, dependencies);
     }
 
-    protected DependencyGraphBuilder<T> setUpPredecessors(Set<T> currentElementsPredecessors, Set<T> currentElements) {
-        dependencies.add(new Dependency<T>(currentElementsPredecessors, currentElements));
+    private DependencyGraphBuilder<T> setUpPredecessors(Set<T> currentElementsPredecessors, Set<T> currentElements) {
+        dependencies.add(new DependencyGraph.Dependency<T>(currentElementsPredecessors, currentElements));
         return this;
     }
 
-    public DependencyGraphBuilder<T> addElement(T element) {
+    public DependencyGraphBuilder<T> addIndependentElement(T element) {
         independentElements.add(element);
         return this;
     }
 
-    public PredecessorElementsList withPredecessors() {
+    public PredecessorElementsList<T> withPredecessors() {
         logger.info("... start to construct list of predecessor elements ...");
-        return new PredecessorElementsList(this);
+        return new PredecessorElementsList<>(this);
     }
 
     public PredecessorsElementsListToElementsListBridge<T> withPredecessor(T element) {
         logger.info("constructed list of predecessor elements with one element : {} ", element);
-        return new PredecessorsElementsListToElementsListBridge(this, new PredecessorElementsList(this).addElement(element));
+        return new PredecessorsElementsListToElementsListBridge<T>(this, new PredecessorElementsList<T>(this).addElement(element));
     }
 
     public static class PredecessorsElementsListToElementsListBridge<T> {
@@ -78,7 +61,7 @@ public class DependencyGraphBuilder<T> {
     public static class PredecessorElementsList<T> {
 
         private final DependencyGraphBuilder<T> builder;
-        private Set<T> predecessors = new HashSet<T>();
+        private Set<T> predecessors = new HashSet<>();
 
         private PredecessorElementsList(DependencyGraphBuilder<T> builder) {
             this.builder = builder;
@@ -97,6 +80,7 @@ public class DependencyGraphBuilder<T> {
         }
 
         public DependencyGraphBuilder<T> forElement(T element) {
+            logger.info("... finish to construct predecessors elements list ...");
             logger.info("constructed elements list of single element : {}", element);
             return builder.setUpPredecessors(predecessors, Sets.newHashSet(element));
         }
@@ -128,17 +112,6 @@ public class DependencyGraphBuilder<T> {
             return builder.setUpPredecessors(predecessors, elements);
         }
 
-    }
-
-    private static class Dependency<T> {
-
-        private final Set<T> predecessors;
-        private final Set<T> elements;
-
-        public Dependency(Set<T> predecessors, Set<T> elements) {
-            this.predecessors = predecessors;
-            this.elements = elements;
-        }
     }
 
 }

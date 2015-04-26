@@ -20,36 +20,25 @@ public class DependencyGraph<T> implements Translatable<T> {
     private DirectedAcyclicGraph<T, Integer> innerRepresentation = new DirectedAcyclicGraph<T, Integer>(edgeFactory);
     private Set<T> aloneElements = new HashSet<T>();
 
-    @Override
-    public <R> Translatable<R> translateSavingDependencies(IdempotentFunction<T, R> translationFunction) {
-        checkNotNull(translationFunction);
-        logger.debug("translating dependency graph of elements type '{}' to graph with elements of type '{}'", translationFunction.getArgumentType(), translationFunction.getResultType());
-
-        DependencyGraph<R> translatedGraph = new DependencyGraph<>();
-
-        logger.debug("start translating independent elements...");
-        for (T aloneElement : aloneElements) {
-            translatedGraph.addElement(translationFunction.calculateFor(aloneElement));
-        }
-        logger.debug("finish translating independent elements");
-
-        logger.debug("start translating elements with dependencies...");
-        for (Integer edgeIdx : innerRepresentation.edgeSet()) {
-            Optional<Edge<T>> edge = edgeFactory.getEdge(edgeIdx);
-            if (edge.isPresent()) {
-                R element = translationFunction.calculateFor(edge.get().getElement());
-                R dependentElement = translationFunction.calculateFor(edge.get().getDependantElement());
-                translatedGraph.addDependencyBetween(element, dependentElement);
-            } else {
-                logger.error("edge with index {} is not present, but it should be", edgeIdx);
-            }
-        }
-        logger.debug("finish translating elements with dependencies");
-
-        return translatedGraph;
+    private DependencyGraph() {
+        logger.debug("created empty dependency graph");
     }
 
-    boolean addElement(T element) {
+    DependencyGraph(Set<T> independentElements, List<Dependency<T>> dependencies) {
+        logger.debug("... start building dependency graph via builder ...");
+
+        for (T independentElement : independentElements) {
+            addElement(independentElement);
+        }
+
+        for (Dependency<T> dependency : dependencies) {
+            addDependency(dependency);
+        }
+
+        logger.debug("... finish building dependency graph via builder ...");
+    }
+
+    private boolean addElement(T element) {
         checkNotNull(element);
 
         logger.debug("add alone element without dependencies : {} ", element);
@@ -63,7 +52,15 @@ public class DependencyGraph<T> implements Translatable<T> {
         return true;
     }
 
-    void addDependencyBetween(T element, T dependantElement) {
+    private void addDependency(Dependency<T> dependency) {
+        for (T predecessor : dependency.getPredecessors()) {
+            for (T element : dependency.getElements()) {
+                addDependencyBetween(predecessor, element);
+            }
+        }
+    }
+
+    private void addDependencyBetween(T element, T dependantElement) {
         checkNotNull(element);
         checkNotNull(dependantElement);
 
@@ -89,6 +86,35 @@ public class DependencyGraph<T> implements Translatable<T> {
             logger.warn("cycle found after adding dependency between {} and {}", element, dependantElement);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public <R> DependencyGraph<R> translateSavingDependencies(IdempotentFunction<T, R> translationFunction) {
+        checkNotNull(translationFunction);
+        logger.debug("translating dependency graph of elements type '{}' to graph with elements of type '{}'", translationFunction.getArgumentType(), translationFunction.getResultType());
+
+        DependencyGraph<R> translatedGraph = new DependencyGraph<>();
+
+        logger.debug("start translating independent elements...");
+        for (T aloneElement : aloneElements) {
+            translatedGraph.addElement(translationFunction.calculateFor(aloneElement));
+        }
+        logger.debug("finish translating independent elements");
+
+        logger.debug("start translating elements with dependencies...");
+        for (Integer edgeIdx : innerRepresentation.edgeSet()) {
+            Optional<Edge<T>> edge = edgeFactory.getEdge(edgeIdx);
+            if (edge.isPresent()) {
+                R element = translationFunction.calculateFor(edge.get().getElement());
+                R dependentElement = translationFunction.calculateFor(edge.get().getDependantElement());
+                translatedGraph.addDependencyBetween(element, dependentElement);
+            } else {
+                logger.error("edge with index {} is not present, but it should be", edgeIdx);
+            }
+        }
+        logger.debug("finish translating elements with dependencies");
+
+        return translatedGraph;
     }
 
     public Set<T> getElements() {
@@ -148,6 +174,22 @@ public class DependencyGraph<T> implements Translatable<T> {
         }
     }
 
-    DependencyGraph() {
+    public final static class Dependency<T> {
+
+        private final Set<T> predecessors;
+        private final Set<T> elements;
+
+        public Dependency(Set<T> predecessors, Set<T> elements) {
+            this.predecessors = Collections.unmodifiableSet(predecessors);
+            this.elements = Collections.unmodifiableSet(elements);
+        }
+
+        public Set<T> getPredecessors() {
+            return predecessors;
+        }
+
+        public Set<T> getElements() {
+            return elements;
+        }
     }
 }

@@ -1,10 +1,11 @@
 package pl.edu.agh.integr10s.lifepl.model.working.goal;
 
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.model.definition.goal.Action;
 import pl.edu.agh.integr10s.lifepl.model.definition.goal.GoalDefinition;
+import pl.edu.agh.integr10s.lifepl.model.graph.model.DependencyGraph;
+import pl.edu.agh.integr10s.lifepl.model.graph.model.IdempotentFunction;
 
 import java.util.*;
 
@@ -13,12 +14,14 @@ import java.util.*;
  * dla ktorego na poczatku wszystkie zadania nie sa spelnione.
  */
 public class GoalStatusTracker {
-    private final static Logger logger = LoggerFactory.getLogger(GoalStatusTracker.class);
 
-    private Map<Action, TaskStatus> actionToTaskMapping = new HashMap<Action, TaskStatus>();
+    private final static Logger logger = LoggerFactory.getLogger(GoalStatusTracker.class);
+    private final ActionToTaskStatusMapper actionMapper = new ActionToTaskStatusMapper();
+
+    private final DependencyGraph<ActionStatus> taskDependencyGraph;
 
     public GoalStatusTracker(GoalDefinition goalDefinition) {
-        //TODO Yarek implement
+        taskDependencyGraph = goalDefinition.getActionDependencyGraph().translateSavingDependencies(actionMapper);
     }
 
     /**
@@ -37,8 +40,8 @@ public class GoalStatusTracker {
      *
      * @return kolekcja zawartychw srodku zadan
      */
-    public Collection<TaskStatus> getTasks() {
-        return Lists.newArrayList(actionToTaskMapping.values());
+    public Set<ActionStatus> getTasks() {
+        return taskDependencyGraph.getElements();
     }
 
     /**
@@ -47,8 +50,8 @@ public class GoalStatusTracker {
      * @param action akcja dla kt�rej zwracamy stan zadania
      * @return stan zadania
      */
-    public Optional<TaskStatus> getStatusForAction(Action action) {
-        return Optional.ofNullable(actionToTaskMapping.get(action));
+    public Optional<ActionStatus> getStatusForAction(Action action) {
+        return actionMapper.getTaskStatusForAction(action);
     }
 
     /**
@@ -80,8 +83,21 @@ public class GoalStatusTracker {
      *
      * @return zbior nie wykonanych akcji ktore aktualnie mozna wykonac
      */
-    public Set<TaskStatus> getTasksCanBePerformedCurrently() {
+    public Set<ActionStatus> getTasksCanBePerformedCurrently() {
         //TODO Yarek : implement
         return Collections.emptySet();
+    }
+
+    private static class ActionToTaskStatusMapper extends IdempotentFunction<Action, ActionStatus> {
+
+        public Optional<ActionStatus> getTaskStatusForAction(Action action) {
+            return getStoredResultForArgument(action);
+        }
+
+        @Override
+        protected ActionStatus apply(Action argument) {
+            return new ActionStatus(argument);
+        }
+
     }
 }

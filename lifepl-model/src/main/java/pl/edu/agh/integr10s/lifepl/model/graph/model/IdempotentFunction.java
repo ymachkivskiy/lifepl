@@ -8,6 +8,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -55,4 +56,9 @@ public abstract class IdempotentFunction<T, R> {
     }
 
     protected abstract R apply(T argument);
+
+    protected Optional<R> getStoredResultForArgument(T argument) {
+        checkNotNull(argument);
+        return Optional.ofNullable(storedResults.get(argument));
+    }
 }

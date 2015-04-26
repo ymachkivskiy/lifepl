@@ -3,11 +3,11 @@ package pl.edu.agh.integr10s.lifepl.model.working.goal;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import pl.edu.agh.integr10s.lifepl.model.definition.goal.Action;
 
-public final class TaskStatus {
+public final class ActionStatus {
     private final Action action;
     private boolean isDone;
 
-    public TaskStatus(Action action) {
+    public ActionStatus(Action action) {
         this.action = action;
         this.isDone = false;
     }
@@ -36,8 +36,8 @@ public final class TaskStatus {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj instanceof TaskStatus) {
-            TaskStatus other = (TaskStatus) obj;
+        if (obj instanceof ActionStatus) {
+            ActionStatus other = (ActionStatus) obj;
             return isDone == other.isDone && action.equals(other.action);
         }
         return false;

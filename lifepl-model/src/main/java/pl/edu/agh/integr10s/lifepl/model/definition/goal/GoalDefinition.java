@@ -3,32 +3,45 @@ package pl.edu.agh.integr10s.lifepl.model.definition.goal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.model.working.goal.GoalStatusTracker;
+import pl.edu.agh.integr10s.lifepl.model.graph.model.DependencyGraph;
+import pl.edu.agh.integr10s.lifepl.model.graph.model.DependencyGraphBuilder;
 
 import java.util.Iterator;
 
 /**
  * Cel ktory sie sklada z akcji
  */
-public abstract class GoalDefinition implements Iterable<Action> {
+public class GoalDefinition implements Iterable<Action> {
+
     private static final Logger logger = LoggerFactory.getLogger(GoalDefinition.class);
 
-    static GoalDefinitionBuilder DependentActionsGoalBuilder() {
-        return DAGActionsGoalDefinition.Builder();
+    private final DependencyGraph<Action> actionDependencyGraph;
+
+    GoalDefinition(DependencyGraph<Action> actionDependencyGraph) {
+        this.actionDependencyGraph = actionDependencyGraph;
     }
 
-    static GoalDefinitionBuilder IndependentActionsGoalBuilder() {
-        return SetActionsGoalDefinition.Builder();
+    public static GoalDefinitionBuilder NewBuilder() {
+        return new GoalDefinitionBuilder();
     }
 
-    public static GoalDefinitionBuilder Builder(GoalActionDependency goalActionDependency) {
-        logger.info("getting goal definition builder for {} action dependency type", goalActionDependency);
-        return goalActionDependency.getBuilder();
+    public Iterator<Action> iterator() {
+        return actionDependencyGraph.iteratorWithDependentOrder();
     }
 
-    public abstract Iterator<Action> iterator();
-
-    public GoalStatusTracker startWorkingOn() {
-        return new GoalStatusTracker(this);
+    public DependencyGraph<Action> getActionDependencyGraph() {
+        return actionDependencyGraph;
     }
+
+    public static final class GoalDefinitionBuilder extends DependencyGraphBuilder<Action> {
+
+        private GoalDefinitionBuilder() {
+        }
+
+        public GoalDefinition buildGoalDefinition() {
+            return new GoalDefinition(build());
+        }
+
+    }
+
 }

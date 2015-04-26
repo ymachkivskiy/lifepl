@@ -15,7 +15,7 @@ public class DependentActionsGoalDefinitionTest extends GoalDefinitionTest {
 
     @Before
     public void setUp() {
-        GoalDefinitionBuilder builder = GoalDefinition.Builder(GoalActionDependency.DEPENDENT);
+        GoalDefinition.GoalDefinitionBuilder builder = GoalDefinition.NewBuilder();
 /*
 
                        +----+
@@ -41,30 +41,30 @@ public class DependentActionsGoalDefinitionTest extends GoalDefinitionTest {
         }
 
         builder
-                .addAction(A[0])
+                .addIndependentElement(A[0])
                 .withPredecessor(A[1])
-                .forActions()
-                .addAction(A[2])
-                .addAction(A[3])
-                .addAction(A[4])
+                .forElements()
+                .addElement(A[2])
+                .addElement(A[3])
+                .addElement(A[4])
                 .accept()
                 .withPredecessors()
-                .addAction(A[3])
-                .addAction(A[4])
-                .forAction(A[5])
+                .addElement(A[3])
+                .addElement(A[4])
+                .forElement(A[5])
                 .withPredecessors()
-                .addAction(A[2])
-                .addAction(A[5])
-                .forAction(A[6])
+                .addElement(A[2])
+                .addElement(A[5])
+                .forElement(A[6])
                 .withPredecessors()
-                .addAction(A[6])
-                .addAction(A[7])
-                .forAction(A[8])
+                .addElement(A[6])
+                .addElement(A[7])
+                .forElement(A[8])
                 .withPredecessor(A[8])
-                .forAction(A[9])
+                .forElement(A[9])
         ;
 
-        tested = builder.build();
+        tested = builder.buildGoalDefinition();
     }
 
     @Test
