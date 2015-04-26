@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-public class GoalStatusTrackerTest {
+public class GoalCompletionStatusTrackerTest {
 
     @Test
     public void testGoalReached() throws Exception {

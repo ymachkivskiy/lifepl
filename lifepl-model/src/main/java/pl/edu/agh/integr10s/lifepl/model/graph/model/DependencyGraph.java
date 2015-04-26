@@ -18,7 +18,7 @@ public class DependencyGraph<T> implements Translatable<T> {
 
     private final DummyFactory<T> edgeFactory = new DummyFactory<T>();
     private DirectedAcyclicGraph<T, Integer> innerRepresentation = new DirectedAcyclicGraph<T, Integer>(edgeFactory);
-    private Set<T> aloneElements = new HashSet<T>();
+    private Set<T> independentElements = new HashSet<T>();
 
     private DependencyGraph() {
         logger.debug("created empty dependency graph");
@@ -48,7 +48,7 @@ public class DependencyGraph<T> implements Translatable<T> {
             return false;
         }
 
-        aloneElements.add(element);
+        independentElements.add(element);
         return true;
     }
 
@@ -95,11 +95,11 @@ public class DependencyGraph<T> implements Translatable<T> {
 
         DependencyGraph<R> translatedGraph = new DependencyGraph<>();
 
-        logger.debug("start translating independent elements...");
-        for (T aloneElement : aloneElements) {
+        logger.debug("start translating independentElements elements...");
+        for (T aloneElement : independentElements) {
             translatedGraph.addElement(translationFunction.calculateFor(aloneElement));
         }
-        logger.debug("finish translating independent elements");
+        logger.debug("finish translating independentElements elements");
 
         logger.debug("start translating elements with dependencies...");
         for (Integer edgeIdx : innerRepresentation.edgeSet()) {
@@ -117,16 +117,20 @@ public class DependencyGraph<T> implements Translatable<T> {
         return translatedGraph;
     }
 
+    public int getSize() {
+        return innerRepresentation.vertexSet().size() + independentElements.size();
+    }
+
     public Set<T> getElements() {
-        return Sets.union(aloneElements, innerRepresentation.vertexSet());
+        return Sets.union(independentElements, innerRepresentation.vertexSet());
     }
 
     public Iterator<T> iteratorWithDependentOrder() {
-        return Iterators.concat(aloneElements.iterator(), innerRepresentation.iterator());
+        return Iterators.concat(independentElements.iterator(), innerRepresentation.iterator());
     }
 
     public Set<T> getIndependentElements() {
-        return Collections.unmodifiableSet(aloneElements);
+        return Collections.unmodifiableSet(independentElements);
     }
 
     public Set<T> getDependentElementsFor(T element) {

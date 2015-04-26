@@ -7,20 +7,25 @@ import pl.edu.agh.integr10s.lifepl.model.definition.goal.GoalDefinition;
 import pl.edu.agh.integr10s.lifepl.model.graph.model.DependencyGraph;
 import pl.edu.agh.integr10s.lifepl.model.graph.model.IdempotentFunction;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 
 /**
+ * NOT THREAD SAFE
+ *
  * Monitor stanu spelnienia celu, jest tworzony na podstawie GoalDefinition,
  * dla ktorego na poczatku wszystkie zadania nie sa spelnione.
  */
-public class GoalStatusTracker {
+public class GoalCompletionStatusTracker {
 
-    private final static Logger logger = LoggerFactory.getLogger(GoalStatusTracker.class);
+    private final static Logger logger = LoggerFactory.getLogger(GoalCompletionStatusTracker.class);
+
     private final ActionToTaskStatusMapper actionMapper = new ActionToTaskStatusMapper();
-
     private final DependencyGraph<ActionStatus> taskDependencyGraph;
+    private int doneActions = 0;
 
-    public GoalStatusTracker(GoalDefinition goalDefinition) {
+    public GoalCompletionStatusTracker(GoalDefinition goalDefinition) {
         taskDependencyGraph = goalDefinition.getActionDependencyGraph().translateSavingDependencies(actionMapper);
     }
 
@@ -30,8 +35,7 @@ public class GoalStatusTracker {
      * @return osiagniecie celu
      */
     public boolean goalReached() {
-        //TODO Yarek : implement
-        return false;
+        return doneActions == taskDependencyGraph.getSize();
     }
 
     /**
@@ -61,9 +65,37 @@ public class GoalStatusTracker {
      * @param action akcja ktora probujemy
      * @return jesli akcja zostala oznaczona jako wykonana true,  w przeciwnym przypadku false
      */
-    public boolean markAsDone(Action action) {
-        //TODO Yarek : implement
-        return false;
+    public boolean markAsDone(final Action action) {
+        if (action == null) {
+            logger.error("try to mark null action as done");
+            return false;
+        }
+
+        Optional<ActionStatus> actionStatus = actionMapper.getTaskStatusForAction(action);
+        if (actionStatus.isPresent()) {
+            final ActionStatus status = actionStatus.get();
+            if (status.isDone()) {
+                logger.warn("try to mark action {} as done, but it is already marked as done", action);
+                return true;
+            }
+
+            logger.info("check if actions on which action {} depends are done", action);
+
+            for (ActionStatus masterActionStatus : taskDependencyGraph.getElementsOnWhichElementDepends(status)) {
+                if(!masterActionStatus.isDone()) {
+                    logger.warn("action {} on which action {} depends is not done", masterActionStatus.getAction(), action);
+                    return false;
+                }
+            }
+
+            logger.info("marking action {} as done", action);
+            status.markDone();
+
+            return true;
+        } else {
+            logger.warn("try to mark action {} which is not tracked by this tracker", action);
+            return false;
+        }
     }
 
     /**
@@ -72,9 +104,34 @@ public class GoalStatusTracker {
      * @param action akcja ktora trzeba oznaczyc jako nie zrobiona
      * @return jesli akcja zostala zaznaczona jako nie wykonana true, w przeciwnym przypadku false
      */
-    public boolean markAsNotDone(Action action) {
-        //TODO Yarek : implement
-        return false;
+    public boolean markAsNotDone(final Action action) {
+        if (action == null) {
+            logger.error("try to mark null action as not done");
+            return false;
+        }
+
+        Optional<ActionStatus> actionStatus = actionMapper.getTaskStatusForAction(action);
+        if (actionStatus.isPresent()) {
+
+            final ActionStatus status = actionStatus.get();
+            if (!status.isDone()) {
+                logger.warn("try to mark action {} as not done, but it is already marked as not done", action);
+                return true;
+            }
+
+            logger.info("marking action {} as not done", action);
+            status.markUnDone();
+
+            for (ActionStatus dependentActionStatus : taskDependencyGraph.getDependentElementsFor(status)) {
+                logger.info("marking dependent action {} as not done", dependentActionStatus.getAction());
+                dependentActionStatus.markUnDone();
+            }
+
+            return true;
+        } else {
+            logger.warn("try to mark action {} which is not tracked by this tracker", action);
+            return false;
+        }
     }
 
     /**
@@ -83,7 +140,7 @@ public class GoalStatusTracker {
      *
      * @return zbior nie wykonanych akcji ktore aktualnie mozna wykonac
      */
-    public Set<ActionStatus> getTasksCanBePerformedCurrently() {
+    public Set<Action> getTasksCanBePerformedCurrently() {
         //TODO Yarek : implement
         return Collections.emptySet();
     }

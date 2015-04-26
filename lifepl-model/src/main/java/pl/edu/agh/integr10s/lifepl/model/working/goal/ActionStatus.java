@@ -20,8 +20,12 @@ public final class ActionStatus {
         return isDone;
     }
 
-    void setIsDone(boolean isDone) {
-        this.isDone = isDone;
+    void markDone() {
+        isDone = true;
+    }
+
+    void markUnDone() {
+        isDone = false;
     }
 
     @Override
@@ -45,8 +49,6 @@ public final class ActionStatus {
 
     @Override
     public String toString() {
-        return new StringBuilder()
-                .append("task{").append(action).append("-").append(isDone ? "DONE" : "IN_PROCESS").append("}")
-                .toString();
+        return "task{" + action + "::" + (isDone ? "DONE" : "NOT_DONE") + "}";
     }
 }
