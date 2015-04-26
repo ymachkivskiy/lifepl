@@ -49,7 +49,7 @@ public class DependencyGraph<T> implements Translatable<T> {
         return translatedGraph;
     }
 
-    private boolean addElement(T element) {
+    boolean addElement(T element) {
         checkNotNull(element);
 
         logger.debug("add alone element without dependencies : {} ", element);
@@ -63,7 +63,7 @@ public class DependencyGraph<T> implements Translatable<T> {
         return true;
     }
 
-    private void addDependencyBetween(T element, T dependantElement) {
+    void addDependencyBetween(T element, T dependantElement) {
         checkNotNull(element);
         checkNotNull(dependantElement);
 
@@ -146,5 +146,8 @@ public class DependencyGraph<T> implements Translatable<T> {
         public Optional<Edge<T>> getEdge(Integer e) {
             return Optional.ofNullable(edgeMap.get(e));
         }
+    }
+
+    DependencyGraph() {
     }
 }
