@@ -16,9 +16,9 @@ public class DependencyGraph<T> implements Translatable<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(DependencyGraph.class);
 
-    private final DummyFactory<T> edgeFactory = new DummyFactory<T>();
-    private DirectedAcyclicGraph<T, Integer> innerRepresentation = new DirectedAcyclicGraph<T, Integer>(edgeFactory);
-    private Set<T> independentElements = new HashSet<T>();
+    private final DummyFactory<T> edgeFactory = new DummyFactory<>();
+    private final DirectedAcyclicGraph<T, Integer> innerRepresentation = new DirectedAcyclicGraph<>(edgeFactory);
+    private Set<T> independentElements = new HashSet<>();
 
     private DependencyGraph() {
         logger.debug("created empty dependency graph");
@@ -133,14 +133,108 @@ public class DependencyGraph<T> implements Translatable<T> {
         return Collections.unmodifiableSet(independentElements);
     }
 
-    public Set<T> getDependentElementsFor(T element) {
+    public Set<T> getDependentElementsFor(final T element) {
         checkNotNull(element);
-        return Collections.emptySet(); // TODO implement
+        logger.debug("getting elements which depends on {}", element);
+
+        if (!containsElement(element)) {
+            logger.warn("try to get dependent elements for element {} , which is not belong to dependency graph", element);
+            return Collections.emptySet();
+        }
+
+        if (isIndependentElement(element)) {
+            logger.debug("element {} has no dependent elements", element);
+            return Collections.emptySet();
+        }
+
+        return gatherRelatedElements(element, new RelatedElementsExtractor() {
+            @Override
+            protected Set<Integer> getEdges(T element) {
+                return innerRepresentation.outgoingEdgesOf(element);
+            }
+
+            @Override
+            protected T getEdgeVertex(Integer edge) {
+                return innerRepresentation.getEdgeTarget(edge);
+            }
+        });
+
+    }
+
+    public boolean containsElement(T element) {
+        return isIndependentElement(element) || isDependentElement(element);
+    }
+
+    public boolean isIndependentElement(T element) {
+        return independentElements.contains(element);
+    }
+
+    private Set<T> gatherRelatedElements(final T element, final RelatedElementsExtractor elementsExtractor) {
+        checkNotNull(element);
+        checkNotNull(elementsExtractor);
+        logger.debug("gathering related elements for element {}", element);
+
+        Set<T> gatheredElements = new HashSet<>();
+
+        gatheredElements.add(element);
+
+        Stack<T> unprocessedElements = new Stack<>();
+        unprocessedElements.push(element);
+
+        while (!unprocessedElements.isEmpty()) {
+            T currentElement = unprocessedElements.pop();
+
+            logger.debug("--- currently processed element :: {} ");
+
+            Set<T> relatedElements = elementsExtractor.getRelatedElements(currentElement);
+
+            for (T relatedElement : relatedElements) {
+                if (gatheredElements.contains(relatedElement)) {
+                    logger.debug("---- got related element {} , which was already processed, skipping it", relatedElement);
+                } else {
+                    logger.debug("---- got related element {} , which was not processed yet, storing and marking for further processing", relatedElement);
+                    gatheredElements.add(relatedElement);
+                    unprocessedElements.push(relatedElement);
+                }
+            }
+        }
+
+        gatheredElements.remove(element);
+
+        logger.debug("related elements for element {} were gathered :: ", element, gatheredElements);
+
+        return gatheredElements;
+    }
+
+    public boolean isDependentElement(T element) {
+        return innerRepresentation.containsVertex(element);
     }
 
     public Set<T> getElementsOnWhichElementDepends(T element) {
         checkNotNull(element);
-        return Collections.emptySet(); // TODO implement
+        logger.debug("getting elements on which element {} depends on", element);
+
+        if (!containsElement(element)) {
+            logger.warn("try to get elements on which element {} depends, which is not belong to dependency graph", element);
+            return Collections.emptySet();
+        }
+
+        if (isIndependentElement(element)) {
+            logger.debug("element {} does not depend on other elements", element);
+            return Collections.emptySet();
+        }
+
+        return gatherRelatedElements(element, new RelatedElementsExtractor() {
+            @Override
+            protected Set<Integer> getEdges(T element) {
+                return innerRepresentation.incomingEdgesOf(element);
+            }
+
+            @Override
+            protected T getEdgeVertex(Integer edge) {
+                return innerRepresentation.getEdgeSource(edge);
+            }
+        });
     }
 
     private static class Edge<T> {
@@ -195,5 +289,24 @@ public class DependencyGraph<T> implements Translatable<T> {
         public Set<T> getElements() {
             return elements;
         }
+    }
+
+    private abstract class RelatedElementsExtractor {
+
+        public Set<T> getRelatedElements(T element) {
+            Set<Integer> edges = getEdges(element);
+            Set<T> elements = new HashSet<>();
+
+            for (Integer edge : edges) {
+                elements.add(getEdgeVertex(edge));
+            }
+
+            return elements;
+        }
+
+        protected abstract Set<Integer> getEdges(T element);
+
+        protected abstract T getEdgeVertex(Integer edge);
+
     }
 }
