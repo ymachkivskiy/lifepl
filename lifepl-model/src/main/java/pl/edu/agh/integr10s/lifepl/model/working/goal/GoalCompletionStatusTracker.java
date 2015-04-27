@@ -1,5 +1,6 @@
 package pl.edu.agh.integr10s.lifepl.model.working.goal;
 
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.model.definition.goal.Action;
@@ -7,13 +8,11 @@ import pl.edu.agh.integr10s.lifepl.model.definition.goal.GoalDefinition;
 import pl.edu.agh.integr10s.lifepl.model.graph.model.DependencyGraph;
 import pl.edu.agh.integr10s.lifepl.model.graph.model.IdempotentFunction;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * NOT THREAD SAFE
- *
+ * <p/>
  * Monitor stanu spelnienia celu, jest tworzony na podstawie GoalDefinition,
  * dla ktorego na poczatku wszystkie zadania nie sa spelnione.
  */
@@ -23,10 +22,12 @@ public class GoalCompletionStatusTracker {
 
     private final ActionToTaskStatusMapper actionMapper = new ActionToTaskStatusMapper();
     private final DependencyGraph<ActionStatus> taskDependencyGraph;
-    private int doneActions = 0;
+    private final Set<Action> notDoneActionsSet;
 
     public GoalCompletionStatusTracker(GoalDefinition goalDefinition) {
-        taskDependencyGraph = goalDefinition.getActionDependencyGraph().translateSavingDependencies(actionMapper);
+        final DependencyGraph<Action> actionDependencyGraph = goalDefinition.getActionDependencyGraph();
+        notDoneActionsSet = Sets.newHashSet(actionDependencyGraph.getElements());
+        taskDependencyGraph = actionDependencyGraph.translateSavingDependencies(actionMapper);
     }
 
     /**
@@ -35,7 +36,7 @@ public class GoalCompletionStatusTracker {
      * @return osiagniecie celu
      */
     public boolean goalReached() {
-        return doneActions == taskDependencyGraph.getSize();
+        return notDoneActionsSet.isEmpty();
     }
 
     /**
@@ -44,14 +45,14 @@ public class GoalCompletionStatusTracker {
      *
      * @return kolekcja zawartychw srodku zadan
      */
-    public Set<ActionStatus> getTasks() {
+    public Set<ActionStatus> getActionsStatuses() {
         return taskDependencyGraph.getElements();
     }
 
     /**
      * Zwraca status zadania dla podanej akcji jesli taka nalezy do celu, inaczej Optional.empty()
      *
-     * @param action akcja dla kt�rej zwracamy stan zadania
+     * @param action akcja dla ktorej zwracamy stan zadania
      * @return stan zadania
      */
     public Optional<ActionStatus> getStatusForAction(Action action) {
@@ -82,7 +83,7 @@ public class GoalCompletionStatusTracker {
             logger.info("check if actions on which action {} depends are done", action);
 
             for (ActionStatus masterActionStatus : taskDependencyGraph.getElementsOnWhichElementDepends(status)) {
-                if(!masterActionStatus.isDone()) {
+                if (!masterActionStatus.isDone()) {
                     logger.warn("action {} on which action {} depends is not done", masterActionStatus.getAction(), action);
                     return false;
                 }
@@ -90,6 +91,8 @@ public class GoalCompletionStatusTracker {
 
             logger.info("marking action {} as done", action);
             status.markDone();
+
+            notDoneActionsSet.remove(action);
 
             return true;
         } else {
@@ -121,10 +124,12 @@ public class GoalCompletionStatusTracker {
 
             logger.info("marking action {} as not done", action);
             status.markUnDone();
+            notDoneActionsSet.add(action);
 
             for (ActionStatus dependentActionStatus : taskDependencyGraph.getDependentElementsFor(status)) {
                 logger.info("marking dependent action {} as not done", dependentActionStatus.getAction());
                 dependentActionStatus.markUnDone();
+                notDoneActionsSet.add(dependentActionStatus.getAction());
             }
 
             return true;
@@ -134,15 +139,54 @@ public class GoalCompletionStatusTracker {
         }
     }
 
+    private Set<Action> filterUndoneActions(Set<ActionStatus> actionsStatuses) {
+        Set<Action> undoneActions = new HashSet<>();
+        for (ActionStatus actionStatus : actionsStatuses) {
+            if (!actionStatus.isDone()) {
+                undoneActions.add(actionStatus.getAction());
+            }
+        }
+        return undoneActions;
+    }
     /**
      * Sluzy do pobierania zbioru nie wykonanych akcji, ktore moga aktualnie zostac wykonane,
      * w sensie wszystkie akcje, od ktorych sa zalezne zostaly wykonane, lub akcje nie maja zaleznosci.
      *
      * @return zbior nie wykonanych akcji ktore aktualnie mozna wykonac
      */
-    public Set<Action> getTasksCanBePerformedCurrently() {
-        //TODO Yarek : implement
-        return Collections.emptySet();
+    public Set<Action> getNonBlockedUndoneActions() {
+        logger.info("getting non blocked undone actions");
+
+        if (notDoneActionsSet.isEmpty()) {
+            logger.info("there is no undone actions");
+            return Collections.emptySet();
+        }
+
+        Set<Action> nonBlockedUndoneActions = new HashSet<>();
+        Set<Action> workingCopyOfNotDoneActions = new HashSet<>(notDoneActionsSet);
+
+        for (Iterator<Action> $undoneAction = workingCopyOfNotDoneActions.iterator(); $undoneAction.hasNext(); ) {
+            Action undoneAction = $undoneAction.next();
+            logger.debug("checking undone action {} and its dependencies", undoneAction);
+
+            Optional<ActionStatus> undoneActionStatus = getStatusForAction(undoneAction);
+            if (undoneActionStatus.isPresent()) {
+                final Set<ActionStatus> actionsStatusesOnWhichCurrentActionDepends = taskDependencyGraph.getElementsOnWhichElementDepends(undoneActionStatus.get());
+                final Set<Action> undoneActionsOnWhichCurrentActionDepends = filterUndoneActions(actionsStatusesOnWhichCurrentActionDepends);
+
+                if (undoneActionsOnWhichCurrentActionDepends.isEmpty()) {
+                    logger.info("adding action {} to set of unblocked undone actions", undoneAction);
+                } else {
+                    logger.debug("action {} has undone actions on which it depends on : {}", undoneAction, undoneActionsOnWhichCurrentActionDepends);
+                }
+
+            } else {
+                logger.error("action {} not found in status tracker during performing getNonBlockedUndoneActions()", undoneAction);
+                return Collections.emptySet();
+            }
+        }
+
+        return nonBlockedUndoneActions;
     }
 
     private static class ActionToTaskStatusMapper extends IdempotentFunction<Action, ActionStatus> {
