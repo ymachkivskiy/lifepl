@@ -1,12 +1,12 @@
-package pl.edu.agh.integr10s.lifepl.model.working.goal;
+package pl.edu.agh.integr10s.lifepl.model.track;
 
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.model.definition.goal.Action;
-import pl.edu.agh.integr10s.lifepl.model.definition.goal.GoalDefinition;
-import pl.edu.agh.integr10s.lifepl.model.graph.model.DependencyGraph;
-import pl.edu.agh.integr10s.lifepl.model.graph.model.IdempotentFunction;
+import pl.edu.agh.integr10s.lifepl.model.common.Action;
+import pl.edu.agh.integr10s.lifepl.model.common.GoalDefinition;
+import pl.edu.agh.integr10s.lifepl.model.util.graph.DependencyGraph;
+import pl.edu.agh.integr10s.lifepl.model.util.IdempotentFunction;
 
 import java.util.*;
 

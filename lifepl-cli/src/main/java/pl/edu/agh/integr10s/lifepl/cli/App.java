@@ -1,6 +1,6 @@
 package pl.edu.agh.integr10s.lifepl.cli;
 
-import pl.edu.agh.integr10s.lifepl.model.graph.model.IdempotentFunction;
+import pl.edu.agh.integr10s.lifepl.model.util.IdempotentFunction;
 
 public class App
 {

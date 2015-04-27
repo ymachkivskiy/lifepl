@@ -1,7 +1,7 @@
-package pl.edu.agh.integr10s.lifepl.model.working.goal;
+package pl.edu.agh.integr10s.lifepl.model.track;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import pl.edu.agh.integr10s.lifepl.model.definition.goal.Action;
+import pl.edu.agh.integr10s.lifepl.model.common.Action;
 
 public final class ActionStatus {
     private final Action action;

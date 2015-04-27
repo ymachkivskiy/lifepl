@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.definition.goal;
+package pl.edu.agh.integr10s.lifepl.model.common;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

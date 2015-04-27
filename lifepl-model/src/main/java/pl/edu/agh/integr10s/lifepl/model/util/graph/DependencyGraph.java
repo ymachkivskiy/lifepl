@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.graph.model;
+package pl.edu.agh.integr10s.lifepl.model.util.graph;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
@@ -6,6 +6,7 @@ import org.jgrapht.EdgeFactory;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.lifepl.model.util.IdempotentFunction;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;

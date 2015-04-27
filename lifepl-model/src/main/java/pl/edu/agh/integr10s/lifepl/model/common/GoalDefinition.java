@@ -1,10 +1,10 @@
-package pl.edu.agh.integr10s.lifepl.model.definition.goal;
+package pl.edu.agh.integr10s.lifepl.model.common;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.model.graph.model.DependencyGraph;
-import pl.edu.agh.integr10s.lifepl.model.graph.model.DependencyGraphBuilder;
+import pl.edu.agh.integr10s.lifepl.model.util.graph.DependencyGraph;
+import pl.edu.agh.integr10s.lifepl.model.util.graph.DependencyGraphBuilder;
 
 import java.util.Iterator;
 

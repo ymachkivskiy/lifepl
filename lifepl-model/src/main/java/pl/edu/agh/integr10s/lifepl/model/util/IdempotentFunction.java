@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.graph.model;
+package pl.edu.agh.integr10s.lifepl.model.util;
 
 
 import org.slf4j.Logger;
