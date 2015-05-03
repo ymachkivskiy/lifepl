@@ -2,8 +2,7 @@ package pl.edu.agh.integr10s.lifepl.cli.shell;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.cli.shell.app.MainShell;
-import pl.edu.agh.integr10s.lifepl.cli.shell.app.WorldsShell;
+import pl.edu.agh.integr10s.lifepl.cli.shell.impls.ConfiguredShells;
 import pl.edu.agh.integr10s.lifepl.cli.shell.build.AppShellBuilder;
 
 import java.io.IOException;
@@ -31,9 +30,8 @@ public final class ApplicationShell {
     }
 
     private static ApplicationShell createShell() {
-        return new AppShellBuilder(APP_NAME)
-                .addSubShell(new MainShell())
-                .addSubShell(new WorldsShell())
+        return new AppShellBuilder()
+                .addSubShells(ConfiguredShells.get())
                 .build();
     }
 

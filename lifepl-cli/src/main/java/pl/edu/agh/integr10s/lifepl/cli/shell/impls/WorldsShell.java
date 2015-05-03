@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.app;
+package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
 
 import asg.cliche.Command;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;

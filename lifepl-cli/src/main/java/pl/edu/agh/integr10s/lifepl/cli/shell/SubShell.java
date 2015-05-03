@@ -18,7 +18,6 @@ public abstract class SubShell implements ShellDependent {
     private final SubShellName subShellName;
     private final SubShellName parentSubShellName;
 
-    private String applicationName;
     private Shell parentShell;
 
     private Optional<Shell> shell = Optional.empty();
@@ -28,10 +27,6 @@ public abstract class SubShell implements ShellDependent {
     public SubShell(SubShellName subShellName, SubShellName parentSubShellName) {
         this.subShellName = subShellName;
         this.parentSubShellName = parentSubShellName;
-    }
-
-    public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
     }
 
     public final SubShellName getSubShellName() {
@@ -52,17 +47,13 @@ public abstract class SubShell implements ShellDependent {
     }
 
     protected Shell createShell() {
-        return ShellFactory.createSubshell(subShellName.getShellLevelName(), parentShell, getApplicationName(), this);
+        return ShellFactory.createSubshell(subShellName.getPrompt(), parentShell, subShellName.getDescription(), this);
     }
 
     protected void setupChildrenParentShells(Shell shell) {
         for (SubShell subShell : childSubShells.values()) {
             subShell.cliSetShell(shell);
         }
-    }
-
-    public String getApplicationName() {
-        return applicationName;
     }
 
     public void addChildSubShell(SubShell childSubShell) {
@@ -87,7 +78,7 @@ public abstract class SubShell implements ShellDependent {
 
     @Override
     public String toString() {
-        return "shellCategory::" + subShellName.getShellLevelName() + "[implementation " + getClass().getName() + "]";
+        return "shellCategory::" + subShellName.getPrompt() + "[implementation " + getClass().getName() + "]";
     }
 
     @Override

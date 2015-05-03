@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.app;
+package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
 
 import asg.cliche.Command;
 import asg.cliche.Shell;
@@ -35,6 +35,6 @@ public class MainShell extends SubShell {
 
     @Override
     protected Shell createShell() {
-        return ShellFactory.createConsoleShell(getSubShellName().getShellLevelName(), getApplicationName(), this);
+        return ShellFactory.createConsoleShell(getSubShellName().getPrompt(), getSubShellName().getDescription(), this);
     }
 }

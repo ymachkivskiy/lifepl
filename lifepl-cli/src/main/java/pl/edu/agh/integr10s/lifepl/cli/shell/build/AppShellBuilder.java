@@ -11,17 +11,19 @@ public class AppShellBuilder {
     private static final Logger logger = LoggerFactory.getLogger(AppShellBuilder.class);
 
     private final Set<SubShell> subShells = new HashSet<>();
-    private final String applicationName;
-
-    public AppShellBuilder(String applicationName) {
-        this.applicationName = applicationName;
-    }
 
     public AppShellBuilder addSubShell(SubShell level) {
-        level.setApplicationName(applicationName);
         this.subShells.add(level);
         return this;
     }
+
+    public AppShellBuilder addSubShells(Collection<SubShell> subShells) {
+        for (SubShell subShell : subShells) {
+            addSubShell(subShell);
+        }
+        return this;
+    }
+
 
     public ApplicationShell build() {
         BuildEngine buildEngine = new BuildEngine();
