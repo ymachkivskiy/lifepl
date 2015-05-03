@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public abstract class SubShell implements ShellDependent {
+
     private final static Logger logger = LoggerFactory.getLogger(SubShell.class);
 
     private final SubShellName subShellName;
@@ -19,7 +21,9 @@ public abstract class SubShell implements ShellDependent {
     private String applicationName;
     private Shell parentShell;
 
-    private Set<SubShell> childSubShells = new HashSet<>();
+    private Optional<Shell> shell = Optional.empty();
+
+    protected Map<SubShellName, SubShell> childSubShells = new HashMap<>();
 
     public SubShell(SubShellName subShellName, SubShellName parentSubShellName) {
         this.subShellName = subShellName;
@@ -38,8 +42,23 @@ public abstract class SubShell implements ShellDependent {
         return parentSubShellName;
     }
 
-    public void runLevel() throws IOException {
-        ShellFactory.createSubshell(subShellName.getShellLevelName(), parentShell, getApplicationName(), this).commandLoop();
+    public final void runLevel() throws IOException {
+        if (!shell.isPresent()) {
+            shell = Optional.of(createShell());
+            setupChildrenParentShells(shell.get());
+        }
+
+        shell.get().commandLoop();
+    }
+
+    protected Shell createShell() {
+        return ShellFactory.createSubshell(subShellName.getShellLevelName(), parentShell, getApplicationName(), this);
+    }
+
+    protected void setupChildrenParentShells(Shell shell) {
+        for (SubShell subShell : childSubShells.values()) {
+            subShell.cliSetShell(shell);
+        }
     }
 
     public String getApplicationName() {
@@ -48,7 +67,10 @@ public abstract class SubShell implements ShellDependent {
 
     public void addChildSubShell(SubShell childSubShell) {
         logger.debug("add child sub shell {} to sub shell {}", childSubShell, this);
-        this.childSubShells.add(childSubShell);
+        SubShell prevSubShell = childSubShells.put(childSubShell.getSubShellName(), childSubShell);
+        if (prevSubShell != null) {
+            logger.warn("sub shell  ' {} ' was replaced", prevSubShell);
+        }
     }
 
     @Override
@@ -65,7 +87,7 @@ public abstract class SubShell implements ShellDependent {
 
     @Override
     public String toString() {
-        return "shellCategory::" + subShellName.getShellLevelName() + "[implementation "+ getClass().getName() + "]";
+        return "shellCategory::" + subShellName.getShellLevelName() + "[implementation " + getClass().getName() + "]";
     }
 
     @Override

@@ -3,6 +3,7 @@ package pl.edu.agh.integr10s.lifepl.cli.shell;
 public enum SubShellName {
     NONE(""),
     MAIN("lifepl"),
+    WORLDS("worlds")
 
     ;
 

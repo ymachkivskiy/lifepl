@@ -1,6 +1,7 @@
 package pl.edu.agh.integr10s.lifepl.cli.shell.app;
 
 import asg.cliche.Command;
+import asg.cliche.Shell;
 import asg.cliche.ShellFactory;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShellName;
@@ -23,8 +24,17 @@ public class MainShell extends SubShell {
 
     }
 
+    @Command
+    public void enterWorlds() {
+        try {
+            childSubShells.get(SubShellName.WORLDS).runLevel();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
-    public void runLevel() throws IOException {
-        ShellFactory.createConsoleShell(getSubShellName().getShellLevelName(), getApplicationName(), this).commandLoop();
+    protected Shell createShell() {
+        return ShellFactory.createConsoleShell(getSubShellName().getShellLevelName(), getApplicationName(), this);
     }
 }
