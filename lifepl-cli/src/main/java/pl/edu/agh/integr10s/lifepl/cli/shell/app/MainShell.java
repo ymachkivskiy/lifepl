@@ -1,15 +1,16 @@
 package pl.edu.agh.integr10s.lifepl.cli.shell.app;
 
 import asg.cliche.Command;
-import pl.edu.agh.integr10s.lifepl.cli.shell.AbstractShellLevel;
+import asg.cliche.ShellFactory;
+import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
+import pl.edu.agh.integr10s.lifepl.cli.shell.SubShellName;
 
-public class MainShell extends AbstractShellLevel{
+import java.io.IOException;
 
-    private static final String PROMPT = "lifepl";
-
+public class MainShell extends SubShell {
 
     public MainShell() {
-        super(PROMPT);
+        super(SubShellName.MAIN, SubShellName.NONE);
     }
 
     @Command
@@ -22,4 +23,8 @@ public class MainShell extends AbstractShellLevel{
 
     }
 
+    @Override
+    public void runLevel() throws IOException {
+        ShellFactory.createConsoleShell(getSubShellName().getShellLevelName(), getApplicationName(), this).commandLoop();
+    }
 }
