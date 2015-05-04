@@ -46,6 +46,16 @@ public abstract class SubShell implements ShellDependent {
         shell.get().commandLoop();
     }
 
+    protected void runChildShell(SubShellName childName) throws IOException {
+        SubShell childShell = childSubShells.get(childName);
+        logger.debug("running child shell from ' {} ' for it's child  ' {} ' ", this, childName);
+        if (childShell == null) {
+            logger.error("not found child sub shell ' {} ' ", childName);
+        } else {
+            childShell.runLevel();
+        }
+    }
+
     protected Shell createShell() {
         return ShellFactory.createSubshell(subShellName.getPrompt(), parentShell, subShellName.getDescription(), this);
     }

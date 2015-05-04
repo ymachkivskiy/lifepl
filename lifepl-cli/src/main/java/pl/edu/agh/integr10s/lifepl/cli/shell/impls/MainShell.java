@@ -1,6 +1,5 @@
 package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
 
-import asg.cliche.Command;
 import asg.cliche.Shell;
 import asg.cliche.ShellFactory;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
@@ -14,20 +13,9 @@ public class MainShell extends SubShell {
         super(SubShellName.MAIN, SubShellName.NONE);
     }
 
-    @Command
-    public void enterPlaning() {
-
-    }
-
-    @Command
-    public void enterWordModelsManaging() {
-
-    }
-
-    @Command
-    public void enterWorlds() {
+    public void ew() {
         try {
-            childSubShells.get(SubShellName.WORLDS).runLevel();
+            runChildShell(SubShellName.WORLDS);
         } catch (IOException e) {
             e.printStackTrace();
         }
