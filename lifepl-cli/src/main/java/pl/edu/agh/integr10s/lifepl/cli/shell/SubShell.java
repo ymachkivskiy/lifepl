@@ -5,8 +5,10 @@ import asg.cliche.ShellDependent;
 import asg.cliche.ShellFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.lifepl.cli.shell.utils.SubShellVisitor;
 
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -17,12 +19,9 @@ public abstract class SubShell implements ShellDependent {
 
     private final SubShellName subShellName;
     private final SubShellName parentSubShellName;
-
-    private Shell parentShell;
-
-    private Optional<Shell> shell = Optional.empty();
-
     protected Map<SubShellName, SubShell> childSubShells = new HashMap<>();
+    private Shell parentShell;
+    private Optional<Shell> shell = Optional.empty();
 
     public SubShell(SubShellName subShellName, SubShellName parentSubShellName) {
         this.subShellName = subShellName;
@@ -46,6 +45,16 @@ public abstract class SubShell implements ShellDependent {
         shell.get().commandLoop();
     }
 
+    public void reconfigureAs(SubShell other) {
+        this.parentShell = other.parentShell;
+        this.shell = other.shell;
+        this.childSubShells = other.childSubShells;
+    }
+
+    public EnumSet<SubShellName> childShells() {
+        return EnumSet.copyOf(childSubShells.keySet());
+    }
+
     protected void runChildShell(SubShellName childName) throws IOException {
         SubShell childShell = childSubShells.get(childName);
         logger.debug("running child shell from ' {} ' for it's child  ' {} ' ", this, childName);
@@ -61,7 +70,7 @@ public abstract class SubShell implements ShellDependent {
         SubShellName subShellChild = SubShellName.valueOf(childName.toUpperCase());
         if (subShellChild == null) {
             logger.error("there is no such subShellName '{}'", childName);
-        }else {
+        } else {
             runChildShell(subShellChild);
         }
     }
@@ -82,6 +91,11 @@ public abstract class SubShell implements ShellDependent {
         if (prevSubShell != null) {
             logger.warn("sub shell  ' {} ' was replaced", prevSubShell);
         }
+    }
+
+    public void accept(SubShellVisitor visitor) {
+
+        visitor.visitSubShell(this);
     }
 
     @Override

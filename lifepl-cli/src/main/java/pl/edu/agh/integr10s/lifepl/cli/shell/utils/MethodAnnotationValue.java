@@ -1,21 +1,21 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.utils.dummy_package;
+package pl.edu.agh.integr10s.lifepl.cli.shell.utils;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class MethodAnnotationValue {
-
     private final Map<String, String> annotationFieldToValueMap = new HashMap<>();
-    private final Set<String> allowedFields = new HashSet<>();
     private final String methodName;
     private final Class<? extends Annotation> annotationClass;
-
     public MethodAnnotationValue(String methodName, Class<? extends Annotation> annotationClass) {
         this.methodName = methodName;
         this.annotationClass = annotationClass;
+    }
+
+    @Override
+    public String toString() {
+        return "annotation{" + annotationClass + "}::" + annotationFieldToValueMap;
     }
 
     public String getMethodName() {

@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AppShellBuilder {
     private static final Logger logger = LoggerFactory.getLogger(AppShellBuilder.class);
@@ -39,6 +41,10 @@ public class AppShellBuilder {
         logger.debug("use  ' {} '  sub shell as application shell root", rootSubShell);
 
         buildEngine.injectSubShellsDependencies(rootSubShell);
+
+        logger.debug("injecting annotations to shell tree");
+
+
 
         logger.debug("finish building application shell");
 
