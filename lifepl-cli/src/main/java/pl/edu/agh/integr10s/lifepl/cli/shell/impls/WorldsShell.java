@@ -11,7 +11,7 @@ public class WorldsShell extends SubShell{
     }
 
     @Command
-    public void worldsCommand() {
+    public void localCommand() {
         System.out.println("worlds command");
     }
 }

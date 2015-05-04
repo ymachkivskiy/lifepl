@@ -56,6 +56,16 @@ public abstract class SubShell implements ShellDependent {
         }
     }
 
+    protected void runChildShellByName(String childName) throws IOException {
+        logger.debug("running child shell by name ' {} '", childName);
+        SubShellName subShellChild = SubShellName.valueOf(childName.toUpperCase());
+        if (subShellChild == null) {
+            logger.error("there is no such subShellName '{}'", childName);
+        }else {
+            runChildShell(subShellChild);
+        }
+    }
+
     protected Shell createShell() {
         return ShellFactory.createSubshell(subShellName.getPrompt(), parentShell, subShellName.getDescription(), this);
     }

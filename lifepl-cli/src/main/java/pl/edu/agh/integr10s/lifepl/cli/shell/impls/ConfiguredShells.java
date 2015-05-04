@@ -2,8 +2,8 @@ package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
 
 import asg.cliche.Command;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
-import pl.edu.agh.integr10s.lifepl.cli.shell.utils.AnnotationValue;
-import pl.edu.agh.integr10s.lifepl.cli.shell.utils.StringValuesAnnotationAdder;
+import pl.edu.agh.integr10s.lifepl.cli.shell.utils.dummy_package.AnnotatingMethodAssembly;
+import pl.edu.agh.integr10s.lifepl.cli.shell.utils.dummy_package.MethodAnnotationValue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,12 +14,19 @@ public final class ConfiguredShells {
     }
 
     public static List<SubShell> get() {
-        AnnotationValue val = new AnnotationValue(Command.class);
-        val.setValue("name" , "blablalb");
+        MethodAnnotationValue val = new MethodAnnotationValue("ew", Command.class);
+        val.setValue("name" , "someCommand");
+
+        AnnotatingMethodAssembly assembly = new AnnotatingMethodAssembly(val);
+
+//        StringValuesAnnotationAdder.getAnnotatedInstance(MainShell.class, "ew", val),
+
+
+
         try {
 
             return Arrays.asList(
-                    StringValuesAnnotationAdder.getAnnotatedInstance(MainShell.class, "ew", val),
+                    assembly.assemble(MainShell.class).newInstance(),
                     new WorldsShell()
             );
 

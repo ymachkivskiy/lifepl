@@ -9,13 +9,14 @@ import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;
 import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.StringMemberValue;
+import pl.edu.agh.integr10s.lifepl.cli.shell.utils.dummy_package.MethodAnnotationValue;
 
 import java.util.Map;
 
 public class StringValuesAnnotationAdder {
 
 
-    public static <T> T getAnnotatedInstance(Class<T> classToAnnotate, String methodName, AnnotationValue annotationValue) throws Exception {
+    public static <T> T getAnnotatedInstance(Class<T> classToAnnotate, String methodName, MethodAnnotationValue methodAnnotationValue) throws Exception {
 
         //pool creation
         ClassPool pool = ClassPool.getDefault();
@@ -33,18 +34,18 @@ public class StringValuesAnnotationAdder {
         ConstPool constpool = ccFile.getConstPool();
 
         AnnotationsAttribute attr = new AnnotationsAttribute(constpool, AnnotationsAttribute.visibleTag);
-        attr.addAnnotation(getAnnotation(annotationValue, ccFile, constpool));
+        attr.addAnnotation(getAnnotation(methodAnnotationValue, ccFile, constpool));
         // add the annotation to the method descriptor
         methodDescriptor.getMethodInfo().addAttribute(attr);
 
         return classToAnnotate.cast(cc.toClass().newInstance());
     }
 
-    private static Annotation getAnnotation(AnnotationValue annotationValue, ClassFile ccFile, ConstPool constpool) {
-        Class<? extends java.lang.annotation.Annotation> annotationClass = annotationValue.getAnnotationClass();
+    private static Annotation getAnnotation(MethodAnnotationValue methodAnnotationValue, ClassFile ccFile, ConstPool constpool) {
+        Class<? extends java.lang.annotation.Annotation> annotationClass = methodAnnotationValue.getAnnotationClass();
         Annotation annot = new Annotation(annotationClass.getName(), constpool);
 
-        for (Map.Entry<String, String> annotationFieldValueEntry : annotationValue.getAnnotationFieldToValueMap().entrySet()) {
+        for (Map.Entry<String, String> annotationFieldValueEntry : methodAnnotationValue.getAnnotationFieldToValueMap().entrySet()) {
             annot.addMemberValue(annotationFieldValueEntry.getKey(), new StringMemberValue(annotationFieldValueEntry.getValue(), ccFile.getConstPool()));
 
         }
