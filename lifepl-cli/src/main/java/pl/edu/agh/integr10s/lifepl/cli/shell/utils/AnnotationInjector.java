@@ -34,7 +34,7 @@ public final class AnnotationInjector {
     }
 
     private static String addCommandInvocationUsingParam(String methodParamValue, CtClass workingSubClass) {
-        logger.debug("adding command invocation {}({})", BASE_METHOD_NAME, methodParamValue);
+        logger.debug("adding command invocation {}(\"{}\")", BASE_METHOD_NAME, methodParamValue);
 
         String generatedMethodName = BASE_METHOD_NAME + methodParamValue;
 
@@ -90,15 +90,24 @@ public final class AnnotationInjector {
     }
 
     public final SubShell injectCommand(SubShell originalObject) {
+        logger.debug("trying to inject annotations to sub shell with class ' {} '", originalObject.getClass());
+
+        if (originalObject.childShellsNames().isEmpty()) {
+            logger.debug("original sub shell ' {} ' has not children, annotations will not be injected", originalObject);
+            return originalObject;
+        }
+
         try {
 
             CtClass baseClass = classPool.getCtClass(SubShell.class.getName());
-            //1. inject new methods
+
+            logger.debug("injecting new methods to class ' {} '", originalObject.getClass().getName());
+
             CtClass workingSubClass = createSubClass(baseClass, GENERATED_METHODS_CLASS_SUFFIX);
 
             List<MethodAnnotationValue> annotations = new LinkedList<>();
 
-            for (SubShellName subShellName : originalObject.childShells()) {
+            for (SubShellName subShellName : originalObject.childShellsNames()) {
                 String generatedMethodName = addCommandInvocationUsingParam(subShellName.name(), workingSubClass);
                 MethodAnnotationValue annotationValue = new MethodAnnotationValue(generatedMethodName, Command.class);
 
@@ -109,7 +118,8 @@ public final class AnnotationInjector {
                 annotations.add(annotationValue);
             }
 
-            //2. annotate
+            logger.debug("adding annotations to generated methods");
+
             baseClass = workingSubClass;
             workingSubClass = createSubClass(workingSubClass, ANNOTATED_METHODS_CLASS_SUFFIX);
 

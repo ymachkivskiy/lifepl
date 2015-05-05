@@ -3,15 +3,13 @@ package pl.edu.agh.integr10s.lifepl.cli.shell;
 import asg.cliche.Shell;
 import asg.cliche.ShellDependent;
 import asg.cliche.ShellFactory;
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.cli.shell.utils.SubShellVisitor;
 
 import java.io.IOException;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class SubShell implements ShellDependent {
 
@@ -19,9 +17,9 @@ public abstract class SubShell implements ShellDependent {
 
     private final SubShellName subShellName;
     private final SubShellName parentSubShellName;
-    protected Map<SubShellName, SubShell> childSubShells = new HashMap<>();
     private Shell parentShell;
     private Optional<Shell> shell = Optional.empty();
+    protected Map<SubShellName, SubShell> childSubShells = new HashMap<>();
 
     public SubShell(SubShellName subShellName, SubShellName parentSubShellName) {
         this.subShellName = subShellName;
@@ -51,8 +49,14 @@ public abstract class SubShell implements ShellDependent {
         this.childSubShells = other.childSubShells;
     }
 
-    public EnumSet<SubShellName> childShells() {
-        return EnumSet.copyOf(childSubShells.keySet());
+    public EnumSet<SubShellName> childShellsNames() {
+        EnumSet<SubShellName> childrenNames = EnumSet.noneOf(SubShellName.class);
+        childrenNames.addAll(childSubShells.keySet());
+        return childrenNames;
+    }
+
+    public Set<SubShell> childShells() {
+        return Sets.newHashSet(childSubShells.values());
     }
 
     protected void runChildShell(SubShellName childName) throws IOException {
@@ -85,16 +89,23 @@ public abstract class SubShell implements ShellDependent {
         }
     }
 
-    public void addChildSubShell(SubShell childSubShell) {
+    private void addChildSubShellFlagged(SubShell childSubShell, boolean warnReplacing) {
         logger.debug("add child sub shell {} to sub shell {}", childSubShell, this);
         SubShell prevSubShell = childSubShells.put(childSubShell.getSubShellName(), childSubShell);
         if (prevSubShell != null) {
-            logger.warn("sub shell  ' {} ' was replaced", prevSubShell);
+            if(warnReplacing){
+                logger.warn("sub shell  ' {} ' was replaced", prevSubShell);
+            }else{
+                logger.debug("sub shell  ' {} ' was replaced", prevSubShell);
+            }
         }
     }
 
-    public void accept(SubShellVisitor visitor) {
+    public void addChildSubShell(SubShell childSubShell) {
+        addChildSubShellFlagged(childSubShell, true);
+    }
 
+    public void accept(SubShellVisitor visitor) {
         visitor.visitSubShell(this);
     }
 

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
+import pl.edu.agh.integr10s.lifepl.cli.shell.utils.SubShellAnnotationInjectionVisitor;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -44,7 +45,9 @@ public class AppShellBuilder {
 
         logger.debug("injecting annotations to shell tree");
 
+        SubShellAnnotationInjectionVisitor injector = new SubShellAnnotationInjectionVisitor();
 
+        rootSubShell = injector.doInjection(rootSubShell);
 
         logger.debug("finish building application shell");
 
