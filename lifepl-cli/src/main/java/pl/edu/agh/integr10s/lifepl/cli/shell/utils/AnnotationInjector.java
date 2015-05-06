@@ -10,10 +10,10 @@ import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.StringMemberValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.lifepl.cli.shell.ShellNameAware;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
-import pl.edu.agh.integr10s.lifepl.cli.shell.SubShellName;
 
-public final class AnnotationInjector<ST extends SubShell> {
+public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, ST extends SubShell<E>> {
     private static final Logger logger = LoggerFactory.getLogger(AnnotationInjector.class);
 
     private static final String BASE_METHOD_NAME = "runChildShellByName";
@@ -28,7 +28,7 @@ public final class AnnotationInjector<ST extends SubShell> {
         return cSuperClass.getName() + "_" + subclassSuffix;
     }
 
-    private static void addCommandInvocationUsingParam(SubShellName subShellName, CtClass workingSubClass) {
+    private void addCommandInvocationUsingParam(ShellNameAware<E> subShellName, CtClass workingSubClass) {
         final String methodParamValue = subShellName.getPrompt();
         final String generatedMethodName = BASE_METHOD_NAME + methodParamValue;
 
@@ -86,7 +86,7 @@ public final class AnnotationInjector<ST extends SubShell> {
             CtClass baseClass = classPool.getCtClass(originalClass.getName());
             CtClass workingSubClass = createSubClass(baseClass, GENERATED_CLASS_SUFFIX);
 
-            for (SubShellName subShellName : originalObject.childShellsNames()) {
+            for (ShellNameAware<E> subShellName : originalObject.childShellsNames()) {
                 addCommandInvocationUsingParam(subShellName, workingSubClass);
             }
 

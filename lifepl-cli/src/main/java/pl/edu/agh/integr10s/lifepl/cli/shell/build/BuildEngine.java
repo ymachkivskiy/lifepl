@@ -2,54 +2,54 @@ package pl.edu.agh.integr10s.lifepl.cli.shell.build;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.lifepl.cli.shell.ShellNameAware;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
-import pl.edu.agh.integr10s.lifepl.cli.shell.SubShellName;
 
 import java.util.*;
 
-final class BuildEngine {
+final class BuildEngine<E extends Enum<E> & ShellNameAware<E>> {
     private static final Logger logger = LoggerFactory.getLogger(BuildEngine.class);
 
-    List<SubShell> mainCategoryShells = new LinkedList<>();
-    Map<SubShellName, List<SubShell>> parentSubShellNameToSubShellsMap = new HashMap<>();
+    List<SubShell<E>> mainCategoryShells = new LinkedList<>();
+    Map<E, List<SubShell<E>>> parentSubShellNameToSubShellsMap = new HashMap<>();
 
-    public BuildEngine() {
-        for (SubShellName subShellName : SubShellName.values()) {
-            parentSubShellNameToSubShellsMap.put(subShellName, new LinkedList<>());
+    public BuildEngine(Class<E> subShellNamesClass) {
+        for (E shellNameAware : subShellNamesClass.getEnumConstants()) {
+            parentSubShellNameToSubShellsMap.put(shellNameAware, new LinkedList<>());
         }
     }
 
-    public void processSubShells(Set<SubShell> subShells) {
-        for (SubShell subShell : subShells) {
-            final SubShellName subShellName = subShell.getSubShellName();
-            final SubShellName parentSubShellName = subShell.getParentSubShellName();
+    public void processSubShells(Set<SubShell<E>> subShells) {
+        for (SubShell<E> subShell : subShells) {
+            final ShellNameAware<E> shellNameAware = subShell.getSubShellName();
+            final ShellNameAware<E> parentSubShellName = subShell.getParentSubShellName();
 
-            logger.debug("has declaration of sub shell  ' {} '  with name  ' {} '  and parent sub shell  ' {} ' ", subShell, subShellName, parentSubShellName);
+            logger.debug("has declaration of sub shell  ' {} '  with name  ' {} '  and parent sub shell  ' {} ' ", subShell, shellNameAware, parentSubShellName);
 
             parentSubShellNameToSubShellsMap.get(parentSubShellName).add(subShell);
 
-            if (subShellName == SubShellName.MAIN) {
+            if (shellNameAware.isMain()) {
                 logger.debug("found root sub shell  ' {} '  ", subShell);
                 mainCategoryShells.add(subShell);
             }
         }
     }
 
-    public void injectSubShellsDependencies(SubShell rootLevelElement) {
+    public void injectSubShellsDependencies(SubShell<E> rootLevelElement) {
 
-        Stack<SubShell> unconfiguredSubShells = new Stack<>();
+        Stack<SubShell<E>> unconfiguredSubShells = new Stack<>();
 
         unconfiguredSubShells.push(rootLevelElement);
 
         while (!unconfiguredSubShells.isEmpty()) {
-            SubShell currentSubShell = unconfiguredSubShells.pop();
+            SubShell<E> currentSubShell = unconfiguredSubShells.pop();
             logger.debug("configuring dependencies for sub shell  ' {} ' ", currentSubShell);
-            List<SubShell> childSubShells = parentSubShellNameToSubShellsMap.get(currentSubShell.getSubShellName());
+            List<SubShell<E>> childSubShells = parentSubShellNameToSubShellsMap.get(currentSubShell.getSubShellName());
             if (childSubShells.isEmpty()) {
                 logger.debug("sub shell  ' {} '  has no child sub shells", currentSubShell);
             }
 
-            for (SubShell childSubShell : childSubShells) {
+            for (SubShell<E> childSubShell : childSubShells) {
                 logger.debug("found child sub shell  ' {} ' ", childSubShell);
                 currentSubShell.addChildSubShell(childSubShell);
                 unconfiguredSubShells.push(childSubShell);

@@ -3,17 +3,16 @@ package pl.edu.agh.integr10s.lifepl.cli.shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.cli.shell.build.AppShellBuilder;
-import pl.edu.agh.integr10s.lifepl.cli.shell.impls.ConfiguredShells;
 
 import java.io.IOException;
 
-public final class ApplicationShell {
+public final class ApplicationShell<E extends Enum<E> & ShellNameAware<E>> {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationShell.class);
 
-    private final SubShell rootLevel;
+    private final SubShell<E> rootLevel;
 
-    public ApplicationShell(SubShell rootLevel) {
+    public ApplicationShell(SubShell<E> rootLevel) {
         this.rootLevel = rootLevel;
     }
 
@@ -27,14 +26,13 @@ public final class ApplicationShell {
         }
     }
 
-    private static ApplicationShell createShell() {
-        return new AppShellBuilder()
-                .addSubShells(ConfiguredShells.get())
-                .build();
+    private static <E extends Enum<E> & ShellNameAware<E>> ApplicationShell<E> createShell(ConfiguredShellsProvider<E> shellsProvider) {
+        return new AppShellBuilder<>(shellsProvider).build();
     }
 
 
-    public static void startApp() throws IOException {
-        createShell().start();
+    public static <E extends Enum<E> & ShellNameAware<E>> void startApp(ConfiguredShellsProvider<E> shellsProvider) throws IOException {
+        logger.debug("starting application with configured shells ' {} '", shellsProvider);
+        createShell(shellsProvider).start();
     }
 }

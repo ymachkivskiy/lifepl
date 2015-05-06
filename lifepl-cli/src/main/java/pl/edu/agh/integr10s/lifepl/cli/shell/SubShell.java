@@ -9,28 +9,33 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.cli.shell.utils.SubShellVisitor;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
-public abstract class SubShell implements ShellDependent {
+public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements ShellDependent {
 
     private final static Logger logger = LoggerFactory.getLogger(SubShell.class);
 
-    private final SubShellName subShellName;
-    private final SubShellName parentSubShellName;
+    private final ShellNameAware<E> subShellName;
+    private final ShellNameAware<E> parentSubShellName;
+    private final Class<E> clazz;
     private Shell parentShell;
     private Optional<Shell> shell = Optional.empty();
-    protected Map<SubShellName, SubShell> childSubShells = new HashMap<>();
+    protected Map<ShellNameAware<E>, SubShell> childSubShells = new HashMap<>();
 
-    public SubShell(SubShellName subShellName, SubShellName parentSubShellName) {
+    public SubShell(Class<E> clazz, ShellNameAware<E> subShellName, ShellNameAware<E> parentSubShellName) {
         this.subShellName = subShellName;
         this.parentSubShellName = parentSubShellName;
+        this.clazz = clazz;
     }
 
-    public final SubShellName getSubShellName() {
+    public final ShellNameAware<E> getSubShellName() {
         return this.subShellName;
     }
 
-    public final SubShellName getParentSubShellName() {
+    public final ShellNameAware<E> getParentSubShellName() {
         return parentSubShellName;
     }
 
@@ -43,7 +48,7 @@ public abstract class SubShell implements ShellDependent {
         shell.get().commandLoop();
     }
 
-    public void reconfigureAs(SubShell other) {
+    public void reconfigureAs(SubShell<E> other) {
         logger.debug("reconfiguring ' {} ' as ' {} '", this, other);
 
         this.parentShell = other.parentShell;
@@ -51,17 +56,15 @@ public abstract class SubShell implements ShellDependent {
         this.childSubShells = other.childSubShells;
     }
 
-    public EnumSet<SubShellName> childShellsNames() {
-        EnumSet<SubShellName> childrenNames = EnumSet.noneOf(SubShellName.class);
-        childrenNames.addAll(childSubShells.keySet());
-        return childrenNames;
+    public Set<ShellNameAware<E>> childShellsNames() {
+        return Sets.newHashSet(childSubShells.keySet());
     }
 
     public Set<SubShell> childShells() {
         return Sets.newHashSet(childSubShells.values());
     }
 
-    protected void runChildShell(SubShellName childName) throws IOException {
+    protected void runChildShell(ShellNameAware<E> childName) throws IOException {
         SubShell childShell = childSubShells.get(childName);
         logger.debug("running child shell from ' {} ' for it's child  ' {} ' ", this, childName);
         if (childShell == null) {
@@ -73,7 +76,8 @@ public abstract class SubShell implements ShellDependent {
 
     protected void runChildShellByName(String childName) throws IOException {
         logger.debug("running child shell by name ' {} '", childName);
-        SubShellName subShellChild = SubShellName.valueOf(childName.toUpperCase());
+
+        ShellNameAware<E> subShellChild = Enum.valueOf(clazz, childName.toUpperCase());
         if (subShellChild == null) {
             logger.error("there is no such subShellName '{}'", childName);
         } else {
@@ -91,7 +95,7 @@ public abstract class SubShell implements ShellDependent {
         }
     }
 
-    private void addChildSubShellFlagged(SubShell childSubShell, boolean warnReplacing) {
+    private void addChildSubShellFlagged(SubShell<E> childSubShell, boolean warnReplacing) {
         logger.debug("add child sub shell {} to sub shell {}", childSubShell, this);
         SubShell prevSubShell = childSubShells.put(childSubShell.getSubShellName(), childSubShell);
         if (prevSubShell != null) {

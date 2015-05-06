@@ -3,14 +3,13 @@ package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
 import asg.cliche.Shell;
 import asg.cliche.ShellFactory;
 import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
-import pl.edu.agh.integr10s.lifepl.cli.shell.SubShellName;
 
 import java.io.IOException;
 
-public class MainShell extends SubShell {
+public class MainShell extends SubShell<SubShellName> {
 
     public MainShell() {
-        super(SubShellName.MAIN, SubShellName.NONE);
+        super(SubShellName.class, SubShellName.MAIN, SubShellName.NONE);
     }
 
     public void ew() {
