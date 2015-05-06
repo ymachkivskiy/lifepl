@@ -1,12 +1,12 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.build;
+package pl.edu.agh.integr10s.clibuilder.build;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationShell;
-import pl.edu.agh.integr10s.lifepl.cli.shell.ConfiguredShellsProvider;
-import pl.edu.agh.integr10s.lifepl.cli.shell.ShellNameAware;
-import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
-import pl.edu.agh.integr10s.lifepl.cli.shell.utils.SubShellAnnotationInjectionVisitor;
+import pl.edu.agh.integr10s.clibuilder.ApplicationShell;
+import pl.edu.agh.integr10s.clibuilder.shell.ConfiguredShellsProvider;
+import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
+import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
+import pl.edu.agh.integr10s.clibuilder.utils.SubShellAnnotationInjectionVisitor;
 
 import java.util.Collection;
 import java.util.HashSet;

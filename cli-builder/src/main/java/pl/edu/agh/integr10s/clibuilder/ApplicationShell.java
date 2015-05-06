@@ -1,8 +1,12 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell;
+package pl.edu.agh.integr10s.clibuilder;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.cli.shell.build.AppShellBuilder;
+import pl.edu.agh.integr10s.clibuilder.build.AppShellBuilder;
+import pl.edu.agh.integr10s.clibuilder.shell.ConfiguredShellsProvider;
+import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
+import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.io.IOException;
 

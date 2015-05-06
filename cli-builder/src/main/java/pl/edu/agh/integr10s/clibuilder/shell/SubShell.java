@@ -1,4 +1,5 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell;
+package pl.edu.agh.integr10s.clibuilder.shell;
+
 
 import asg.cliche.Shell;
 import asg.cliche.ShellDependent;
@@ -6,7 +7,7 @@ import asg.cliche.ShellFactory;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.cli.shell.utils.SubShellVisitor;
+import pl.edu.agh.integr10s.clibuilder.utils.SubShellVisitor;
 
 import java.io.IOException;
 import java.util.HashMap;

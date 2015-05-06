@@ -1,10 +1,11 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.utils;
+package pl.edu.agh.integr10s.clibuilder.utils;
+
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.cli.shell.ShellNameAware;
-import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
+import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
+import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 public class SubShellAnnotationInjectionVisitor<E extends Enum<E> & ShellNameAware<E>> implements SubShellVisitor<E> {
     private static final Logger logger = LoggerFactory.getLogger(SubShellAnnotationInjectionVisitor.class);

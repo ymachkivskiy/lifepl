@@ -1,8 +1,8 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
+package pl.edu.agh.integr10s.lifepl.cli.shellimpls;
 
 import asg.cliche.Shell;
 import asg.cliche.ShellFactory;
-import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
+import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.io.IOException;
 

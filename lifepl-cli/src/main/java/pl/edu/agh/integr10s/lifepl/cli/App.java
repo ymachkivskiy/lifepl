@@ -1,7 +1,7 @@
 package pl.edu.agh.integr10s.lifepl.cli;
 
-import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationShell;
-import pl.edu.agh.integr10s.lifepl.cli.shell.impls.ConfiguredShells;
+import pl.edu.agh.integr10s.clibuilder.ApplicationShell;
+import pl.edu.agh.integr10s.lifepl.cli.shellimpls.ConfiguredShells;
 
 import java.io.IOException;
 

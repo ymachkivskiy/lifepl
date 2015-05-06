@@ -1,6 +1,7 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
+package pl.edu.agh.integr10s.lifepl.cli.shellimpls;
 
-import pl.edu.agh.integr10s.lifepl.cli.shell.ShellNameAware;
+
+import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 
 public enum SubShellName implements ShellNameAware<SubShellName> {
 

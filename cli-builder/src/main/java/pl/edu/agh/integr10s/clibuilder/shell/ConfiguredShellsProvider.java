@@ -1,4 +1,5 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell;
+package pl.edu.agh.integr10s.clibuilder.shell;
+
 
 import java.util.List;
 

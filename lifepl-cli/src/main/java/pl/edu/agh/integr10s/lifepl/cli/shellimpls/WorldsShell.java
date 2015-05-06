@@ -1,7 +1,7 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
+package pl.edu.agh.integr10s.lifepl.cli.shellimpls;
 
 import asg.cliche.Command;
-import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
+import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 public class WorldsShell extends SubShell<SubShellName> {
 

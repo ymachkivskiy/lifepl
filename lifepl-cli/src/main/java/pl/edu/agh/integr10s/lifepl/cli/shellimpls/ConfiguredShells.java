@@ -1,7 +1,8 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
+package pl.edu.agh.integr10s.lifepl.cli.shellimpls;
 
-import pl.edu.agh.integr10s.lifepl.cli.shell.ConfiguredShellsProvider;
-import pl.edu.agh.integr10s.lifepl.cli.shell.SubShell;
+
+import pl.edu.agh.integr10s.clibuilder.shell.ConfiguredShellsProvider;
+import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.util.ArrayList;
 import java.util.List;
