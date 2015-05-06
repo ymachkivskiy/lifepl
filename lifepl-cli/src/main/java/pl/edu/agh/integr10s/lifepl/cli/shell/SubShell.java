@@ -44,6 +44,8 @@ public abstract class SubShell implements ShellDependent {
     }
 
     public void reconfigureAs(SubShell other) {
+        logger.debug("reconfiguring ' {} ' as ' {} '", this, other);
+
         this.parentShell = other.parentShell;
         this.shell = other.shell;
         this.childSubShells = other.childSubShells;
@@ -94,15 +96,19 @@ public abstract class SubShell implements ShellDependent {
         SubShell prevSubShell = childSubShells.put(childSubShell.getSubShellName(), childSubShell);
         if (prevSubShell != null) {
             if(warnReplacing){
-                logger.warn("sub shell  ' {} ' was replaced", prevSubShell);
+                logger.warn("sub shell  ' {} ' was replaced by  ' {} '", prevSubShell, childSubShell);
             }else{
-                logger.debug("sub shell  ' {} ' was replaced", prevSubShell);
+                logger.debug("sub shell  ' {} ' was replaced by  ' {} '", prevSubShell, childSubShell);
             }
         }
     }
 
     public void addChildSubShell(SubShell childSubShell) {
         addChildSubShellFlagged(childSubShell, true);
+    }
+
+    public void addChildSubShellWithReplacement(SubShell childSubShell) {
+        addChildSubShellFlagged(childSubShell, false);
     }
 
     public void accept(SubShellVisitor visitor) {

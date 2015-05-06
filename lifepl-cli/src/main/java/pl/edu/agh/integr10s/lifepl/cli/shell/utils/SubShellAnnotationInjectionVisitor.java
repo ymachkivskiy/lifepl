@@ -14,14 +14,14 @@ public class SubShellAnnotationInjectionVisitor implements SubShellVisitor {
     public void visitSubShell(SubShell parentShell) {
         for (SubShell childShell : parentShell.childShells()) {
             logger.debug("injecting to child sub shell ' {} ' of parent sub shell ' {} '", childShell, parentShell);
-            parentShell.addChildSubShell(doInjection(childShell));
+            parentShell.addChildSubShellWithReplacement(doInjection(childShell));
         }
     }
 
     public SubShell doInjection(SubShell originalSubShell) {
         logger.debug("START  -  injection for sub shell ' {} '", originalSubShell);
         visitSubShell(originalSubShell);
-        logger.debug("FINISH  -  injectionfor sub shell '  {} '", originalSubShell);
+        logger.debug("FINISH  -  injection for sub shell '  {} '", originalSubShell);
         return injector.injectCommand(originalSubShell);
     }
 
