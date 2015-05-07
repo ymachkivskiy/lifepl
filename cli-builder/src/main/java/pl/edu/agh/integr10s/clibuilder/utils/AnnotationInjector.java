@@ -10,11 +10,12 @@ import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.StringMemberValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.clibuilder.shell.ApplicationState;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 
-public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, ST extends SubShell<E>> {
+public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState, ST extends SubShell<E, AppStateT>> {
     private static final Logger logger = LoggerFactory.getLogger(AnnotationInjector.class);
 
     private static final String BASE_METHOD_NAME = "runChildShellByName";
@@ -97,14 +98,8 @@ public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, ST 
 
             return result;
 
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (CannotCompileException e) {
-            e.printStackTrace();
+        } catch (NotFoundException | InstantiationException | IllegalAccessException | CannotCompileException e) {
+            logger.error("injection of command not finished correctly", e);
         }
 
         return originalObject;

@@ -2,16 +2,17 @@ package pl.edu.agh.integr10s.clibuilder.build;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.clibuilder.shell.ApplicationState;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.util.*;
 
-final class BuildEngine<E extends Enum<E> & ShellNameAware<E>> {
+final class BuildEngine<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> {
     private static final Logger logger = LoggerFactory.getLogger(BuildEngine.class);
 
-    List<SubShell<E>> mainCategoryShells = new LinkedList<>();
-    Map<E, List<SubShell<E>>> parentSubShellNameToSubShellsMap = new HashMap<>();
+    List<SubShell<E, AppStateT>> mainCategoryShells = new LinkedList<>();
+    Map<E, List<SubShell<E, AppStateT>>> parentSubShellNameToSubShellsMap = new HashMap<>();
 
     public BuildEngine(Class<E> subShellNamesClass) {
         for (E shellNameAware : subShellNamesClass.getEnumConstants()) {
@@ -19,8 +20,8 @@ final class BuildEngine<E extends Enum<E> & ShellNameAware<E>> {
         }
     }
 
-    public void processSubShells(Set<SubShell<E>> subShells) {
-        for (SubShell<E> subShell : subShells) {
+    public void processSubShells(Set<SubShell<E, AppStateT>> subShells) {
+        for (SubShell<E, AppStateT> subShell : subShells) {
             final ShellNameAware<E> shellNameAware = subShell.getSubShellName();
             final ShellNameAware<E> parentSubShellName = subShell.getParentSubShellName();
 
@@ -35,21 +36,21 @@ final class BuildEngine<E extends Enum<E> & ShellNameAware<E>> {
         }
     }
 
-    public void injectSubShellsDependencies(SubShell<E> rootLevelElement) {
+    public void injectSubShellsDependencies(SubShell<E, AppStateT> rootLevelElement) {
 
-        Stack<SubShell<E>> unconfiguredSubShells = new Stack<>();
+        Stack<SubShell<E, AppStateT>> unconfiguredSubShells = new Stack<>();
 
         unconfiguredSubShells.push(rootLevelElement);
 
         while (!unconfiguredSubShells.isEmpty()) {
-            SubShell<E> currentSubShell = unconfiguredSubShells.pop();
+            SubShell<E, AppStateT> currentSubShell = unconfiguredSubShells.pop();
             logger.debug("configuring dependencies for sub shell  ' {} ' ", currentSubShell);
-            List<SubShell<E>> childSubShells = parentSubShellNameToSubShellsMap.get(currentSubShell.getSubShellName());
+            List<SubShell<E, AppStateT>> childSubShells = parentSubShellNameToSubShellsMap.get(currentSubShell.getSubShellName());
             if (childSubShells.isEmpty()) {
                 logger.debug("sub shell  ' {} '  has no child sub shells", currentSubShell);
             }
 
-            for (SubShell<E> childSubShell : childSubShells) {
+            for (SubShell<E, AppStateT> childSubShell : childSubShells) {
                 logger.debug("found child sub shell  ' {} ' ", childSubShell);
                 currentSubShell.addChildSubShell(childSubShell);
                 unconfiguredSubShells.push(childSubShell);
@@ -58,7 +59,7 @@ final class BuildEngine<E extends Enum<E> & ShellNameAware<E>> {
     }
 
 
-    public SubShell peekRootSubShell() {
+    public SubShell<E, AppStateT> peekRootSubShell() {
         if (mainCategoryShells.isEmpty()) {
             logger.error("no root level sub shell found during building application shell");
             System.exit(1);

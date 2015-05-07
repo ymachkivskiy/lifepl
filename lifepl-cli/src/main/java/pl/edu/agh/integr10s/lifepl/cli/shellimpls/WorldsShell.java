@@ -3,7 +3,7 @@ package pl.edu.agh.integr10s.lifepl.cli.shellimpls;
 import asg.cliche.Command;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
-public class WorldsShell extends SubShell<SubShellName> {
+public class WorldsShell extends SubShell<SubShellName, AppState> {
 
     public WorldsShell() {
         super(SubShellName.class, SubShellName.WORLDS, SubShellName.MAIN);
@@ -11,7 +11,7 @@ public class WorldsShell extends SubShell<SubShellName> {
 
     @Command
     public void localCommand() {
-        System.out.println("worlds command");
+        System.out.println("worlds command" + getApplicationState().getValue());
     }
 
     @Command

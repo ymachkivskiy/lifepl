@@ -4,22 +4,22 @@ package pl.edu.agh.integr10s.clibuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.build.AppShellBuilder;
-import pl.edu.agh.integr10s.clibuilder.shell.ConfiguredShellsProvider;
+import pl.edu.agh.integr10s.clibuilder.shell.ApplicationState;
+import pl.edu.agh.integr10s.clibuilder.shell.CliAppConfiguration;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.io.IOException;
 
-public final class ApplicationShell<E extends Enum<E> & ShellNameAware<E>> {
+public final class ApplicationShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationShell.class);
 
-    private final SubShell<E> rootLevel;
+    private final SubShell<E, AppStateT> rootLevel;
 
-    public ApplicationShell(SubShell<E> rootLevel) {
+    public ApplicationShell(SubShell<E,AppStateT> rootLevel) {
         this.rootLevel = rootLevel;
     }
-
 
     public void start() {
         try {
@@ -30,12 +30,12 @@ public final class ApplicationShell<E extends Enum<E> & ShellNameAware<E>> {
         }
     }
 
-    private static <E extends Enum<E> & ShellNameAware<E>> ApplicationShell<E> createShell(ConfiguredShellsProvider<E> shellsProvider) {
-        return new AppShellBuilder<>(shellsProvider).build();
+    private static <E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> ApplicationShell<E, AppStateT> createShell(CliAppConfiguration<E, AppStateT> cliAppConfiguration) {
+        return new AppShellBuilder<>(cliAppConfiguration).build();
     }
 
 
-    public static <E extends Enum<E> & ShellNameAware<E>> void startApp(ConfiguredShellsProvider<E> shellsProvider) throws IOException {
+    public static <E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> void startApp(CliAppConfiguration<E, AppStateT> shellsProvider) throws IOException {
         logger.debug("starting application with configured shells ' {} '", shellsProvider);
         createShell(shellsProvider).start();
     }

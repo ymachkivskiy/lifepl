@@ -17,16 +17,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements ShellDependent, ShellManageable {
+public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> implements ShellDependent, ShellManageable {
 
     private final static Logger logger = LoggerFactory.getLogger(SubShell.class);
 
+    private AppStateT applicationState;
     private final ShellNameAware<E> subShellName;
     private final ShellNameAware<E> parentSubShellName;
     private final Class<E> clazz;
     private Shell parentShell;
     private Optional<Shell> shell = Optional.empty();
-    protected Map<ShellNameAware<E>, SubShell> childSubShells = new HashMap<>();
+    protected Map<ShellNameAware<E>, SubShell<E, AppStateT>> childSubShells = new HashMap<>();
 
     public SubShell(Class<E> clazz, ShellNameAware<E> subShellName, ShellNameAware<E> parentSubShellName) {
         this.subShellName = subShellName;
@@ -42,6 +43,20 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
         return parentSubShellName;
     }
 
+    public void setApplicationState(AppStateT state) {
+        logger.debug("setting application state ' {} ' in shell ' {} '", state, this);
+
+        this.applicationState = state;
+
+        for (SubShell<E, AppStateT> childShell : childShells()) {
+            childShell.setApplicationState(state);
+        }
+    }
+
+    protected final AppStateT getApplicationState() {
+        return applicationState;
+    }
+
     public final void runLevel() throws IOException {
         if (!shell.isPresent()) {
             shell = Optional.of(createShell());
@@ -51,24 +66,25 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
         shell.get().commandLoop();
     }
 
-    public final void reconfigureAs(SubShell<E> other) {
+    public final void reconfigureAs(SubShell<E, AppStateT> other) {
         logger.debug("reconfiguring ' {} ' as ' {} '", this, other);
 
         this.parentShell = other.parentShell;
         this.shell = other.shell;
         this.childSubShells = other.childSubShells;
+        this.applicationState = other.applicationState;
     }
 
     public final Set<ShellNameAware<E>> childShellsNames() {
         return Sets.newHashSet(childSubShells.keySet());
     }
 
-    public final Set<SubShell> childShells() {
+    public final Set<SubShell<E,AppStateT>> childShells() {
         return Sets.newHashSet(childSubShells.values());
     }
 
-    protected final void runChildShell(ShellNameAware<E> childName) throws IOException {
-        SubShell childShell = childSubShells.get(childName);
+    private final void runChildShell(ShellNameAware<E> childName) throws IOException {
+        SubShell<E, AppStateT> childShell = childSubShells.get(childName);
         logger.debug("running child shell from ' {} ' for it's child  ' {} ' ", this, childName);
         if (childShell == null) {
             logger.error("not found child sub shell ' {} ' ", childName);
@@ -104,9 +120,9 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
         }
     }
 
-    private final void addChildSubShellFlagged(SubShell<E> childSubShell, boolean warnReplacing) {
+    private final void addChildSubShellFlagged(SubShell<E, AppStateT> childSubShell, boolean warnReplacing) {
         logger.debug("add child sub shell {} to sub shell {}", childSubShell, this);
-        SubShell prevSubShell = childSubShells.put(childSubShell.getSubShellName(), childSubShell);
+        SubShell<E, AppStateT> prevSubShell = childSubShells.put(childSubShell.getSubShellName(), childSubShell);
         if (prevSubShell != null) {
             if (warnReplacing) {
                 logger.warn("sub shell  ' {} ' was replaced by  ' {} '", prevSubShell, childSubShell);
@@ -116,15 +132,15 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
         }
     }
 
-    public final void addChildSubShell(SubShell<E> childSubShell) {
+    public final void addChildSubShell(SubShell<E, AppStateT> childSubShell) {
         addChildSubShellFlagged(childSubShell, true);
     }
 
-    public final void addChildSubShellWithReplacement(SubShell<E> childSubShell) {
+    public final void addChildSubShellWithReplacement(SubShell<E, AppStateT> childSubShell) {
         addChildSubShellFlagged(childSubShell, false);
     }
 
-    public final void accept(SubShellVisitor<E> visitor) {
+    public final void accept(SubShellVisitor<E, AppStateT> visitor) {
         visitor.visitSubShell(this);
     }
 
@@ -142,7 +158,7 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
             return true;
         }
         if (obj instanceof SubShell) {
-            SubShell<E> other = (SubShell<E>) obj;
+            SubShell<E, AppStateT> other = (SubShell<E, AppStateT>) obj;
             return subShellName == other.subShellName && parentSubShellName == other.parentSubShellName;
         }
         return false;
