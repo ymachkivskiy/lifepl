@@ -1,10 +1,7 @@
 package pl.edu.agh.integr10s.lifepl.cli.shellimpls;
 
-import asg.cliche.Shell;
-import asg.cliche.ShellFactory;
+import asg.cliche.Command;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
-
-import java.io.IOException;
 
 public class MainShell extends SubShell<SubShellName> {
 
@@ -12,16 +9,10 @@ public class MainShell extends SubShell<SubShellName> {
         super(SubShellName.class, SubShellName.MAIN, SubShellName.NONE);
     }
 
-    public void ew() {
-        try {
-            runChildShell(SubShellName.WORLDS);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Command
+    public void wor() {
+        System.out.println("words");
     }
 
-    @Override
-    protected Shell createShell() {
-        return ShellFactory.createConsoleShell(getSubShellName().getPrompt(), getSubShellName().getDescription(), this);
-    }
+
 }

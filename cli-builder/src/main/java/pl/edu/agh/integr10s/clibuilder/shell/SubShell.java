@@ -4,7 +4,9 @@ package pl.edu.agh.integr10s.clibuilder.shell;
 import asg.cliche.Shell;
 import asg.cliche.ShellDependent;
 import asg.cliche.ShellFactory;
+import asg.cliche.ShellManageable;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.utils.SubShellVisitor;
@@ -15,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements ShellDependent {
+public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements ShellDependent, ShellManageable {
 
     private final static Logger logger = LoggerFactory.getLogger(SubShell.class);
 
@@ -49,7 +51,7 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
         shell.get().commandLoop();
     }
 
-    public void reconfigureAs(SubShell<E> other) {
+    public final void reconfigureAs(SubShell<E> other) {
         logger.debug("reconfiguring ' {} ' as ' {} '", this, other);
 
         this.parentShell = other.parentShell;
@@ -57,15 +59,15 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
         this.childSubShells = other.childSubShells;
     }
 
-    public Set<ShellNameAware<E>> childShellsNames() {
+    public final Set<ShellNameAware<E>> childShellsNames() {
         return Sets.newHashSet(childSubShells.keySet());
     }
 
-    public Set<SubShell> childShells() {
+    public final Set<SubShell> childShells() {
         return Sets.newHashSet(childSubShells.values());
     }
 
-    protected void runChildShell(ShellNameAware<E> childName) throws IOException {
+    protected final void runChildShell(ShellNameAware<E> childName) throws IOException {
         SubShell childShell = childSubShells.get(childName);
         logger.debug("running child shell from ' {} ' for it's child  ' {} ' ", this, childName);
         if (childShell == null) {
@@ -86,50 +88,64 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
         }
     }
 
-    protected Shell createShell() {
-        return ShellFactory.createSubshell(subShellName.getPrompt(), parentShell, subShellName.getDescription(), this);
+    protected final Shell createShell() {
+        if (subShellName.isMain()) {
+            logger.debug("create main shell ' {} '", subShellName);
+            return ShellFactory.createConsoleShell(getSubShellName().getPrompt(), getSubShellName().getDescription(), this);
+        } else {
+            logger.debug("create shell  ' {} '", subShellName);
+            return ShellFactory.createSubshell(subShellName.getPrompt(), parentShell, subShellName.getDescription(), this);
+        }
     }
 
-    protected void setupChildrenParentShells(Shell shell) {
+    protected final void setupChildrenParentShells(Shell shell) {
         for (SubShell subShell : childSubShells.values()) {
             subShell.cliSetShell(shell);
         }
     }
 
-    private void addChildSubShellFlagged(SubShell<E> childSubShell, boolean warnReplacing) {
+    private final void addChildSubShellFlagged(SubShell<E> childSubShell, boolean warnReplacing) {
         logger.debug("add child sub shell {} to sub shell {}", childSubShell, this);
         SubShell prevSubShell = childSubShells.put(childSubShell.getSubShellName(), childSubShell);
         if (prevSubShell != null) {
-            if(warnReplacing){
+            if (warnReplacing) {
                 logger.warn("sub shell  ' {} ' was replaced by  ' {} '", prevSubShell, childSubShell);
-            }else{
+            } else {
                 logger.debug("sub shell  ' {} ' was replaced by  ' {} '", prevSubShell, childSubShell);
             }
         }
     }
 
-    public void addChildSubShell(SubShell childSubShell) {
+    public final void addChildSubShell(SubShell<E> childSubShell) {
         addChildSubShellFlagged(childSubShell, true);
     }
 
-    public void addChildSubShellWithReplacement(SubShell childSubShell) {
+    public final void addChildSubShellWithReplacement(SubShell<E> childSubShell) {
         addChildSubShellFlagged(childSubShell, false);
     }
 
-    public void accept(SubShellVisitor visitor) {
+    public final void accept(SubShellVisitor<E> visitor) {
         visitor.visitSubShell(this);
     }
 
     @Override
     public final int hashCode() {
-        //TODO implement
-        return super.hashCode();
+        return new HashCodeBuilder(11, 53)
+                .append(subShellName)
+                .append(parentSubShellName)
+                .hashCode();
     }
 
     @Override
     public final boolean equals(Object obj) {
-        //TODO implement
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof SubShell) {
+            SubShell<E> other = (SubShell<E>) obj;
+            return subShellName == other.subShellName && parentSubShellName == other.parentSubShellName;
+        }
+        return false;
     }
 
     @Override
@@ -140,5 +156,25 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>> implements
     @Override
     public final void cliSetShell(Shell shell) {
         this.parentShell = shell;
+    }
+
+    protected void onShellStart() {
+        // empty
+    }
+
+    protected void onShellExit() {
+        // empty
+    }
+
+    @Override
+    public final void cliEnterLoop() {
+        logger.debug("enter sub shell ' {} ' loop", subShellName);
+        onShellStart();
+    }
+
+    @Override
+    public final void cliLeaveLoop() {
+        logger.debug("leave sub shell ' {} ' loop", subShellName);
+        onShellExit();
     }
 }
