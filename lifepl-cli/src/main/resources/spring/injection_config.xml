@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="shells.xml"/>
+    <import resource="persistence.xml"/>
+
+    <bean name="cliConfiguration" class="pl.edu.agh.integr10s.lifepl.cli.shell.CliConfiguration" scope="singleton">
+        <property name="shells">
+            <list>
+                <ref bean="shells.main"/>
+                <ref bean="shells.actors"/>
+            </list>
+        </property>
+        <property name="initialState" ref="lifepl.cli.appcontext"/>
+    </bean>
+
+
+    <bean id="lifepl.cli.appcontext" class="pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext" scope="singleton">
+        <property name="actorsService" ref="persistence.actors.inmemo"/>
+    </bean>
+
+
+</beans>

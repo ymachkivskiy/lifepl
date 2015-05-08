@@ -4,14 +4,14 @@ package pl.edu.agh.integr10s.clibuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.build.AppShellBuilder;
-import pl.edu.agh.integr10s.clibuilder.shell.ApplicationState;
+import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
 import pl.edu.agh.integr10s.clibuilder.shell.CliAppConfiguration;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.io.IOException;
 
-public final class ApplicationShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> {
+public final class ApplicationShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationShell.class);
 
@@ -30,12 +30,12 @@ public final class ApplicationShell<E extends Enum<E> & ShellNameAware<E>, AppSt
         }
     }
 
-    private static <E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> ApplicationShell<E, AppStateT> createShell(CliAppConfiguration<E, AppStateT> cliAppConfiguration) {
+    private static <E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> ApplicationShell<E, AppStateT> createShell(CliAppConfiguration<E, AppStateT> cliAppConfiguration) {
         return new AppShellBuilder<>(cliAppConfiguration).build();
     }
 
 
-    public static <E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> void startApp(CliAppConfiguration<E, AppStateT> shellsProvider) throws IOException {
+    public static <E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> void startApp(CliAppConfiguration<E, AppStateT> shellsProvider) throws IOException {
         logger.debug("starting application with configured shells ' {} '", shellsProvider);
         createShell(shellsProvider).start();
     }

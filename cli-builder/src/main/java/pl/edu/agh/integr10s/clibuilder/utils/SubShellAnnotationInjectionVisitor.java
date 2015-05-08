@@ -4,11 +4,11 @@ package pl.edu.agh.integr10s.clibuilder.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.clibuilder.shell.ApplicationState;
+import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
-public class SubShellAnnotationInjectionVisitor<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> implements SubShellVisitor<E, AppStateT> {
+public class SubShellAnnotationInjectionVisitor<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> implements SubShellVisitor<E, AppStateT> {
     private static final Logger logger = LoggerFactory.getLogger(SubShellAnnotationInjectionVisitor.class);
 
     private final AnnotationInjector injector;

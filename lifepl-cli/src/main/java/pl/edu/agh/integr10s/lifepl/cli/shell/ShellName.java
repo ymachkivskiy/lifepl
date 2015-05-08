@@ -1,21 +1,21 @@
-package pl.edu.agh.integr10s.lifepl.cli.shellimpls;
+package pl.edu.agh.integr10s.lifepl.cli.shell;
 
 
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 
-public enum SubShellName implements ShellNameAware<SubShellName> {
+public enum ShellName implements ShellNameAware<ShellName> {
 
     NONE(
-        "",
-        "",
-        ""
+            "",
+            "",
+            ""
     ),
 
 
     MAIN(
-        "lifepl",
-        "Lifepl main menu",
-        ""
+            "lifepl",
+            "Lifepl application menu",
+            ""
     ) {
         @Override
         public boolean isMain() {
@@ -24,17 +24,18 @@ public enum SubShellName implements ShellNameAware<SubShellName> {
     },
 
 
-    WORLDS(
-        "worlds",
-        "Some worlds description",
-        "ws"
-    );
+    ACTORS(
+            "actors",
+            "Actors command line",
+            "a"
+    ),
+    ;
 
     private final String prompt;
     private final String description;
     private final String abbrev;
 
-    SubShellName(String promptName, String description, String abbrev) {
+    ShellName(String promptName, String description, String abbrev) {
         this.prompt = promptName;
         this.description = description;
         this.abbrev = abbrev;

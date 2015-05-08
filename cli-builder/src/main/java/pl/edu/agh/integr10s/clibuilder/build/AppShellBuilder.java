@@ -3,7 +3,7 @@ package pl.edu.agh.integr10s.clibuilder.build;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.ApplicationShell;
-import pl.edu.agh.integr10s.clibuilder.shell.ApplicationState;
+import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
 import pl.edu.agh.integr10s.clibuilder.shell.CliAppConfiguration;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AppShellBuilder<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> {
+public class AppShellBuilder<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> {
     private static final Logger logger = LoggerFactory.getLogger(AppShellBuilder.class);
 
     private final Set<SubShell<E, AppStateT>> subShells = new HashSet<>();

@@ -2,13 +2,13 @@ package pl.edu.agh.integr10s.clibuilder.build;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.clibuilder.shell.ApplicationState;
+import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.util.*;
 
-final class BuildEngine<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> {
+final class BuildEngine<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> {
     private static final Logger logger = LoggerFactory.getLogger(BuildEngine.class);
 
     List<SubShell<E, AppStateT>> mainCategoryShells = new LinkedList<>();

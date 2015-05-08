@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends ApplicationState> implements ShellDependent, ShellManageable {
+public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> implements ShellDependent, ShellManageable {
 
     private final static Logger logger = LoggerFactory.getLogger(SubShell.class);
 
