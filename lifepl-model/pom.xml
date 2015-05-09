@@ -11,7 +11,8 @@
     <groupId>pl.edu.agh.integr10s</groupId>
     <artifactId>lifepl-model</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>lifepl-model</name>
+    <name>LifePl::Model</name>
+    <description>Contains models which represents planning problem</description>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>

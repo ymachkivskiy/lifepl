@@ -9,16 +9,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>pl.edu.agh.integr10s</groupId>
-    <artifactId>lifepl-persistance</artifactId>
+    <artifactId>lifepl-engine</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>LifePl::Persistence</name>
-    <description>Contains application persistence layer</description>
+    <name>LifePl::EngineCommons</name>
+    <description>Contains engines for processing model and creating plans</description>
     <url>http://maven.apache.org</url>
-    <dependencies>
-        <dependency>
-            <groupId>pl.edu.agh.integr10s</groupId>
-            <artifactId>lifepl-model</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 </project>

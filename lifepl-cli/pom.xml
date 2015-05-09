@@ -11,7 +11,8 @@
     <groupId>pl.edu.agh.integr10s</groupId>
     <artifactId>lifepl-cli</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>lifepl-cli</name>
+    <name>LifePl::CLI</name>
+    <description>Command line application version for LifePl</description>
     <url>http://maven.apache.org</url>
     <repositories>
         <repository>
