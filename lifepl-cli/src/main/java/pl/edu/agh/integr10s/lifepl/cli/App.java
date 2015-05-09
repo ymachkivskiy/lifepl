@@ -9,18 +9,8 @@ import java.io.IOException;
 public class App
 {
 
-    private static final String SPRING_CONFIGS[] =
-            {
-                    "spring/injection_config.xml",
-                    "spring/persistence.xml",
-                    "spring/shells.xml"
-            };
-
     public static void main(String[] args) throws IOException {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(SPRING_CONFIGS);
-
-        CliConfiguration cliConfiguration = ctx.getBean(CliConfiguration.class);
-
-        ApplicationShell.startApp(cliConfiguration);
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring/appconfig.xml");
+        ApplicationShell.startApp(ctx.getBean(CliConfiguration.class));
     }
 }

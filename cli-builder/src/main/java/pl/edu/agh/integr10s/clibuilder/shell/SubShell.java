@@ -73,6 +73,12 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
         this.shell = other.shell;
         this.childSubShells = other.childSubShells;
         this.applicationState = other.applicationState;
+
+        postReconfigureAs(other);
+    }
+
+    protected void postReconfigureAs(SubShell<E, AppStateT> other) {
+        // empty
     }
 
     public final Set<ShellNameAware<E>> childShellsNames() {
