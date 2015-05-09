@@ -1,11 +1,12 @@
 package pl.edu.agh.integr10s.lifepl.cli.util.listing;
 
-import jline.console.ConsoleReader;
 import org.apache.commons.lang.math.IntRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Optional;
 
 class ListingPicker<T> {
@@ -19,15 +20,20 @@ class ListingPicker<T> {
         }
 
         IntRange choseRange = new IntRange(1, model.getRowCount());
+        final String prompt = "chose number inside " + choseRange.toString() + " : ";
 
         try {
 
-            ConsoleReader consoleReader = new ConsoleReader();
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-            consoleReader.setPrompt("chose number inside " + choseRange.toString() + " : ");
+            while (true) {
+                System.out.print(prompt);
+                String line = in.readLine();
 
-            String line;
-            while ((line = consoleReader.readLine()) != null) {
+                if (line == null) {
+                    break;
+                }
+
                 try {
 
                     Integer chosen = Integer.parseInt(line);
@@ -37,16 +43,14 @@ class ListingPicker<T> {
                     }
 
                     return Optional.of(model.getElement(chosen));
-
                 } catch (NumberFormatException e) {
                     logger.info("invalid number format, input must be integer number, but was \"{}\" ", line);
                 }
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("console reader error ", e);
         }
-
 
         return Optional.empty(); //TODO implement
     }

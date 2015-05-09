@@ -85,6 +85,9 @@ public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, App
 
         try {
 
+            ClassClassPath ccpath = new ClassClassPath(originalClass);
+            classPool.insertClassPath(ccpath);
+
             CtClass baseClass = classPool.getCtClass(originalClass.getName());
             CtClass workingSubClass = createSubClass(baseClass, GENERATED_CLASS_SUFFIX);
 
