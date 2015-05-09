@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.common;
+package pl.edu.agh.integr10s.lifepl.model.goal;
 
 import com.google.common.collect.Lists;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.common;
+package pl.edu.agh.integr10s.lifepl.model.goal;
 
 import org.junit.Before;
 
