@@ -4,5 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="persistence.actors.inmemo" class="pl.edu.agh.integr10s.lifepl.persistance.actors.InMemoryActorsService" scope="singleton"/>
+    <bean id="persistence.worlds.inmemo" class="pl.edu.agh.integr10s.lifepl.persistance.worlds.InMemoryWorldsService" scope="singleton"/>
 
 </beans>

@@ -19,6 +19,7 @@
 
     <bean id="lifepl.cli.appcontext" class="pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext" scope="singleton">
         <property name="actorsService" ref="persistence.actors.inmemo"/>
+        <property name="worldsService" ref="persistence.worlds.inmemo"/>
     </bean>
 
 
