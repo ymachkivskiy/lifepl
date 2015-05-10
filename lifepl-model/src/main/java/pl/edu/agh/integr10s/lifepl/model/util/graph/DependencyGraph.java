@@ -68,12 +68,12 @@ public class DependencyGraph<T> implements Translatable<T> {
         logger.debug("setting dependency : {} depends on {}", dependantElement, element);
         try {
             if (!innerRepresentation.containsVertex(element)) {
-                logger.debug("goal does not contain {} yet, adding...", element);
+                logger.debug("track does not contain {} yet, adding...", element);
                 innerRepresentation.addVertex(element);
             }
 
             if (!innerRepresentation.containsVertex(dependantElement)) {
-                logger.debug("goal does not contain {} yet, adding...", dependantElement);
+                logger.debug("track does not contain {} yet, adding...", dependantElement);
                 innerRepresentation.addVertex(dependantElement);
             }
 

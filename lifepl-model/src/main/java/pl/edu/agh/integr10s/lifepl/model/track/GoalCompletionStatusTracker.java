@@ -3,10 +3,10 @@ package pl.edu.agh.integr10s.lifepl.model.track;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.model.goal.Action;
-import pl.edu.agh.integr10s.lifepl.model.goal.GoalDefinition;
+import pl.edu.agh.integr10s.lifepl.model.actor.Goal;
 import pl.edu.agh.integr10s.lifepl.model.util.IdempotentFunction;
 import pl.edu.agh.integr10s.lifepl.model.util.graph.DependencyGraph;
+import pl.edu.agh.integr10s.lifepl.model.world.Action;
 
 import java.util.*;
 
@@ -24,8 +24,8 @@ public class GoalCompletionStatusTracker {
     private final DependencyGraph<ActionStatus> taskDependencyGraph;
     private final Set<Action> notDoneActionsSet;
 
-    public GoalCompletionStatusTracker(GoalDefinition goalDefinition) {
-        final DependencyGraph<Action> actionDependencyGraph = goalDefinition.getActionDependencyGraph();
+    public GoalCompletionStatusTracker(Goal goal) {
+        final DependencyGraph<Action> actionDependencyGraph = goal.getActionDependencyGraph();
         notDoneActionsSet = Sets.newHashSet(actionDependencyGraph.getElements());
         taskDependencyGraph = actionDependencyGraph.translateSavingDependencies(actionMapper);
     }

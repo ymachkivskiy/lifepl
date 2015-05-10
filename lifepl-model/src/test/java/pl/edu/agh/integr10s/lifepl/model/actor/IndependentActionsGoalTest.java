@@ -1,12 +1,12 @@
-package pl.edu.agh.integr10s.lifepl.model.goal;
+package pl.edu.agh.integr10s.lifepl.model.actor;
 
 import org.junit.Before;
 
-public class IndependentActionsGoalDefinitionTest extends GoalDefinitionTest {
+public class IndependentActionsGoalTest extends GoalTest {
 
     @Before
     public void setUpClass() {
-        GoalDefinition.GoalDefinitionBuilder builder = GoalDefinition.NewBuilder();
+        Goal.GoalDefinitionBuilder builder = Goal.NewBuilder();
 
         for (int i = 0; i < 20; ++i) {
             builder.addIndependentElement(createRandomAction());

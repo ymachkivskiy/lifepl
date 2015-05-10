@@ -11,4 +11,6 @@ public interface ActorsService {
     public void addActor(Actor actor);
 
     public void removeActor(Actor actor);
+
+    public void updateActor(Actor actor);
 }

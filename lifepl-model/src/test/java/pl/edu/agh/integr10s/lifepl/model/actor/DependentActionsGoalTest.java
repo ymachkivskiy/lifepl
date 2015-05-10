@@ -1,21 +1,22 @@
-package pl.edu.agh.integr10s.lifepl.model.goal;
+package pl.edu.agh.integr10s.lifepl.model.actor;
 
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
+import pl.edu.agh.integr10s.lifepl.model.world.Action;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
-public class DependentActionsGoalDefinitionTest extends GoalDefinitionTest {
+public class DependentActionsGoalTest extends GoalTest {
 
     public static final int ACTIONS_COUNT = 10;
     public static final Action[] A = new Action[ACTIONS_COUNT];
 
     @Before
     public void setUp() {
-        GoalDefinition.GoalDefinitionBuilder builder = GoalDefinition.NewBuilder();
+        Goal.GoalDefinitionBuilder builder = Goal.NewBuilder();
 /*
 
                        +----+

@@ -1,23 +1,24 @@
-package pl.edu.agh.integr10s.lifepl.model.goal;
+package pl.edu.agh.integr10s.lifepl.model.actor;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.model.util.graph.DependencyGraph;
 import pl.edu.agh.integr10s.lifepl.model.util.graph.DependencyGraphBuilder;
+import pl.edu.agh.integr10s.lifepl.model.world.Action;
 
 import java.util.Iterator;
 
 /**
  * Cel ktory sie sklada z akcji
  */
-public class GoalDefinition implements Iterable<Action> {
+public class Goal implements Iterable<Action> {
 
-    private static final Logger logger = LoggerFactory.getLogger(GoalDefinition.class);
+    private static final Logger logger = LoggerFactory.getLogger(Goal.class);
 
     private final DependencyGraph<Action> actionDependencyGraph;
 
-    GoalDefinition(DependencyGraph<Action> actionDependencyGraph) {
+    Goal(DependencyGraph<Action> actionDependencyGraph) {
         this.actionDependencyGraph = actionDependencyGraph;
     }
 
@@ -38,8 +39,8 @@ public class GoalDefinition implements Iterable<Action> {
         private GoalDefinitionBuilder() {
         }
 
-        public GoalDefinition buildGoalDefinition() {
-            return new GoalDefinition(build());
+        public Goal buildGoalDefinition() {
+            return new Goal(build());
         }
 
     }

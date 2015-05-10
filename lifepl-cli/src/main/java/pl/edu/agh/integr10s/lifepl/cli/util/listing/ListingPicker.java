@@ -52,6 +52,6 @@ class ListingPicker<T> {
             logger.error("console reader error ", e);
         }
 
-        return Optional.empty(); //TODO implement
+        return Optional.empty();
     }
 }

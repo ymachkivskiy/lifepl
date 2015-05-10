@@ -1,15 +1,16 @@
-package pl.edu.agh.integr10s.lifepl.model.goal;
+package pl.edu.agh.integr10s.lifepl.model.actor;
 
 import org.junit.Test;
+import pl.edu.agh.integr10s.lifepl.model.world.Action;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 
-public abstract class GoalDefinitionTest {
+public abstract class GoalTest {
 
-    protected GoalDefinition tested;
+    protected Goal tested;
     private Set<Action> containingActions = new HashSet<Action>();
 
     private int actionCounter = 0;
