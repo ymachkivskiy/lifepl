@@ -150,6 +150,15 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
         visitor.visitSubShell(this);
     }
 
+    public void runSpecializedShell(SpecializedSubShell specializedSubShell) {
+        logger.debug("run specialized shell {} from within {}", specializedSubShell, this);
+        try {
+            ShellFactory.createSubshell(specializedSubShell.getPrompt(), shell.get(), specializedSubShell.getDescription(), specializedSubShell).commandLoop();
+        } catch (IOException e) {
+            logger.error("error during running specialized shell", e);
+        }
+    }
+
     @Override
     public final int hashCode() {
         return new HashCodeBuilder(11, 53)
