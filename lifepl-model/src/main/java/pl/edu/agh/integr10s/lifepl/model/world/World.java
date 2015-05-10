@@ -12,15 +12,26 @@ public class World implements WorldModelView {
     private static final Logger logger = LoggerFactory.getLogger(World.class);
 
     private final String name;
+    private String description;
     private Set<Actor> actors = new HashSet<>();
     private Set<Action> allowedActions = new HashSet<>();
     private Map<Action, List<ActionSlot>> actionsSlots = new HashMap<>();
 
     public World(String name) {
         this.name = name;
+        setDescription(name + "-sample description");
     }
 
-    public String getShortDescription() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        logger.info("set world {} description to \"{}\"", this, description);
+        this.description = description;
+    }
+
+    public String getName() {
         return name;
     }
 

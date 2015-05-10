@@ -31,7 +31,7 @@ public class ShellImpl extends SubShell<ShellName, ApplicationContext> {
         listing(service().getActors()).list();
     }
 
-    @Command(name = "delete", abbrev = "del", description = "Delete actor")
+    @Command(name = "delete", abbrev = "rm", description = "Delete actor")
     public void deleteActor() {
         Optional<Actor> actor = listing(service().getActors()).choose();
         if (actor.isPresent()) {

@@ -10,7 +10,7 @@
         <property name="shells">
             <list>
                 <ref bean="shells.main"/>
-                <ref bean="shells.actors"/>
+                <ref bean="shells.worlds"/>
             </list>
         </property>
         <property name="initialState" ref="lifepl.cli.appcontext"/>

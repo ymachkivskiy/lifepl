@@ -29,6 +29,13 @@ public enum ShellName implements ShellNameAware<ShellName> {
             "Actors command line",
             "a"
     ),
+
+    WORLDS(
+            "worlds",
+            "World models command line",
+            "w"
+    )
+
     ;
 
     private final String prompt;

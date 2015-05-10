@@ -8,7 +8,7 @@ public class ActorWorldProperty extends Property<Actor>{
 
     @Override
     public Object extract(Actor propertyHost) {
-        return propertyHost.getWorld().getShortDescription();
+        return propertyHost.getWorld().getDescription();
     }
 
     public ActorWorldProperty(int sortKey) {
