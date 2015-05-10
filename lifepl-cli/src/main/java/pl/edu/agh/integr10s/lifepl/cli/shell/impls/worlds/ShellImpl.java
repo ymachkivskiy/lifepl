@@ -5,7 +5,6 @@ import asg.cliche.Param;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
-import pl.edu.agh.integr10s.lifepl.cli.util.listing.ListUtils;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 import pl.edu.agh.integr10s.lifepl.persistance.worlds.WorldsService;
@@ -19,13 +18,13 @@ public class ShellImpl extends SubShell<ShellName, ApplicationContext> {
         super(ShellName.class, ShellName.WORLDS, ShellName.MAIN);
     }
 
+    public static Listing<World> listing(Collection<World> worlds) {
+        return Listing.For(worlds, WorldProperties.PROPERTY_EXTRACTOR);
+    }
+
     @Command(name = "list", abbrev = "ls", description = "List all available world models")
     public void listWorlds() {
         listing(service().getWorlds()).list();
-    }
-
-    public static Listing<World> listing(Collection<World> worlds) {
-        return Listing.For(worlds, ListUtils.WorldsPropertyExtractor());
     }
 
     public WorldsService service() {
@@ -46,7 +45,7 @@ public class ShellImpl extends SubShell<ShellName, ApplicationContext> {
         service().addWorld(world);
     }
 
-    @Command(name = "edit", abbrev = "e", description = "Edit existing world model")
+    @Command(name = "view", abbrev = "v", description = "View existing world model")
     public void editWorld() {
         Optional<World> worldToEdit = listing(service().getWorlds()).choose();
         if (worldToEdit.isPresent()) {

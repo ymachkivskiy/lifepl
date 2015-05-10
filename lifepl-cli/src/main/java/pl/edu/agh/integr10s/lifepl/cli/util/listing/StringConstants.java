@@ -11,4 +11,6 @@ public final class StringConstants {
     public static final String WORLD_DESCRIPTION_COLUMN = "Description";
     public static final String WORLD_ACTORS_NUMBER_COLUMN = "Actors #";
     public static final String WORLD_ALLOWED_ACTIONS_COLUMN = "Allowed Actions #";
+
+    public static final String ACTION_NAME_COLUMN = "Name";
 }

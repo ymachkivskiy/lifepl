@@ -4,7 +4,6 @@ import asg.cliche.Command;
 import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
-import pl.edu.agh.integr10s.lifepl.cli.util.listing.ListUtils;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
 import pl.edu.agh.integr10s.lifepl.model.actor.Actor;
 import pl.edu.agh.integr10s.lifepl.persistance.actors.ActorsService;
@@ -19,7 +18,7 @@ public class ShellImpl extends SubShell<ShellName, ApplicationContext> {
     }
 
     private static Listing<Actor> listing(Collection<Actor> actors) {
-        return Listing.For(actors, ListUtils.ActorPropertyExtractor());
+        return Listing.For(actors, ActorProperties.PROPERTY_EXTRACTOR_GLOBAL);
     }
 
     private ActorsService service() {
