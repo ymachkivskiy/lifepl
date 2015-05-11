@@ -5,9 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.build.AppShellBuilder;
 import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
+import pl.edu.agh.integr10s.clibuilder.shell.CategorizedShell;
 import pl.edu.agh.integr10s.clibuilder.shell.CliAppConfiguration;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
-import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.io.IOException;
 
@@ -15,9 +15,9 @@ public final class ApplicationShell<E extends Enum<E> & ShellNameAware<E>, AppSt
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationShell.class);
 
-    private final SubShell<E, AppStateT> rootLevel;
+    private final CategorizedShell<E, AppStateT> rootLevel;
 
-    public ApplicationShell(SubShell<E,AppStateT> rootLevel) {
+    public ApplicationShell(CategorizedShell<E,AppStateT> rootLevel) {
         this.rootLevel = rootLevel;
     }
 

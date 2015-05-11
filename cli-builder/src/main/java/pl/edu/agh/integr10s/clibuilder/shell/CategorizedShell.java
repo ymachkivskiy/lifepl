@@ -2,9 +2,7 @@ package pl.edu.agh.integr10s.clibuilder.shell;
 
 
 import asg.cliche.Shell;
-import asg.cliche.ShellDependent;
 import asg.cliche.ShellFactory;
-import asg.cliche.ShellManageable;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
@@ -17,19 +15,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> implements ShellDependent, ShellManageable {
+public abstract class CategorizedShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> extends AbstractShell {
 
-    private final static Logger logger = LoggerFactory.getLogger(SubShell.class);
+    private static final Logger logger = LoggerFactory.getLogger(CategorizedShell.class);
 
     private AppStateT applicationState;
     private final ShellNameAware<E> subShellName;
     private final ShellNameAware<E> parentSubShellName;
     private final Class<E> clazz;
-    private Shell parentShell;
-    private Optional<Shell> shell = Optional.empty();
-    protected Map<ShellNameAware<E>, SubShell<E, AppStateT>> childSubShells = new HashMap<>();
+    protected Map<ShellNameAware<E>, CategorizedShell<E, AppStateT>> childSubShells = new HashMap<>();
 
-    public SubShell(Class<E> clazz, ShellNameAware<E> subShellName, ShellNameAware<E> parentSubShellName) {
+    public CategorizedShell(Class<E> clazz, ShellNameAware<E> subShellName, ShellNameAware<E> parentSubShellName) {
+        super(subShellName.toString());
         this.subShellName = subShellName;
         this.parentSubShellName = parentSubShellName;
         this.clazz = clazz;
@@ -48,7 +45,7 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
 
         this.applicationState = state;
 
-        for (SubShell<E, AppStateT> childShell : childShells()) {
+        for (CategorizedShell<E, AppStateT> childShell : childShells()) {
             childShell.setApplicationState(state);
         }
     }
@@ -66,7 +63,7 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
         shell.get().commandLoop();
     }
 
-    public final void reconfigureAs(SubShell<E, AppStateT> other) {
+    public final void reconfigureAs(CategorizedShell<E, AppStateT> other) {
         logger.debug("reconfiguring ' {} ' as ' {} '", this, other);
 
         this.parentShell = other.parentShell;
@@ -77,7 +74,7 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
         postReconfigureAs(other);
     }
 
-    protected void postReconfigureAs(SubShell<E, AppStateT> other) {
+    protected void postReconfigureAs(CategorizedShell<E, AppStateT> other) {
         // empty
     }
 
@@ -85,12 +82,12 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
         return Sets.newHashSet(childSubShells.keySet());
     }
 
-    public final Set<SubShell<E,AppStateT>> childShells() {
+    public final Set<CategorizedShell<E,AppStateT>> childShells() {
         return Sets.newHashSet(childSubShells.values());
     }
 
     private final void runChildShell(ShellNameAware<E> childName) throws IOException {
-        SubShell<E, AppStateT> childShell = childSubShells.get(childName);
+        CategorizedShell<E, AppStateT> childShell = childSubShells.get(childName);
         logger.debug("running child shell from ' {} ' for it's child  ' {} ' ", this, childName);
         if (childShell == null) {
             logger.error("not found child sub shell ' {} ' ", childName);
@@ -121,42 +118,33 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
     }
 
     protected final void setupChildrenParentShells(Shell shell) {
-        for (SubShell subShell : childSubShells.values()) {
-            subShell.cliSetShell(shell);
+        for (AbstractShell categorizedShell : childSubShells.values()) {
+            categorizedShell.cliSetShell(shell);
         }
     }
 
-    private final void addChildSubShellFlagged(SubShell<E, AppStateT> childSubShell, boolean warnReplacing) {
-        logger.debug("add child sub shell {} to sub shell {}", childSubShell, this);
-        SubShell<E, AppStateT> prevSubShell = childSubShells.put(childSubShell.getSubShellName(), childSubShell);
-        if (prevSubShell != null) {
+    private final void addChildSubShellFlagged(CategorizedShell<E, AppStateT> childCategorizedShell, boolean warnReplacing) {
+        logger.debug("add child sub shell {} to sub shell {}", childCategorizedShell, this);
+        CategorizedShell<E, AppStateT> prevCategorizedShell = childSubShells.put(childCategorizedShell.getSubShellName(), childCategorizedShell);
+        if (prevCategorizedShell != null) {
             if (warnReplacing) {
-                logger.warn("sub shell  ' {} ' was replaced by  ' {} '", prevSubShell, childSubShell);
+                logger.warn("sub shell  ' {} ' was replaced by  ' {} '", prevCategorizedShell, childCategorizedShell);
             } else {
-                logger.debug("sub shell  ' {} ' was replaced by  ' {} '", prevSubShell, childSubShell);
+                logger.debug("sub shell  ' {} ' was replaced by  ' {} '", prevCategorizedShell, childCategorizedShell);
             }
         }
     }
 
-    public final void addChildSubShell(SubShell<E, AppStateT> childSubShell) {
-        addChildSubShellFlagged(childSubShell, true);
+    public final void addChildSubShell(CategorizedShell<E, AppStateT> childCategorizedShell) {
+        addChildSubShellFlagged(childCategorizedShell, true);
     }
 
-    public final void addChildSubShellWithReplacement(SubShell<E, AppStateT> childSubShell) {
-        addChildSubShellFlagged(childSubShell, false);
+    public final void addChildSubShellWithReplacement(CategorizedShell<E, AppStateT> childCategorizedShell) {
+        addChildSubShellFlagged(childCategorizedShell, false);
     }
 
     public final void accept(SubShellVisitor<E, AppStateT> visitor) {
         visitor.visitSubShell(this);
-    }
-
-    public void runSpecializedShell(SpecializedSubShell specializedSubShell) {
-        logger.debug("run specialized shell {} from within {}", specializedSubShell, this);
-        try {
-            ShellFactory.createSubshell(specializedSubShell.getPrompt(), shell.get(), specializedSubShell.getDescription(), specializedSubShell).commandLoop();
-        } catch (IOException e) {
-            logger.error("error during running specialized shell", e);
-        }
     }
 
     @Override
@@ -172,8 +160,8 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
         if (this == obj) {
             return true;
         }
-        if (obj instanceof SubShell) {
-            SubShell<E, AppStateT> other = (SubShell<E, AppStateT>) obj;
+        if (obj instanceof AbstractShell) {
+            CategorizedShell<E, AppStateT> other = (CategorizedShell<E, AppStateT>) obj;
             return subShellName == other.subShellName && parentSubShellName == other.parentSubShellName;
         }
         return false;
@@ -184,28 +172,4 @@ public abstract class SubShell<E extends Enum<E> & ShellNameAware<E>, AppStateT 
         return "shellCategory::" + subShellName.getPrompt() + "[implementation " + getClass().getName() + "]";
     }
 
-    @Override
-    public final void cliSetShell(Shell shell) {
-        this.parentShell = shell;
-    }
-
-    protected void onShellStart() {
-        // empty
-    }
-
-    protected void onShellExit() {
-        // empty
-    }
-
-    @Override
-    public final void cliEnterLoop() {
-        logger.debug("enter sub shell ' {} ' loop", subShellName);
-        onShellStart();
-    }
-
-    @Override
-    public final void cliLeaveLoop() {
-        logger.debug("leave sub shell ' {} ' loop", subShellName);
-        onShellExit();
-    }
 }

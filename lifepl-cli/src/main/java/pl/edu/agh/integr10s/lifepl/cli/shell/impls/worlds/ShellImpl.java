@@ -2,7 +2,7 @@ package pl.edu.agh.integr10s.lifepl.cli.shell.impls.worlds;
 
 import asg.cliche.Command;
 import asg.cliche.Param;
-import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
+import pl.edu.agh.integr10s.clibuilder.shell.CategorizedShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
@@ -12,7 +12,7 @@ import pl.edu.agh.integr10s.lifepl.persistance.worlds.WorldsService;
 import java.util.Collection;
 import java.util.Optional;
 
-public class ShellImpl extends SubShell<ShellName, ApplicationContext> {
+public class ShellImpl extends CategorizedShell<ShellName, ApplicationContext> {
 
     public ShellImpl() {
         super(ShellName.class, ShellName.WORLDS, ShellName.MAIN);

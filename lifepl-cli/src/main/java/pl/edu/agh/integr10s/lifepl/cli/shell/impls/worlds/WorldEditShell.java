@@ -22,12 +22,13 @@ public class WorldEditShell extends SpecializedSubShell {
     private boolean saveBeforeExit;
 
     @Override
-    public void cliEnterLoop() {
+    protected void onShellEnter() {
         saveBeforeExit = false;
+        logger.info("save on exit default value is set for FALSE. Change it's value by appropriate command.");
     }
 
     @Override
-    public void cliLeaveLoop() {
+    public void onShellExit() {
         if(saveBeforeExit){
             logger.info("saving world model before exit");
             worldService.updateWorld(world);

@@ -10,12 +10,13 @@ import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.StringMemberValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.clibuilder.shell.AbstractShell;
 import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
+import pl.edu.agh.integr10s.clibuilder.shell.CategorizedShell;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
-import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 
-public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext, ST extends SubShell<E, AppStateT>> {
+public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext, ST extends CategorizedShell<E, AppStateT>> {
     private static final Logger logger = LoggerFactory.getLogger(AnnotationInjector.class);
 
     private static final String BASE_METHOD_NAME = "runChildShellByName";
@@ -74,7 +75,7 @@ public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, App
     }
 
     public final ST injectCommand(ST originalObject) {
-        final Class<? extends SubShell> originalClass = originalObject.getClass();
+        final Class<? extends AbstractShell> originalClass = originalObject.getClass();
 
         logger.debug("trying to inject annotations to sub shell with class ' {} '", originalClass);
 

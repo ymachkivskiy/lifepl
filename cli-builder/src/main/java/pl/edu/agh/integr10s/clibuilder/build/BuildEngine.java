@@ -3,16 +3,16 @@ package pl.edu.agh.integr10s.clibuilder.build;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
+import pl.edu.agh.integr10s.clibuilder.shell.CategorizedShell;
 import pl.edu.agh.integr10s.clibuilder.shell.ShellNameAware;
-import pl.edu.agh.integr10s.clibuilder.shell.SubShell;
 
 import java.util.*;
 
 final class BuildEngine<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> {
     private static final Logger logger = LoggerFactory.getLogger(BuildEngine.class);
 
-    List<SubShell<E, AppStateT>> mainCategoryShells = new LinkedList<>();
-    Map<E, List<SubShell<E, AppStateT>>> parentSubShellNameToSubShellsMap = new HashMap<>();
+    List<CategorizedShell<E, AppStateT>> mainCategoryShells = new LinkedList<>();
+    Map<E, List<CategorizedShell<E, AppStateT>>> parentSubShellNameToSubShellsMap = new HashMap<>();
 
     public BuildEngine(Class<E> subShellNamesClass) {
         for (E shellNameAware : subShellNamesClass.getEnumConstants()) {
@@ -20,46 +20,46 @@ final class BuildEngine<E extends Enum<E> & ShellNameAware<E>, AppStateT extends
         }
     }
 
-    public void processSubShells(Set<SubShell<E, AppStateT>> subShells) {
-        for (SubShell<E, AppStateT> subShell : subShells) {
-            final ShellNameAware<E> shellNameAware = subShell.getSubShellName();
-            final ShellNameAware<E> parentSubShellName = subShell.getParentSubShellName();
+    public void processSubShells(Set<CategorizedShell<E, AppStateT>> categorizedShells) {
+        for (CategorizedShell<E, AppStateT> categorizedShell : categorizedShells) {
+            final ShellNameAware<E> shellNameAware = categorizedShell.getSubShellName();
+            final ShellNameAware<E> parentSubShellName = categorizedShell.getParentSubShellName();
 
-            logger.debug("has declaration of sub shell  ' {} '  with name  ' {} '  and parent sub shell  ' {} ' ", subShell, shellNameAware, parentSubShellName);
+            logger.debug("has declaration of sub shell  ' {} '  with name  ' {} '  and parent sub shell  ' {} ' ", categorizedShell, shellNameAware, parentSubShellName);
 
-            parentSubShellNameToSubShellsMap.get(parentSubShellName).add(subShell);
+            parentSubShellNameToSubShellsMap.get(parentSubShellName).add(categorizedShell);
 
             if (shellNameAware.isMain()) {
-                logger.debug("found root sub shell  ' {} '  ", subShell);
-                mainCategoryShells.add(subShell);
+                logger.debug("found root sub shell  ' {} '  ", categorizedShell);
+                mainCategoryShells.add(categorizedShell);
             }
         }
     }
 
-    public void injectSubShellsDependencies(SubShell<E, AppStateT> rootLevelElement) {
+    public void injectSubShellsDependencies(CategorizedShell<E, AppStateT> rootLevelElement) {
 
-        Stack<SubShell<E, AppStateT>> unconfiguredSubShells = new Stack<>();
+        Stack<CategorizedShell<E, AppStateT>> unconfiguredCategorizedShells = new Stack<>();
 
-        unconfiguredSubShells.push(rootLevelElement);
+        unconfiguredCategorizedShells.push(rootLevelElement);
 
-        while (!unconfiguredSubShells.isEmpty()) {
-            SubShell<E, AppStateT> currentSubShell = unconfiguredSubShells.pop();
-            logger.debug("configuring dependencies for sub shell  ' {} ' ", currentSubShell);
-            List<SubShell<E, AppStateT>> childSubShells = parentSubShellNameToSubShellsMap.get(currentSubShell.getSubShellName());
-            if (childSubShells.isEmpty()) {
-                logger.debug("sub shell  ' {} '  has no child sub shells", currentSubShell);
+        while (!unconfiguredCategorizedShells.isEmpty()) {
+            CategorizedShell<E, AppStateT> currentCategorizedShell = unconfiguredCategorizedShells.pop();
+            logger.debug("configuring dependencies for sub shell  ' {} ' ", currentCategorizedShell);
+            List<CategorizedShell<E, AppStateT>> childCategorizedShells = parentSubShellNameToSubShellsMap.get(currentCategorizedShell.getSubShellName());
+            if (childCategorizedShells.isEmpty()) {
+                logger.debug("sub shell  ' {} '  has no child sub shells", currentCategorizedShell);
             }
 
-            for (SubShell<E, AppStateT> childSubShell : childSubShells) {
-                logger.debug("found child sub shell  ' {} ' ", childSubShell);
-                currentSubShell.addChildSubShell(childSubShell);
-                unconfiguredSubShells.push(childSubShell);
+            for (CategorizedShell<E, AppStateT> childCategorizedShell : childCategorizedShells) {
+                logger.debug("found child sub shell  ' {} ' ", childCategorizedShell);
+                currentCategorizedShell.addChildSubShell(childCategorizedShell);
+                unconfiguredCategorizedShells.push(childCategorizedShell);
             }
         }
     }
 
 
-    public SubShell<E, AppStateT> peekRootSubShell() {
+    public CategorizedShell<E, AppStateT> peekRootSubShell() {
         if (mainCategoryShells.isEmpty()) {
             logger.error("no root level sub shell found during building application shell");
             System.exit(1);
