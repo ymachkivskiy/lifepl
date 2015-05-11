@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Actor {
@@ -56,10 +57,10 @@ public class Actor {
     public static Collection<Actor> sampleActors() {
         List<Actor> r = new ArrayList<>();
         //TODO -------- remove it
-        final World world1 = new World("world-simple");
+        final World world1 = new World("world-simple", LocalDateTime.now(), LocalDateTime.now().plusDays(2));
         r.add(new Actor("Wiktor", world1));
         r.add(new Actor("Alex", world1));
-        r.add(new Actor("Zbyszek", new World("world-2")));
+        r.add(new Actor("Zbyszek", new World("world-2", LocalDateTime.now(), LocalDateTime.now().plusDays(3))));
         //-------------------
 
         return r;

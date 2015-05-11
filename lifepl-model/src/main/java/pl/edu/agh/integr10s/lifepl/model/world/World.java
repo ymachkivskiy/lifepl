@@ -5,20 +5,35 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.lifepl.model.actor.Actor;
 import pl.edu.agh.integr10s.lifepl.model.actor.ActorProfile;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
-public class World implements WorldModelView {
+public class World {
 
     private static final Logger logger = LoggerFactory.getLogger(World.class);
+
+    private final LocalDateTime beginningEra;
+    private final LocalDateTime endingEra;
 
     private final String name;
     private String description;
     private Set<Actor> actors = new HashSet<>();
+
+    public LocalDateTime getBeginningEra() {
+        return beginningEra;
+    }
+
+    public LocalDateTime getEndingEra() {
+        return endingEra;
+    }
+
     private Set<Action> allowedActions = new HashSet<>();
     private Map<Action, List<ActionSlot>> actionsSlots = new HashMap<>();
 
-    public World(String name) {
+    public World(String name, LocalDateTime beginningEra, LocalDateTime endingEra) {
         this.name = name;
+        this.beginningEra = beginningEra;
+        this.endingEra = endingEra;
         setDescription(name + "-sample description");
     }
 
@@ -35,12 +50,10 @@ public class World implements WorldModelView {
         return name;
     }
 
-    @Override
     public Set<Action> getAllowedActions() {
         return Collections.unmodifiableSet(allowedActions);
     }
 
-    @Override
     public List<ActionSlot> getActionSlots(Action action) {
         List<ActionSlot> actionSlots = actionsSlots.get(action);
         if (actionSlots == null) {

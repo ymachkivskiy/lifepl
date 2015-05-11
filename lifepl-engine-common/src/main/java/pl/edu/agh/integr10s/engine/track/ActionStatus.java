@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.track;
+package pl.edu.agh.integr10s.engine.track;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import pl.edu.agh.integr10s.lifepl.model.world.Action;

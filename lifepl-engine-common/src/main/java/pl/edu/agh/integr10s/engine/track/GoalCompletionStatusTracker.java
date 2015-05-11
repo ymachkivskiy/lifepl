@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.track;
+package pl.edu.agh.integr10s.engine.track;
 
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;

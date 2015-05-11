@@ -41,7 +41,7 @@ public class ShellImpl extends CategorizedShell<ShellName, ApplicationContext> {
 
     @Command(name = "create", abbrev = "new", description = "Create new world model")
     public void createWorld(@Param(name = "world name", description = "name of new world model") String name) {
-        World world = new World(name);
+        World world = new World(name, null, null); //TODO change it!!!!!!!!!!!!!!!!
         service().addWorld(world);
     }
 

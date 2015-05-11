@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.model.track;
+package pl.edu.agh.integr10s.engine.track;
 
 import org.junit.Test;
 
