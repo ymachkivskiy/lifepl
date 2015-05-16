@@ -1,19 +1,23 @@
 package pl.edu.agh.integr10s.lifepl.model.world;
 
+import pl.edu.agh.integr10s.lifepl.model.world.properties.SlotProperty;
+
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Set;
 
 public final class ActionSlot {
+
     private final LocalDateTime beginOfSlot;
     private final LocalDateTime endOfSlot;
     private final Action action;
+    private final Set<SlotProperty> slotProperties;
 
-    //  slot cost properties (can be energy)
-    // slot restrictions (amount of people , for example)
-
-    ActionSlot(LocalDateTime beginOfSlot, LocalDateTime endOfSlot, Action action) {
-        this.beginOfSlot = beginOfSlot;
-        this.endOfSlot = endOfSlot;
+    ActionSlot(ActionSlotBuilder slotBuilder, Action action) {
         this.action = action;
+        this.beginOfSlot = slotBuilder.getSlotStart();
+        this.endOfSlot = slotBuilder.getSlotEnd();
+        this.slotProperties = Collections.unmodifiableSet(slotBuilder.getSlotProperties());
     }
 
     public LocalDateTime getBeginOfSlot() {
@@ -24,6 +28,10 @@ public final class ActionSlot {
         return endOfSlot;
     }
 
+
+    public Set<SlotProperty> getSlotProperties() {
+        return slotProperties;
+    }
 
     @Override
     public int hashCode() {

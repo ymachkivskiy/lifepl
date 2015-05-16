@@ -1,5 +1,7 @@
 package pl.edu.agh.integr10s.lifepl.cli.util.listing;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public abstract class Property<T> {
 
     private final String name;
@@ -26,8 +28,10 @@ public abstract class Property<T> {
 
     @Override
     public int hashCode() {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.cli.util.listing.Property:: int hashCode ()
-        return super.hashCode();
+        return new HashCodeBuilder(141, 19)
+                .append(name)
+                .append(sortKey)
+                .hashCode();
     }
 
     @Override

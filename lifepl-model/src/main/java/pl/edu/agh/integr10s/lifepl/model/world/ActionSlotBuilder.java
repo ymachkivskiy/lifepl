@@ -2,20 +2,32 @@ package pl.edu.agh.integr10s.lifepl.model.world;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.lifepl.model.world.properties.SlotProperty;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ActionSlotConfig {
+public class ActionSlotBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(ActionSlotConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActionSlotBuilder.class);
 
     private LocalDateTime slotStart = LocalDateTime.now();
-    private LocalDateTime slotEnd = slotStart;
+    private LocalDateTime slotEnd = slotStart.plusHours(1);
+    private Set<SlotProperty> slotProperties = new HashSet<>();
 
-    public LocalDateTime getSlotStart() {
+    LocalDateTime getSlotStart() {
         return slotStart;
+    }
+
+    LocalDateTime getSlotEnd() {
+        return slotEnd;
+    }
+
+    Set<SlotProperty> getSlotProperties() {
+        return slotProperties;
     }
 
     public void setSlotStart(LocalDateTime slotStart) {
@@ -23,13 +35,14 @@ public class ActionSlotConfig {
         this.slotStart = slotStart;
     }
 
-    public LocalDateTime getSlotEnd() {
-        return slotEnd;
-    }
-
     public void setSlotEnd(LocalDateTime slotEnd) {
         checkNotNull(slotEnd);
         this.slotEnd = slotEnd;
+    }
+
+    public void addSlotProperty(SlotProperty property) {
+        logger.debug("adding slot property {} to slot builder {}", property, this);
+        slotProperties.add(property);
     }
 
     public ActionSlot createSlot(Action action) {
@@ -39,7 +52,7 @@ public class ActionSlotConfig {
             return null;
         }
 
-        return new ActionSlot(slotStart, slotEnd, action);
+        return new ActionSlot(this, action);
     }
 
     @Override

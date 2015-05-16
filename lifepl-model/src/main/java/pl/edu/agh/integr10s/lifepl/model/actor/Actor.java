@@ -1,7 +1,9 @@
 package pl.edu.agh.integr10s.lifepl.model.actor;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.agh.integr10s.lifepl.model.actor.capability.ActorCapabilities;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 
 import java.time.LocalDateTime;
@@ -13,10 +15,12 @@ public class Actor {
 
     private final String name;
     private final World world;
+    private final ActorCapabilities capabilities;
     private Set<Goal> goals = new HashSet<>();
 
-    Actor(String name, World world) {
+    Actor(String name, World world, ActorCapabilities capabilities) {
         this.name = name;
+        this.capabilities = capabilities;
         this.world = world;
     }
 
@@ -29,6 +33,10 @@ public class Actor {
         return Collections.unmodifiableSet(goals);
     }
 
+    public ActorCapabilities getCapabilities() {
+        return capabilities;
+    }
+
     public World getWorld() {
         return world;
     }
@@ -39,8 +47,10 @@ public class Actor {
 
     @Override
     public int hashCode() {
-        //TODO implement pl.edu.agh.integr10s.lifepl.model.actor.Actor::hashCode
-        return super.hashCode();
+        return new HashCodeBuilder(19, 17)
+                .append(name)
+                .append(world.hashCode())
+                .hashCode();
     }
 
     @Override
@@ -58,9 +68,9 @@ public class Actor {
         List<Actor> r = new ArrayList<>();
         //TODO -------- remove it
         final World world1 = new World("world-simple", LocalDateTime.now(), LocalDateTime.now().plusDays(2));
-        r.add(new Actor("Wiktor", world1));
-        r.add(new Actor("Alex", world1));
-        r.add(new Actor("Zbyszek", new World("world-2", LocalDateTime.now(), LocalDateTime.now().plusDays(3))));
+        r.add(new Actor("Wiktor", world1, null));
+        r.add(new Actor("Alex", world1, null));
+        r.add(new Actor("Zbyszek", new World("world-2", LocalDateTime.now(), LocalDateTime.now().plusDays(3)), null));
         //-------------------
 
         return r;

@@ -63,7 +63,7 @@ public class World {
         return Collections.unmodifiableList(actionSlots);
     }
 
-    public ActionSlot addActionSlot(Action action, ActionSlotConfig slotConfig) {
+    public ActionSlot addActionSlot(Action action, ActionSlotBuilder slotConfig) {
         logger.info("adding action slot with configuration {} for action {}", slotConfig, action);
 
         ActionSlot slot = slotConfig.createSlot(action);
