@@ -3,7 +3,9 @@ package pl.edu.agh.integr10s.lifepl.cli.shell.impls.planing;
 import asg.cliche.Command;
 import pl.edu.agh.integr10s.clibuilder.shell.CategorizedShell;
 import pl.edu.agh.integr10s.engine.factory.EngineFactory;
+import pl.edu.agh.integr10s.engine.resolve.Planning;
 import pl.edu.agh.integr10s.lifepl.cli.props.EngineProperties;
+import pl.edu.agh.integr10s.lifepl.cli.props.PlaningProperties;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
@@ -13,8 +15,10 @@ public class PlaningShell extends CategorizedShell<ShellName, ApplicationContext
         super(ShellName.class, ShellName.PLANING, ShellName.MAIN);
     }
 
-    public void listSimulations() {
-        //TODO list all done simulations
+    @Command(name = "list-plannings", abbrev = "lsp", description = "List all performed plannings")
+    public void listPerformedPlannings() {
+        Listing<Planning> listing = Listing.For(getApplicationState().getPlaningService().getAllPlannings(), PlaningProperties.PROPERTY_EXTRACTOR);
+        listing.list();
     }
 
     @Command(name = "list-engines", abbrev = "lse", description = "List available engines")

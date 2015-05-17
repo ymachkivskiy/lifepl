@@ -5,5 +5,6 @@
 
     <bean id="persistence.actors.inmemo" class="pl.edu.agh.integr10s.lifepl.persistance.actors.InMemoryActorsService" scope="singleton"/>
     <bean id="persistence.worlds.inmemo" class="pl.edu.agh.integr10s.lifepl.persistance.worlds.InMemoryWorldsService" scope="singleton"/>
+    <bean id="persistence.planing.inmemo" class="pl.edu.agh.integr10s.lifepl.persistance.planing.InMemoryPlanningService" scope="singleton"/>
 
 </beans>

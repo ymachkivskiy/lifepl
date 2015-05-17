@@ -23,6 +23,7 @@
         <property name="actorsService" ref="persistence.actors.inmemo"/>
         <property name="worldsService" ref="persistence.worlds.inmemo"/>
         <property name="planningEngines" ref="lifepl.planning.availableEngines"/>
+        <property name="planingService" ref="persistence.planing.inmemo"/>
     </bean>
 
 
