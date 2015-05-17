@@ -2,6 +2,7 @@ package pl.edu.agh.integr10s.lifepl.cli.shell.impls.actors;
 
 import asg.cliche.Command;
 import pl.edu.agh.integr10s.clibuilder.shell.CategorizedShell;
+import pl.edu.agh.integr10s.lifepl.cli.props.ActorProperties;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
@@ -11,9 +12,9 @@ import pl.edu.agh.integr10s.lifepl.persistance.actors.ActorsService;
 import java.util.Collection;
 import java.util.Optional;
 
-public class ShellImpl extends CategorizedShell<ShellName, ApplicationContext> {
+public class ActorsShell extends CategorizedShell<ShellName, ApplicationContext> {
 
-    public ShellImpl() {
+    public ActorsShell() {
         super(ShellName.class, ShellName.ACTORS, ShellName.MAIN);
     }
 

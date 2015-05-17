@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls.worlds;
+package pl.edu.agh.integr10s.lifepl.cli.props;
 
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Property;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.PropertyExtractor;

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+       <bean id="lifepl.planning.availableEngines" class="pl.edu.agh.integr10s.engine.factory.PlanningEngines">
+              <property name="engineFactories">
+                     <list>
+                            <ref bean="engines.factory.dummy"/>
+                     </list>
+              </property>
+       </bean>
+
+       <bean id="engines.factory.dummy" class="pl.edu.agh.integr10s.engines.dummy.DummyEngineFactory"/>
+
+</beans>

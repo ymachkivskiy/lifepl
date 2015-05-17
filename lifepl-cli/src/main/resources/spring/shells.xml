@@ -4,7 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="shells.main" class="pl.edu.agh.integr10s.lifepl.cli.shell.impls.Main"/>
-    <bean id="shells.actors" class="pl.edu.agh.integr10s.lifepl.cli.shell.impls.actors.ShellImpl"/>
-    <bean id="shells.worlds" class="pl.edu.agh.integr10s.lifepl.cli.shell.impls.worlds.ShellImpl"/>
+    <bean id="shells.actors" class="pl.edu.agh.integr10s.lifepl.cli.shell.impls.actors.ActorsShell"/>
+    <bean id="shells.worlds" class="pl.edu.agh.integr10s.lifepl.cli.shell.impls.worlds.WorldsShell"/>
+    <bean id="shells.planing" class="pl.edu.agh.integr10s.lifepl.cli.shell.impls.planing.PlaningShell"/>
 
 </beans>

@@ -34,6 +34,12 @@ public enum ShellName implements ShellNameAware<ShellName> {
             "worlds",
             "World models command line",
             "w"
+    ),
+
+    PLANING(
+            "planing",
+            "Planning planing command line",
+            "plan"
     )
 
     ;
