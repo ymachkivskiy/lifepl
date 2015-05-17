@@ -12,6 +12,8 @@ import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
 
+import java.util.Optional;
+
 public class PlaningShell extends CategorizedShell<ShellName, ApplicationContext> {
     private static final Logger logger = LoggerFactory.getLogger(PlaningShell.class);
 
@@ -44,8 +46,15 @@ public class PlaningShell extends CategorizedShell<ShellName, ApplicationContext
         }
     }
 
-    public void viewSimulation() {
-        //TODO choose one of done simulations and go inside it's view shell
+    @Command(name = "view-planning", abbrev = "vp", description = "View chosen planing results")
+    public void viewPlanning() {
+        Listing<Planning> planningListing = Listing.For(getApplicationState().getPlaningService().getAllPlannings(), PlaningProperties.PROPERTY_EXTRACTOR);
+        Optional<Planning> chosenPlanning = planningListing.choose();
+        if (chosenPlanning.isPresent()) {
+            final Planning planning = chosenPlanning.get();
+            logger.info("view planing results for chosen planing {}", planning);
+            runSpecializedShell(new PlaningViewShell(planning));
+        }
     }
 
 }

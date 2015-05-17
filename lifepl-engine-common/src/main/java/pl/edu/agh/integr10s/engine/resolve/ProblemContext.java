@@ -16,7 +16,6 @@ public class ProblemContext {
     private static final Logger logger = LoggerFactory.getLogger(ProblemContext.class);
 
     private World world;
-
     private ArrayList<Actor> problemActors = new ArrayList<>();
 
 
@@ -25,7 +24,7 @@ public class ProblemContext {
     }
 
     public List<ActionSlot> getActionSlots(Action action) {
-        return Collections.emptyList();//TODO
+        return world.getActionSlots(action);
     }
 
     public void setWorld(World world) {

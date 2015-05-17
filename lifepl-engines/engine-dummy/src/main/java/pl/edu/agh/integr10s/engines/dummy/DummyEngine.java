@@ -7,6 +7,6 @@ import pl.edu.agh.integr10s.engine.resolve.ProblemContext;
 public class DummyEngine extends PlanningEngine {
     @Override
     protected PlanningResult resolveProblem(ProblemContext problemContext) {
-        return null;
+        return new PlanningResult();
     }
 }

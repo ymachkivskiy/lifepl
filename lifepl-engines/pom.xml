@@ -12,7 +12,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>LifePl::Engines</name>
-    <description>Contains various engine implementations</description>
+    <value>Contains various engine implementations</value>
     <modules>
         <module>engine-dummy</module>
     </modules>

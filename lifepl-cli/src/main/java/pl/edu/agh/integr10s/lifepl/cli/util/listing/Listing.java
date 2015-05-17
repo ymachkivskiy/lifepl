@@ -35,6 +35,12 @@ public class Listing<T> {
         System.out.println();
     }
 
+    public void listWithoutNumbering() {
+        table.setAddRowNumbering(false);
+        list();
+        table.setAddRowNumbering(true);
+    }
+
     public Collection<T> chooseMany() {
         list();
         return picker.peekMany(model);

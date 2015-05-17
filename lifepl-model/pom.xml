@@ -12,7 +12,7 @@
     <artifactId>lifepl-model</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>LifePl::Model</name>
-    <description>Contains models which represents planning problem</description>
+    <value>Contains models which represents planning problem</value>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
