@@ -2,7 +2,7 @@ package pl.edu.agh.integr10s.lifepl.model.world;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.model.world.properties.SlotProperty;
+import pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotRestriction;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ public class ActionSlotBuilder {
 
     private LocalDateTime slotStart = LocalDateTime.now();
     private LocalDateTime slotEnd = slotStart.plusHours(1);
-    private Set<SlotProperty> slotProperties = new HashSet<>();
+    private Set<SlotRestriction> slotRestrictions = new HashSet<>();
 
     LocalDateTime getSlotStart() {
         return slotStart;
@@ -26,8 +26,8 @@ public class ActionSlotBuilder {
         return slotEnd;
     }
 
-    Set<SlotProperty> getSlotProperties() {
-        return slotProperties;
+    Set<SlotRestriction> getSlotRestrictions() {
+        return slotRestrictions;
     }
 
     public void setSlotStart(LocalDateTime slotStart) {
@@ -40,9 +40,9 @@ public class ActionSlotBuilder {
         this.slotEnd = slotEnd;
     }
 
-    public void addSlotProperty(SlotProperty property) {
+    public void addSlotProperty(SlotRestriction property) {
         logger.debug("adding slot property {} to slot builder {}", property, this);
-        slotProperties.add(property);
+        slotRestrictions.add(property);
     }
 
     public ActionSlot createSlot(Action action) {

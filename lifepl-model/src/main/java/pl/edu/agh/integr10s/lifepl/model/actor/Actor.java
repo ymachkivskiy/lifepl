@@ -22,6 +22,8 @@ public class Actor {
         this.name = name;
         this.capabilities = capabilities;
         this.world = world;
+
+        capabilities.setActor(this);
     }
 
     public void addGoal(Goal goal) {
@@ -68,9 +70,9 @@ public class Actor {
         List<Actor> r = new ArrayList<>();
         //TODO -------- remove it
         final World world1 = new World("world-simple", LocalDateTime.now(), LocalDateTime.now().plusDays(2));
-        r.add(new Actor("Wiktor", world1, null));
-        r.add(new Actor("Alex", world1, null));
-        r.add(new Actor("Zbyszek", new World("world-2", LocalDateTime.now(), LocalDateTime.now().plusDays(3)), null));
+        r.add(new Actor("Wiktor", world1, new ActorCapabilities()));
+        r.add(new Actor("Alex", world1, new ActorCapabilities()));
+        r.add(new Actor("Zbyszek", new World("world-2", LocalDateTime.now(), LocalDateTime.now().plusDays(3)), new ActorCapabilities()));
         //-------------------
 
         return r;

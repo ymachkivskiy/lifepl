@@ -27,7 +27,7 @@ public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, App
         classPool = ClassPool.getDefault();
     }
 
-    private static final String getAnnotatedClassName(CtClass cSuperClass, String subclassSuffix) {
+    private static String getAnnotatedClassName(CtClass cSuperClass, String subclassSuffix) {
         return cSuperClass.getName() + "_" + subclassSuffix;
     }
 

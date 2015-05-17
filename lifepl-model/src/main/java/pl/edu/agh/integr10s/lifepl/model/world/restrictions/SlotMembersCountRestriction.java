@@ -1,16 +1,16 @@
-package pl.edu.agh.integr10s.lifepl.model.world.properties;
+package pl.edu.agh.integr10s.lifepl.model.world.restrictions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SlotMembersCountProperty implements SlotProperty {
+public class SlotMembersCountRestriction implements SlotRestriction {
 
-    private static final Logger logger = LoggerFactory.getLogger(SlotMembersCountProperty.class);
+    private static final Logger logger = LoggerFactory.getLogger(SlotMembersCountRestriction.class);
 
     private final int maxMembersCount;
     private int currentMembersCount;
 
-    public SlotMembersCountProperty(int maxMembersCount) {
+    public SlotMembersCountRestriction(int maxMembersCount) {
         this.maxMembersCount = maxMembersCount;
         this.currentMembersCount = 0;
     }
@@ -46,13 +46,13 @@ public class SlotMembersCountProperty implements SlotProperty {
 
     @Override
     public boolean equals(Object obj) {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.properties.SlotMembersCountProperty:: boolean equals ()
+        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotMembersCountRestriction:: boolean equals ()
         return super.equals(obj);
     }
 
     @Override
     public String toString() {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.properties.SlotMembersCountProperty:: String toString ()
+        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotMembersCountRestriction:: String toString ()
         return super.toString();
     }
 }

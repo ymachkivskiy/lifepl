@@ -1,6 +1,6 @@
 package pl.edu.agh.integr10s.lifepl.model.world;
 
-import pl.edu.agh.integr10s.lifepl.model.world.properties.SlotProperty;
+import pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotRestriction;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -11,13 +11,13 @@ public final class ActionSlot {
     private final LocalDateTime beginOfSlot;
     private final LocalDateTime endOfSlot;
     private final Action action;
-    private final Set<SlotProperty> slotProperties;
+    private final Set<SlotRestriction> slotRestrictions;
 
     ActionSlot(ActionSlotBuilder slotBuilder, Action action) {
         this.action = action;
         this.beginOfSlot = slotBuilder.getSlotStart();
         this.endOfSlot = slotBuilder.getSlotEnd();
-        this.slotProperties = Collections.unmodifiableSet(slotBuilder.getSlotProperties());
+        this.slotRestrictions = Collections.unmodifiableSet(slotBuilder.getSlotRestrictions());
     }
 
     public LocalDateTime getBeginOfSlot() {
@@ -29,8 +29,12 @@ public final class ActionSlot {
     }
 
 
-    public Set<SlotProperty> getSlotProperties() {
-        return slotProperties;
+    public boolean hasNoRestrictions() {
+        return slotRestrictions.isEmpty();
+    }
+
+    public Set<SlotRestriction> getRestrictions() {
+        return slotRestrictions;
     }
 
     @Override
