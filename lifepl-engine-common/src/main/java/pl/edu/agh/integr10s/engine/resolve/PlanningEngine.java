@@ -2,7 +2,6 @@ package pl.edu.agh.integr10s.engine.resolve;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.engine.factory.EngineFactory;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +11,7 @@ public abstract class PlanningEngine {
 
     protected abstract PlanningResult resolveProblem(ProblemContext problemContext);
 
-    public void setParentFactory(EngineFactory parentFactory) {
+    void setParentFactory(EngineFactory parentFactory) {
         this.parentFactory = parentFactory;
     }
 

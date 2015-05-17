@@ -1,6 +1,4 @@
-package pl.edu.agh.integr10s.engine.factory;
-
-import pl.edu.agh.integr10s.engine.resolve.PlanningEngine;
+package pl.edu.agh.integr10s.engine.resolve;
 
 public abstract class EngineFactory {
 

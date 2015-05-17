@@ -32,7 +32,7 @@ public final class AnnotationInjector<E extends Enum<E> & ShellNameAware<E>, App
     }
 
     private void addCommandInvocationUsingParam(ShellNameAware<E> subShellName, CtClass workingSubClass) {
-        final String methodParamValue = subShellName.getPrompt();
+        final String methodParamValue = subShellName.toString();
         final String generatedMethodName = BASE_METHOD_NAME + methodParamValue;
 
         logger.debug("adding command invocation {}(\"{}\")", BASE_METHOD_NAME, methodParamValue);

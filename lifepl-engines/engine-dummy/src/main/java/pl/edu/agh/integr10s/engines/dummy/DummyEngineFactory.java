@@ -1,7 +1,7 @@
 package pl.edu.agh.integr10s.engines.dummy;
 
-import pl.edu.agh.integr10s.engine.factory.EngineDescription;
-import pl.edu.agh.integr10s.engine.factory.EngineFactory;
+import pl.edu.agh.integr10s.engine.resolve.EngineDescription;
+import pl.edu.agh.integr10s.engine.resolve.EngineFactory;
 
 public class DummyEngineFactory extends EngineFactory {
     private static final EngineDescription DUMMY_ENGINE_DESCRIPTION = new EngineDescription(

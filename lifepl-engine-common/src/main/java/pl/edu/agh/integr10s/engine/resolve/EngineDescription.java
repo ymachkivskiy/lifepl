@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.engine.factory;
+package pl.edu.agh.integr10s.engine.resolve;
 
 public class EngineDescription {
 

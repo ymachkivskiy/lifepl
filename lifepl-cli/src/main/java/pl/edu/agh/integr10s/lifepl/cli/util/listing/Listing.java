@@ -35,6 +35,11 @@ public class Listing<T> {
         System.out.println();
     }
 
+    public Collection<T> chooseMany() {
+        list();
+        return picker.peekMany(model);
+    }
+
     private void printTable() {
         table.printTable();
     }

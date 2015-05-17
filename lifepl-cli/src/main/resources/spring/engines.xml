@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-       <bean id="lifepl.planning.availableEngines" class="pl.edu.agh.integr10s.engine.factory.PlanningEngines">
+       <bean id="lifepl.planning.availableEngines" class="pl.edu.agh.integr10s.engine.resolve.PlanningEngines">
               <property name="engineFactories">
                      <list>
                             <ref bean="engines.factory.dummy"/>

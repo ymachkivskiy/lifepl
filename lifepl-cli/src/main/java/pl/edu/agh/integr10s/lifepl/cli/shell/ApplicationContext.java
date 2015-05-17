@@ -1,8 +1,8 @@
 package pl.edu.agh.integr10s.lifepl.cli.shell;
 
 import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
-import pl.edu.agh.integr10s.engine.factory.EngineFactory;
-import pl.edu.agh.integr10s.engine.factory.PlanningEngines;
+import pl.edu.agh.integr10s.engine.resolve.EngineFactory;
+import pl.edu.agh.integr10s.engine.resolve.PlanningEngines;
 import pl.edu.agh.integr10s.lifepl.persistance.actors.ActorsService;
 import pl.edu.agh.integr10s.lifepl.persistance.planing.PlaningService;
 import pl.edu.agh.integr10s.lifepl.persistance.worlds.WorldsService;

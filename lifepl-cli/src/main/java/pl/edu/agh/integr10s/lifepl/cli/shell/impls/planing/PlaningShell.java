@@ -1,8 +1,10 @@
 package pl.edu.agh.integr10s.lifepl.cli.shell.impls.planing;
 
 import asg.cliche.Command;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.CategorizedShell;
-import pl.edu.agh.integr10s.engine.factory.EngineFactory;
+import pl.edu.agh.integr10s.engine.resolve.EngineFactory;
 import pl.edu.agh.integr10s.engine.resolve.Planning;
 import pl.edu.agh.integr10s.lifepl.cli.props.EngineProperties;
 import pl.edu.agh.integr10s.lifepl.cli.props.PlaningProperties;
@@ -11,6 +13,8 @@ import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
 
 public class PlaningShell extends CategorizedShell<ShellName, ApplicationContext> {
+    private static final Logger logger = LoggerFactory.getLogger(PlaningShell.class);
+
     public PlaningShell() {
         super(ShellName.class, ShellName.PLANING, ShellName.MAIN);
     }
@@ -27,18 +31,21 @@ public class PlaningShell extends CategorizedShell<ShellName, ApplicationContext
         listing.list();
     }
 
+    @Command(name = "new-planning", abbrev = "np", description = "Create new planning")
+    public void newSimulation() {
+        final ApplicationContext applicationState = getApplicationState();
+
+        if (applicationState.getPlaningEnginesFactories().isEmpty()) {
+            logger.error("Planning can not be performed : no planning engine available");
+        }else if(applicationState.getWorldsService().getWorlds().isEmpty()){
+            logger.error("Planning can not be performed : no world model available");
+        }else{
+            runSpecializedShell(new PlanningRunnerShell(applicationState));
+        }
+    }
+
     public void viewSimulation() {
         //TODO choose one of done simulations and go inside it's view shell
     }
 
-    public void newSimulation() {
-        /* TODO go to new simulation sub shell
-
-        1. engine should be choosen
-        2. world should be choosen
-        3. actors inside world should be choosen
-        4. simulation run
-
-    */
-    }
 }

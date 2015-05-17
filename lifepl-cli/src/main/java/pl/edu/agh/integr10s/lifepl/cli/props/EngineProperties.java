@@ -1,6 +1,6 @@
 package pl.edu.agh.integr10s.lifepl.cli.props;
 
-import pl.edu.agh.integr10s.engine.factory.EngineFactory;
+import pl.edu.agh.integr10s.engine.resolve.EngineFactory;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Property;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.PropertyExtractor;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.StringConstants;
