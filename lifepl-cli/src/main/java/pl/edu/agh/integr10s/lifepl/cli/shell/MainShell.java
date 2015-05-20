@@ -1,12 +1,12 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls;
+package pl.edu.agh.integr10s.lifepl.cli.shell;
 
 import pl.edu.agh.integr10s.clibuilder.shell.CategorizedShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
 
-public class Main extends CategorizedShell<ShellName,ApplicationContext> {
+public class MainShell extends CategorizedShell<ShellName,ApplicationContext> {
 
-    public Main() {
+    public MainShell() {
         super(ShellName.class, ShellName.MAIN, ShellName.NONE);
     }
 

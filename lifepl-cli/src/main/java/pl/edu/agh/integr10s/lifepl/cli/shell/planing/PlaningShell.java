@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls.planing;
+package pl.edu.agh.integr10s.lifepl.cli.shell.planing;
 
 import asg.cliche.Command;
 import org.slf4j.Logger;

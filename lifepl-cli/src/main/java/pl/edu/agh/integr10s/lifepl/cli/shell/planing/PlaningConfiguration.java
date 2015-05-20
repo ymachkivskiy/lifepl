@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls.planing;
+package pl.edu.agh.integr10s.lifepl.cli.shell.planing;
 
 
 import pl.edu.agh.integr10s.engine.resolve.EngineFactory;

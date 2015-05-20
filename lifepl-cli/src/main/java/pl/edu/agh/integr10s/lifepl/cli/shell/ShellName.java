@@ -23,13 +23,6 @@ public enum ShellName implements ShellNameAware<ShellName> {
         }
     },
 
-
-    ACTORS(
-            "actors",
-            "Actors command line",
-            "a"
-    ),
-
     WORLDS(
             "worlds",
             "World models command line",

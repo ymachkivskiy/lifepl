@@ -1,15 +1,10 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls.worlds;
+package pl.edu.agh.integr10s.lifepl.cli.shell.worlds;
 
 import asg.cliche.Command;
 import asg.cliche.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
-import pl.edu.agh.integr10s.lifepl.cli.props.ActionProperties;
-import pl.edu.agh.integr10s.lifepl.cli.props.ActorProperties;
-import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
-import pl.edu.agh.integr10s.lifepl.model.actor.Actor;
-import pl.edu.agh.integr10s.lifepl.model.world.Action;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 import pl.edu.agh.integr10s.lifepl.persistance.worlds.WorldsService;
 
@@ -55,21 +50,5 @@ public class WorldEditShell extends SpecializedSubShell {
         saveBeforeExit = doSafe;
     }
 
-    @Command(name = "list-actions", abbrev = "laa", description = "List allowed in world actions")
-    public void listActions() {
-        actionListing().list();
-    }
 
-    @Command(name = "list-actors", abbrev = "lact", description = "List actors in world model")
-    public void listActors() {
-        actorListing().list();
-    }
-
-    private Listing<Actor> actorListing() {
-        return Listing.For(world.getActors(), ActorProperties.PROPERTY_EXTRACTOR_WORLD);
-    }
-
-    private Listing<Action> actionListing() {
-        return Listing.For(world.getAllowedActions(), ActionProperties.PROPERTY_EXTRACTOR);
-    }
 }

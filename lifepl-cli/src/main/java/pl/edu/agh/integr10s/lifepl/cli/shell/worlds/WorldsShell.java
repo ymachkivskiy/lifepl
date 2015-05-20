@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.cli.shell.impls.worlds;
+package pl.edu.agh.integr10s.lifepl.cli.shell.worlds;
 
 import asg.cliche.Command;
 import asg.cliche.Param;

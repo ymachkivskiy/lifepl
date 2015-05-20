@@ -98,6 +98,11 @@ public class World {
         allowedActions.add(action);
     }
 
+    public void removeAllowedAction(Action action) {
+        logger.info("remove allowed action {} from world model {}", action, this);
+        allowedActions.remove(action);
+    }
+
     @Override
     public int hashCode() {
         //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.World:: int hashCode ()
