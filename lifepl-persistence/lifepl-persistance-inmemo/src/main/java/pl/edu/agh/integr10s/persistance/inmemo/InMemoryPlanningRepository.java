@@ -1,8 +1,7 @@
-package pl.edu.agh.integr10s.lifepl.persistance.planing;
+package pl.edu.agh.integr10s.persistance.inmemo;
 
 import pl.edu.agh.integr10s.engine.resolve.Planning;
 import pl.edu.agh.integr10s.lifepl.persistance.common.PlaningRepository;
-import pl.edu.agh.integr10s.lifepl.persistance.sample.InMemoryStorage;
 
 import java.util.Collection;
 

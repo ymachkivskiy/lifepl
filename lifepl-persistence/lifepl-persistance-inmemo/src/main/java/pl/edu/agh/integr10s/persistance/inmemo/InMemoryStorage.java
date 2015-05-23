@@ -1,4 +1,4 @@
-package pl.edu.agh.integr10s.lifepl.persistance.sample;
+package pl.edu.agh.integr10s.persistance.inmemo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

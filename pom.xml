@@ -51,7 +51,7 @@
         <module>lifepl-model</module>
         <module>lifepl-cli</module>
         <module>cli-builder</module>
-        <module>lifepl-persistance</module>
+        <module>lifepl-persistence</module>
         <module>lifepl-engine-common</module>
         <module>lifepl-engines</module>
     </modules>

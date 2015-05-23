@@ -1,20 +1,13 @@
-package pl.edu.agh.integr10s.lifepl.persistance.worlds;
+package pl.edu.agh.integr10s.persistance.inmemo;
 
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 import pl.edu.agh.integr10s.lifepl.persistance.common.WorldsRepository;
-import pl.edu.agh.integr10s.lifepl.persistance.sample.InMemoryStorage;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 
 public class InMemoryWorldsRepository implements WorldsRepository {
 
     private final InMemoryStorage<World> storage = new InMemoryStorage<>(World.class);
-
-    {
-        //TODO remove this
-        storage.addElement(new World("simple world", LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
-    }
 
     @Override
     public Collection<World> getWorlds() {

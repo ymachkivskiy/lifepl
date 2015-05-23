@@ -1,8 +1,7 @@
-package pl.edu.agh.integr10s.lifepl.persistance.actors;
+package pl.edu.agh.integr10s.persistance.inmemo;
 
 import pl.edu.agh.integr10s.lifepl.model.actor.Actor;
 import pl.edu.agh.integr10s.lifepl.persistance.common.ActorsRepository;
-import pl.edu.agh.integr10s.lifepl.persistance.sample.InMemoryStorage;
 
 import java.util.Collection;
 

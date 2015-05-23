@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.edu.agh.integr10s</groupId>
-        <artifactId>lifepl</artifactId>
+        <artifactId>lifepl-persistence</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>pl.edu.agh.integr10s</groupId>
-    <artifactId>lifepl-persistance</artifactId>
+    <artifactId>lifepl-persistance-commons</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>LifePl::Persistence</name>
+    <name>LifePl::Persistence::Commons</name>
     <description>Contains application persistence layer</description>
     <url>http://maven.apache.org</url>
     <dependencies>

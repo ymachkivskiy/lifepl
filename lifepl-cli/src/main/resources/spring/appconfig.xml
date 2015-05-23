@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <import resource="shells.xml"/>
-    <import resource="persistence.xml"/>
+    <import resource="classpath:persistence.xml"/>
     <import resource="engines.xml"/>
 
     <bean name="cliConfiguration" class="pl.edu.agh.integr10s.lifepl.cli.shell.CliConfiguration" scope="singleton">
