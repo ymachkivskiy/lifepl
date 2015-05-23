@@ -3,8 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="persistence.actors.inmemo" class="pl.edu.agh.integr10s.persistence.inmemo.InMemoryActorsRepository" scope="singleton"/>
-    <bean id="persistence.worlds.inmemo" class="pl.edu.agh.integr10s.persistence.inmemo.InMemoryWorldsRepository" scope="singleton"/>
-    <bean id="persistence.planing.inmemo" class="pl.edu.agh.integr10s.persistence.inmemo.InMemoryPlanningRepository" scope="singleton"/>
+    <bean id="persistence.repos.actors" class="pl.edu.agh.integr10s.persistence.inmemo.InMemoryActorsRepository" scope="singleton"/>
+    <bean id="persistence.repos.worlds" class="pl.edu.agh.integr10s.persistence.inmemo.InMemoryWorldsRepository" scope="singleton"/>
+    <bean id="persistence.repos.planing" class="pl.edu.agh.integr10s.persistence.inmemo.InMemoryPlanningRepository" scope="singleton"/>
 
 </beans>

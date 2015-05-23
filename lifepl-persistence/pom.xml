@@ -14,5 +14,6 @@
     <modules>
         <module>lifepl-persistence-commons</module>
         <module>lifepl-persistence-inmemo</module>
+        <module>lifepl-persistence-db</module>
     </modules>
 </project>
