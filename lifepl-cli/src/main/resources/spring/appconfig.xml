@@ -20,10 +20,10 @@
 
 
     <bean id="lifepl.cli.appcontext" class="pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext" scope="singleton">
-        <property name="actorsService" ref="persistence.actors.inmemo"/>
-        <property name="worldsService" ref="persistence.worlds.inmemo"/>
+        <property name="actorsRepository" ref="persistence.actors.inmemo"/>
+        <property name="worldsRepository" ref="persistence.worlds.inmemo"/>
         <property name="planningEngines" ref="lifepl.planning.availableEngines"/>
-        <property name="planingService" ref="persistence.planing.inmemo"/>
+        <property name="planingRepository" ref="persistence.planing.inmemo"/>
     </bean>
 
 

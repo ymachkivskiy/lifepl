@@ -43,7 +43,7 @@ class PlaningConfiguration {
         enginesListing = Listing.For(engineFactories, EngineProperties.PROPERTY_EXTRACTOR);
         engineFactory = engineFactories.get(0);
 
-        Collection<World> worlds = applicationContext.getWorldsService().getWorlds();
+        Collection<World> worlds = applicationContext.getWorldsRepository().getWorlds();
         worldsListing = Listing.For(worlds, WorldProperties.PROPERTY_EXTRACTOR);
         world = worlds.iterator().next();
 

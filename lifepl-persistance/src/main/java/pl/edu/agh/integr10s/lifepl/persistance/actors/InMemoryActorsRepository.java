@@ -1,11 +1,12 @@
 package pl.edu.agh.integr10s.lifepl.persistance.actors;
 
 import pl.edu.agh.integr10s.lifepl.model.actor.Actor;
+import pl.edu.agh.integr10s.lifepl.persistance.common.ActorsRepository;
 import pl.edu.agh.integr10s.lifepl.persistance.sample.InMemoryStorage;
 
 import java.util.Collection;
 
-public class InMemoryActorsService implements ActorsService {
+public class InMemoryActorsRepository implements ActorsRepository {
 
     private final InMemoryStorage<Actor> storage = new InMemoryStorage<>(Actor.class);
 

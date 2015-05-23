@@ -3,41 +3,41 @@ package pl.edu.agh.integr10s.lifepl.cli.shell;
 import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
 import pl.edu.agh.integr10s.engine.resolve.EngineFactory;
 import pl.edu.agh.integr10s.engine.resolve.PlanningEngines;
-import pl.edu.agh.integr10s.lifepl.persistance.actors.ActorsService;
-import pl.edu.agh.integr10s.lifepl.persistance.planing.PlaningService;
-import pl.edu.agh.integr10s.lifepl.persistance.worlds.WorldsService;
+import pl.edu.agh.integr10s.lifepl.persistance.common.ActorsRepository;
+import pl.edu.agh.integr10s.lifepl.persistance.common.PlaningRepository;
+import pl.edu.agh.integr10s.lifepl.persistance.common.WorldsRepository;
 
 import java.util.List;
 
 public class ApplicationContext implements AppContext {
 
-    private ActorsService actorsService;
-    private WorldsService worldsService;
-    private PlaningService planingService;
+    private ActorsRepository actorsRepository;
+    private WorldsRepository worldsRepository;
+    private PlaningRepository planingRepository;
     private PlanningEngines planningEngines;
 
-    public PlaningService getPlaningService() {
-        return planingService;
+    public PlaningRepository getPlaningRepository() {
+        return planingRepository;
     }
 
-    public void setPlaningService(PlaningService planingService) {
-        this.planingService = planingService;
+    public void setPlaningRepository(PlaningRepository planingRepository) {
+        this.planingRepository = planingRepository;
     }
 
-    public WorldsService getWorldsService() {
-        return worldsService;
+    public WorldsRepository getWorldsRepository() {
+        return worldsRepository;
     }
 
-    public void setWorldsService(WorldsService worldsService) {
-        this.worldsService = worldsService;
+    public void setWorldsRepository(WorldsRepository worldsRepository) {
+        this.worldsRepository = worldsRepository;
     }
 
-    public ActorsService getActorsService() {
-        return actorsService;
+    public ActorsRepository getActorsRepository() {
+        return actorsRepository;
     }
 
-    public void setActorsService(ActorsService actorsService) {
-        this.actorsService = actorsService;
+    public void setActorsRepository(ActorsRepository actorsRepository) {
+        this.actorsRepository = actorsRepository;
     }
 
     public List<EngineFactory> getPlaningEnginesFactories() {

@@ -6,13 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
-import pl.edu.agh.integr10s.lifepl.persistance.worlds.WorldsService;
+import pl.edu.agh.integr10s.lifepl.persistance.common.WorldsRepository;
 
 public class WorldEditShell extends SpecializedSubShell {
 
     private static final Logger logger = LoggerFactory.getLogger(WorldEditShell.class);
 
-    private final WorldsService worldService;
+    private final WorldsRepository worldsRepository;
     private final World world;
     private boolean saveBeforeExit;
 
@@ -26,15 +26,15 @@ public class WorldEditShell extends SpecializedSubShell {
     public void onShellExit() {
         if(saveBeforeExit){
             logger.info("saving world model before exit");
-            worldService.updateWorld(world);
+            worldsRepository.updateWorld(world);
         }else {
             logger.info("exiting world model view without saving");
         }
     }
 
-    public WorldEditShell(WorldsService service, World world) {
+    public WorldEditShell(WorldsRepository repository, World world) {
         super(world.getName(), "Editing " + world.getName());
-        this.worldService = service;
+        this.worldsRepository = repository;
         this.world = world;
     }
 

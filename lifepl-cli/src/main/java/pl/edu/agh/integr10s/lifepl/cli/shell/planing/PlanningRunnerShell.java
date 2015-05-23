@@ -10,7 +10,7 @@ import pl.edu.agh.integr10s.engine.resolve.Planning;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.model.actor.Actor;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
-import pl.edu.agh.integr10s.lifepl.persistance.planing.PlaningService;
+import pl.edu.agh.integr10s.lifepl.persistance.common.PlaningRepository;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -18,14 +18,14 @@ import java.util.Optional;
 public class PlanningRunnerShell extends SpecializedSubShell {
     private static final Logger logger = LoggerFactory.getLogger(PlanningRunnerShell.class);
 
-    private final PlaningService planingService;
+    private final PlaningRepository planingRepository;
     private final PlaningConfiguration planingConfiguration;
 
     public PlanningRunnerShell(ApplicationContext applicationContext) {
         super("new-planning", "Configure new planning simulation");
 
         planingConfiguration = new PlaningConfiguration(applicationContext);
-        planingService = applicationContext.getPlaningService();
+        planingRepository = applicationContext.getPlaningRepository();
     }
 
     @Command(name = "set-engine", abbrev = "se", description = "Set planning engine")
@@ -69,6 +69,6 @@ public class PlanningRunnerShell extends SpecializedSubShell {
         logger.info("start planning");
         Planning planning = planingConfiguration.performPlanning();
         logger.info("finish planning");
-        planingService.addPlaning(planning);
+        planingRepository.addPlaning(planning);
     }
 }

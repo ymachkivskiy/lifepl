@@ -1,10 +1,11 @@
-package pl.edu.agh.integr10s.lifepl.persistance.actors;
+package pl.edu.agh.integr10s.lifepl.persistance.common;
+
 
 import pl.edu.agh.integr10s.lifepl.model.actor.Actor;
 
 import java.util.Collection;
 
-public interface ActorsService {
+public interface ActorsRepository {
 
     public Collection<Actor> getActors();
 

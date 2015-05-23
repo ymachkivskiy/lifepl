@@ -23,7 +23,7 @@ public class PlaningShell extends CategorizedShell<ShellName, ApplicationContext
 
     @Command(name = "list-plannings", abbrev = "lsp", description = "List all performed plannings")
     public void listPerformedPlannings() {
-        Listing<Planning> listing = Listing.For(getApplicationState().getPlaningService().getAllPlannings(), PlaningProperties.PROPERTY_EXTRACTOR);
+        Listing<Planning> listing = Listing.For(getApplicationState().getPlaningRepository().getAllPlannings(), PlaningProperties.PROPERTY_EXTRACTOR);
         listing.list();
     }
 
@@ -39,7 +39,7 @@ public class PlaningShell extends CategorizedShell<ShellName, ApplicationContext
 
         if (applicationState.getPlaningEnginesFactories().isEmpty()) {
             logger.error("Planning can not be performed : no planning engine available");
-        }else if(applicationState.getWorldsService().getWorlds().isEmpty()){
+        }else if(applicationState.getWorldsRepository().getWorlds().isEmpty()){
             logger.error("Planning can not be performed : no world model available");
         }else{
             runSpecializedShell(new PlanningRunnerShell(applicationState));
@@ -48,7 +48,7 @@ public class PlaningShell extends CategorizedShell<ShellName, ApplicationContext
 
     @Command(name = "view-planning", abbrev = "vp", description = "View chosen planing results")
     public void viewPlanning() {
-        Listing<Planning> planningListing = Listing.For(getApplicationState().getPlaningService().getAllPlannings(), PlaningProperties.PROPERTY_EXTRACTOR);
+        Listing<Planning> planningListing = Listing.For(getApplicationState().getPlaningRepository().getAllPlannings(), PlaningProperties.PROPERTY_EXTRACTOR);
         Optional<Planning> chosenPlanning = planningListing.choose();
         if (chosenPlanning.isPresent()) {
             final Planning planning = chosenPlanning.get();

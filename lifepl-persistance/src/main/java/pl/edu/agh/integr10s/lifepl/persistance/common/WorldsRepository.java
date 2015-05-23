@@ -1,10 +1,10 @@
-package pl.edu.agh.integr10s.lifepl.persistance.worlds;
+package pl.edu.agh.integr10s.lifepl.persistance.common;
 
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 
 import java.util.Collection;
 
-public interface WorldsService {
+public interface WorldsRepository {
 
     public Collection<World> getWorlds();
 

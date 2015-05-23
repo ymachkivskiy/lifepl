@@ -12,7 +12,7 @@
     <artifactId>lifepl-engine</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>LifePl::EngineCommons</name>
-    <value>Contains engines for processing model and creating plans</value>
+    <description>Contains engines for processing model and creating plans</description>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
