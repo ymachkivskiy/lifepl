@@ -3,9 +3,9 @@ package pl.edu.agh.integr10s.lifepl.cli.shell;
 import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
 import pl.edu.agh.integr10s.engine.resolve.EngineFactory;
 import pl.edu.agh.integr10s.engine.resolve.PlanningEngines;
-import pl.edu.agh.integr10s.lifepl.persistance.common.ActorsRepository;
-import pl.edu.agh.integr10s.lifepl.persistance.common.PlaningRepository;
-import pl.edu.agh.integr10s.lifepl.persistance.common.WorldsRepository;
+import pl.edu.agh.integr10s.lifepl.persistence.common.ActorsRepository;
+import pl.edu.agh.integr10s.lifepl.persistence.common.PlaningRepository;
+import pl.edu.agh.integr10s.lifepl.persistence.common.WorldsRepository;
 
 import java.util.List;
 

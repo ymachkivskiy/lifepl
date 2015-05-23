@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
-import pl.edu.agh.integr10s.lifepl.persistance.common.WorldsRepository;
+import pl.edu.agh.integr10s.lifepl.persistence.common.WorldsRepository;
 
 public class WorldEditShell extends SpecializedSubShell {
 

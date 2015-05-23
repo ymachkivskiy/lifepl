@@ -8,7 +8,7 @@ import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ShellName;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
-import pl.edu.agh.integr10s.lifepl.persistance.common.WorldsRepository;
+import pl.edu.agh.integr10s.lifepl.persistence.common.WorldsRepository;
 
 import java.util.Collection;
 import java.util.Optional;

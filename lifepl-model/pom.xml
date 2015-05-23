@@ -8,7 +8,6 @@
         <artifactId>lifepl</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>pl.edu.agh.integr10s</groupId>
     <artifactId>lifepl-model</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>LifePl::Model</name>

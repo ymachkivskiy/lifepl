@@ -10,7 +10,7 @@ import pl.edu.agh.integr10s.engine.resolve.Planning;
 import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.model.actor.Actor;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
-import pl.edu.agh.integr10s.lifepl.persistance.common.PlaningRepository;
+import pl.edu.agh.integr10s.lifepl.persistence.common.PlaningRepository;
 
 import java.util.Collection;
 import java.util.Optional;
