@@ -73,7 +73,7 @@ public final class ActionSlotProperties {
         public Object extract(ActionSlot propertyHost) {
             StringBuilder sb = new StringBuilder();
             for (SlotRestriction slotRestriction : propertyHost.getRestrictions()) {
-                sb.append("* ").append(slotRestriction).append("\n");
+                sb.append("[").append(slotRestriction).append("];  ");
             }
             return sb.toString();
         }

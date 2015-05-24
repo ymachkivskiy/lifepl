@@ -2,8 +2,9 @@ package pl.edu.agh.integr10s.lifepl.cli.shell.planing;
 
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
 import pl.edu.agh.integr10s.engine.resolve.Planning;
+import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 
-class PlaningViewShell extends SpecializedSubShell {
+class PlaningViewShell extends SpecializedSubShell<ApplicationContext> {
 
     private final Planning planning;
 

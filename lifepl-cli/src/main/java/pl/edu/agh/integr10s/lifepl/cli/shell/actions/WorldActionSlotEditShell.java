@@ -4,16 +4,19 @@ import asg.cliche.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
+import pl.edu.agh.integr10s.lifepl.cli.props.ActionProperties;
 import pl.edu.agh.integr10s.lifepl.cli.props.ActionSlotProperties;
+import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
 import pl.edu.agh.integr10s.lifepl.model.world.Action;
 import pl.edu.agh.integr10s.lifepl.model.world.ActionSlot;
+import pl.edu.agh.integr10s.lifepl.model.world.ActionSlotBuilder;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 
 import java.util.List;
 import java.util.Optional;
 
-public class WorldActionSlotEditShell extends SpecializedSubShell {
+public class WorldActionSlotEditShell extends SpecializedSubShell<ApplicationContext> {
     private static final Logger logger = LoggerFactory.getLogger(WorldActionSlotEditShell.class);
 
     private final World world;
@@ -44,6 +47,21 @@ public class WorldActionSlotEditShell extends SpecializedSubShell {
 
     @Command(name = "new-slot", abbrev = "new", description = "Create new slot for action")
     public void addActionSlot() {
+
+        logger.info("create new action slot");
+
+        Optional<Action> action = Listing.For(world.getAllowedActions(), ActionProperties.PROPERTY_EXTRACTOR).choose();
+        if (action.isPresent()) {
+            final ActionSlotCreatorWizard wizard = new ActionSlotCreatorWizard(getApplicationState().getRestrictionsFabric());
+            Optional<ActionSlotBuilder> newSlot = wizard.newSlotBuilder();
+            if (newSlot.isPresent()) {
+                world.addActionSlot(action.get(), newSlot.get());
+            } else {
+                logger.warn("action slot creation was canceled");
+            }
+        } else {
+            logger.warn("no action chosen for slot creation, abort slot creation");
+        }
 
     }
 

@@ -1,4 +1,6 @@
-package pl.edu.agh.integr10s.lifepl.model.world.restrictions;
+package pl.edu.agh.integr10s.lifepl.model.world.restrictions.impl;
+
+import pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotRestriction;
 
 public class EnergyRestriction implements SlotRestriction {
 

@@ -3,6 +3,7 @@ package pl.edu.agh.integr10s.lifepl.cli.shell;
 import pl.edu.agh.integr10s.clibuilder.shell.AppContext;
 import pl.edu.agh.integr10s.engine.resolve.EngineFactory;
 import pl.edu.agh.integr10s.engine.resolve.PlanningEngines;
+import pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotRestrictionsFabric;
 import pl.edu.agh.integr10s.lifepl.persistence.common.ActorsRepository;
 import pl.edu.agh.integr10s.lifepl.persistence.common.PlaningRepository;
 import pl.edu.agh.integr10s.lifepl.persistence.common.WorldsRepository;
@@ -15,6 +16,15 @@ public class ApplicationContext implements AppContext {
     private WorldsRepository worldsRepository;
     private PlaningRepository planingRepository;
     private PlanningEngines planningEngines;
+    private SlotRestrictionsFabric restrictionsFabric;
+
+    public SlotRestrictionsFabric getRestrictionsFabric() {
+        return restrictionsFabric;
+    }
+
+    public void setRestrictionsFabric(SlotRestrictionsFabric restrictionsFabric) {
+        this.restrictionsFabric = restrictionsFabric;
+    }
 
     public PlaningRepository getPlaningRepository() {
         return planingRepository;

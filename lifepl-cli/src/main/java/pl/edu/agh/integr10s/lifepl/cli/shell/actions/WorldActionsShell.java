@@ -6,13 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
 import pl.edu.agh.integr10s.lifepl.cli.props.ActionProperties;
+import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.util.listing.Listing;
 import pl.edu.agh.integr10s.lifepl.model.world.Action;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 
 import java.util.Optional;
 
-public class WorldActionsShell extends SpecializedSubShell {
+public class WorldActionsShell extends SpecializedSubShell<ApplicationContext> {
     private static final Logger logger = LoggerFactory.getLogger(WorldActionsShell.class);
 
     private final World world;

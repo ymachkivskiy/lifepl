@@ -5,12 +5,13 @@ import asg.cliche.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
+import pl.edu.agh.integr10s.lifepl.cli.shell.ApplicationContext;
 import pl.edu.agh.integr10s.lifepl.cli.shell.actions.WorldActionSlotEditShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.actions.WorldActionsShell;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 import pl.edu.agh.integr10s.lifepl.persistence.common.WorldsRepository;
 
-public class WorldEditShell extends SpecializedSubShell {
+public class WorldEditShell extends SpecializedSubShell<ApplicationContext> {
 
     private static final Logger logger = LoggerFactory.getLogger(WorldEditShell.class);
 

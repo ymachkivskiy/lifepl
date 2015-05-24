@@ -40,9 +40,9 @@ public class ActionSlotBuilder {
         this.slotEnd = slotEnd;
     }
 
-    public void addSlotProperty(SlotRestriction property) {
-        logger.debug("adding slot property {} to slot builder {}", property, this);
-        slotRestrictions.add(property);
+    public void addSlotRestriction(SlotRestriction restriction) {
+        logger.debug("adding slot restriction {} to slot builder {}", restriction, this);
+        slotRestrictions.add(restriction);
     }
 
     public ActionSlot createSlot(Action action) {

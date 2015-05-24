@@ -1,6 +1,6 @@
 package pl.edu.agh.integr10s.clibuilder.shell;
 
-public abstract class SpecializedSubShell extends AbstractShell {
+public abstract class SpecializedSubShell<AppStateT extends AppContext> extends AbstractShell<AppStateT> {
 
     private final String propmt;
     private final String description;

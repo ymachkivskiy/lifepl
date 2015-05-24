@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class CategorizedShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> extends AbstractShell {
+public abstract class CategorizedShell<E extends Enum<E> & ShellNameAware<E>, AppStateT extends AppContext> extends AbstractShell<AppStateT> {
 
     private static final Logger logger = LoggerFactory.getLogger(CategorizedShell.class);
 
-    private AppStateT applicationState;
+
     private final ShellNameAware<E> subShellName;
     private final ShellNameAware<E> parentSubShellName;
     private final Class<E> clazz;
@@ -40,20 +40,6 @@ public abstract class CategorizedShell<E extends Enum<E> & ShellNameAware<E>, Ap
         return parentSubShellName;
     }
 
-    public void setApplicationState(AppStateT state) {
-        logger.debug("setting application state ' {} ' in shell ' {} '", state, this);
-
-        this.applicationState = state;
-
-        for (CategorizedShell<E, AppStateT> childShell : childShells()) {
-            childShell.setApplicationState(state);
-        }
-    }
-
-    protected final AppStateT getApplicationState() {
-        return applicationState;
-    }
-
     public final void runLevel() throws IOException {
         if (!shell.isPresent()) {
             shell = Optional.of(createShell());
@@ -63,13 +49,22 @@ public abstract class CategorizedShell<E extends Enum<E> & ShellNameAware<E>, Ap
         shell.get().commandLoop();
     }
 
+    public void setApplicationState(AppStateT state) {
+        super.setApplicationState(state);
+
+        for (CategorizedShell<E, AppStateT> childShell : childShells()) {
+            childShell.setApplicationState(state);
+        }
+    }
+
     public final void reconfigureAs(CategorizedShell<E, AppStateT> other) {
         logger.debug("reconfiguring ' {} ' as ' {} '", this, other);
 
         this.parentShell = other.parentShell;
         this.shell = other.shell;
         this.childSubShells = other.childSubShells;
-        this.applicationState = other.applicationState;
+
+        setApplicationState(other.getApplicationState());
 
         postReconfigureAs(other);
     }

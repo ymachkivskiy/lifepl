@@ -15,7 +15,7 @@ import pl.edu.agh.integr10s.lifepl.persistence.common.PlaningRepository;
 import java.util.Collection;
 import java.util.Optional;
 
-public class PlanningRunnerShell extends SpecializedSubShell {
+public class PlanningRunnerShell extends SpecializedSubShell<ApplicationContext> {
     private static final Logger logger = LoggerFactory.getLogger(PlanningRunnerShell.class);
 
     private final PlaningRepository planingRepository;

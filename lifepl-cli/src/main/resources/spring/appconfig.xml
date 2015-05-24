@@ -6,6 +6,7 @@
     <import resource="shells.xml"/>
     <import resource="classpath:persistence.xml"/>
     <import resource="engines.xml"/>
+    <import resource="model.xml"/>
 
     <bean name="cliConfiguration" class="pl.edu.agh.integr10s.lifepl.cli.shell.CliConfiguration" scope="singleton">
         <property name="shells">
@@ -24,6 +25,7 @@
         <property name="worldsRepository" ref="persistence.repos.worlds"/>
         <property name="planingRepository" ref="persistence.repos.planing"/>
         <property name="planningEngines" ref="lifepl.planning.availableEngines"/>
+        <property name="restrictionsFabric" ref="lifepl.model.slot.restriction.creators"/>
     </bean>
 
 

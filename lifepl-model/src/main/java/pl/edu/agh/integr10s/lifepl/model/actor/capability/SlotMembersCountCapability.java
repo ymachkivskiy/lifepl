@@ -2,7 +2,7 @@ package pl.edu.agh.integr10s.lifepl.model.actor.capability;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotMembersCountRestriction;
+import pl.edu.agh.integr10s.lifepl.model.world.restrictions.impl.SlotMembersCountRestriction;
 
 public class SlotMembersCountCapability extends ActorCapability<SlotMembersCountRestriction> {
     private static final Logger logger = LoggerFactory.getLogger(SlotMembersCountCapability.class);
