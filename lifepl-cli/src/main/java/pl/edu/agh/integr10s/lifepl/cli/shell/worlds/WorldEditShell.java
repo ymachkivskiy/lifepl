@@ -5,6 +5,7 @@ import asg.cliche.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
+import pl.edu.agh.integr10s.lifepl.cli.shell.actions.WorldActionsShell;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 import pl.edu.agh.integr10s.lifepl.persistence.common.WorldsRepository;
 
@@ -42,6 +43,12 @@ public class WorldEditShell extends SpecializedSubShell {
     public void setDescription(@Param(name = "new description") String newDescription) {
         logger.debug("set world {} new description \"{}\"", world, newDescription);
         world.setDescription(newDescription);
+    }
+
+    @Command(name = "actions", abbrev = "act", description = "Edit actions shell")
+    public void actions() {
+        logger.debug("start edit actions for world {}", world);
+        runSpecializedShell(new WorldActionsShell(world));
     }
 
     @Command(name = "save-before-exit", abbrev = "save", description = "Save ")

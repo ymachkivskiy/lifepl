@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public abstract class AbstractShell implements ShellDependent, ShellManageable {
 
-    private final static Logger logger = LoggerFactory.getLogger(CategorizedShell.class);
+    private final static Logger logger = LoggerFactory.getLogger(AbstractShell.class);
     private final String name;
     protected Shell parentShell;
     protected Optional<Shell> shell = Optional.empty();
@@ -24,7 +24,7 @@ public abstract class AbstractShell implements ShellDependent, ShellManageable {
     public final void runSpecializedShell(SpecializedSubShell specializedSubShell) {
         logger.debug("run specialized shell {} from within {}", specializedSubShell, this);
         try {
-            ShellFactory.createSubshell(specializedSubShell.getPrompt(), shell.get(), specializedSubShell.getDescription(), specializedSubShell).commandLoop();
+            ShellFactory.createSubshell(specializedSubShell.getPrompt(), parentShell, specializedSubShell.getDescription(), specializedSubShell).commandLoop();
         } catch (IOException e) {
             logger.error("error during running specialized shell", e);
         }
