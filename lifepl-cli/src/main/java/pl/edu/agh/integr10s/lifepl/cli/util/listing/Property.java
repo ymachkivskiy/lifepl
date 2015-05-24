@@ -36,13 +36,18 @@ public abstract class Property<T> {
 
     @Override
     public boolean equals(Object obj) {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.cli.util.listing.Property:: boolean equals ()
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (this.getClass() == obj.getClass()) {
+            Property other = (Property) obj;
+            return name.equals(other.name);
+        }
+        return false;
     }
 
     @Override
     public String toString() {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.cli.util.listing.Property:: String toString ()
-        return super.toString();
+        return "property [" + name + "]";
     }
 }

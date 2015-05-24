@@ -5,6 +5,7 @@ import asg.cliche.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.edu.agh.integr10s.clibuilder.shell.SpecializedSubShell;
+import pl.edu.agh.integr10s.lifepl.cli.shell.actions.WorldActionSlotEditShell;
 import pl.edu.agh.integr10s.lifepl.cli.shell.actions.WorldActionsShell;
 import pl.edu.agh.integr10s.lifepl.model.world.World;
 import pl.edu.agh.integr10s.lifepl.persistence.common.WorldsRepository;
@@ -49,6 +50,16 @@ public class WorldEditShell extends SpecializedSubShell {
     public void actions() {
         logger.debug("start edit actions for world {}", world);
         runSpecializedShell(new WorldActionsShell(world));
+    }
+
+    @Command(name ="action-slots", abbrev = "slots", description = "Edit action slots")
+    public void actionSlots() {
+        if (world.getAllowedActions().size() > 0) {
+            logger.debug("start edit action slots for world {}", world);
+            runSpecializedShell(new WorldActionSlotEditShell(world));
+        }else {
+            logger.warn("cannot edit action slots for world where is no allowed actions");
+        }
     }
 
     @Command(name = "save-before-exit", abbrev = "save", description = "Save ")

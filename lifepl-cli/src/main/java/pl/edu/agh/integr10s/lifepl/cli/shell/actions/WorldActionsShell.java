@@ -27,7 +27,7 @@ public class WorldActionsShell extends SpecializedSubShell {
         Listing.For(world.getAllowedActions(), ActionProperties.PROPERTY_EXTRACTOR).list();
     }
 
-    @Command(name="add-action", abbrev = "add", description = "Add new allowed action to current world")
+    @Command(name="new-action", abbrev = "new", description = "Add new allowed action to current world")
     public void addAction(@Param(name = "action_name") String actionName) {
         Action action = new Action(actionName);
         logger.info("add new action {} to world {} ", action, world);

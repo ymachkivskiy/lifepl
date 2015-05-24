@@ -1,5 +1,6 @@
 package pl.edu.agh.integr10s.lifepl.model.world.restrictions;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,18 +42,28 @@ public class SlotMembersCountRestriction implements SlotRestriction {
 
     @Override
     public int hashCode() {
-        return maxMembersCount;
+        return new HashCodeBuilder(17, 57)
+                .append(maxMembersCount)
+                .append(currentMembersCount)
+                .hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotMembersCountRestriction:: boolean equals ()
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof SlotMembersCountRestriction) {
+            SlotMembersCountRestriction other = (SlotMembersCountRestriction) obj;
+            return maxMembersCount == other.maxMembersCount && currentMembersCount == other.currentMembersCount;
+        }
+
+        return false;
     }
 
     @Override
     public String toString() {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotMembersCountRestriction:: String toString ()
-        return super.toString();
+        return "Max members count is " + maxMembersCount + " persons";
     }
 }

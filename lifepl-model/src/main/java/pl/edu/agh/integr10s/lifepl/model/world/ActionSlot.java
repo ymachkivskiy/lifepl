@@ -1,5 +1,6 @@
 package pl.edu.agh.integr10s.lifepl.model.world;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import pl.edu.agh.integr10s.lifepl.model.world.restrictions.SlotRestriction;
 
 import java.time.LocalDateTime;
@@ -39,20 +40,43 @@ public final class ActionSlot {
 
     @Override
     public int hashCode() {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.ActionSlot:: int hashCode ()
-        return super.hashCode();
+        return new HashCodeBuilder(11, 197)
+                .append(beginOfSlot)
+                .append(endOfSlot)
+                .append(action)
+                .append(slotRestrictions)
+                .hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.ActionSlot:: boolean equals ()
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof ActionSlot) {
+            ActionSlot other = (ActionSlot) obj;
+            return     action.equals(other.action)
+                    && beginOfSlot.equals(other.beginOfSlot)
+                    && endOfSlot.equals(other.endOfSlot)
+                    && slotRestrictions.equals(other.slotRestrictions);
+        }
+
+        return false;
     }
 
     @Override
     public String toString() {
-        //TODO implement override pl.edu.agh.integr10s.lifepl.model.world.ActionSlot:: String toString ()
-        return super.toString();
+        StringBuilder result = new StringBuilder();
+
+        result
+                .append("ActionSlot { \n")
+                .append(" action : ").append(action).append("\n")
+                .append(" begin : ").append(beginOfSlot).append("\n")
+                .append(" end : ").append(endOfSlot).append("\n")
+                .append(" restrictions : ").append(slotRestrictions).append("\n}");
+
+        return result.toString();
     }
 
     public Action getAction() {

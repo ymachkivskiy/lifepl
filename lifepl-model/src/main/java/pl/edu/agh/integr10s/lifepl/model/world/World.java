@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class World {
+    private static final ArrayList<ActionSlot> EMPTY_ACTION_SLOT_LIST = new ArrayList<>(0);
 
     private static final Logger logger = LoggerFactory.getLogger(World.class);
 
@@ -61,6 +62,17 @@ public class World {
             return Collections.emptyList();
         }
         return Collections.unmodifiableList(actionSlots);
+    }
+
+    public void removeActionSlot(ActionSlot actionSlot) {
+        logger.info("removing action slot {} from world model {}", actionSlot, this);
+        Action action = actionSlot.getAction();
+        if (allowedActions.contains(action)) {
+            List<ActionSlot> actionSlots = actionsSlots.getOrDefault(action, EMPTY_ACTION_SLOT_LIST);
+            actionSlots.remove(actionSlot);
+        }else {
+            logger.warn("try to remove actions slot {} which not belong to world {} ", actionSlot, this);
+        }
     }
 
     public ActionSlot addActionSlot(Action action, ActionSlotBuilder slotConfig) {

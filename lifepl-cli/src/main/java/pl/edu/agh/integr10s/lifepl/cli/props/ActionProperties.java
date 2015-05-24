@@ -19,7 +19,7 @@ public final class ActionProperties {
     private static class ActionNameProperty extends Property<Action> {
 
         public ActionNameProperty(int sortKey) {
-            super(StringConstants.ACTOR_NAME_COLUMN, sortKey);
+            super(StringConstants.ACTION_NAME_COLUMN, sortKey);
         }
 
         @Override
